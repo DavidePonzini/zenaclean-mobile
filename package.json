@@ -26,7 +26,18 @@
     "standard": "^12.0.1"
   },
   "standard": {
-    "parser": "babel-eslint"
+    "parser": "babel-eslint",
+    "globals": [
+      "describe",
+      "it",
+      "fetch",
+      "navigator",
+      "__DEV__",
+      "XMLHttpRequest",
+      "FormData",
+      "React$Element",
+      "WebSocket"
+    ]
   },
   "jest": {
     "preset": "react-native"
