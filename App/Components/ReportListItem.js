@@ -6,7 +6,8 @@ export default class ReportListItem extends React.Component {
     return (
       <View style={styles.container}>
         <Text style={styles.title}>{this.props.item.title}</Text>
-        <Text style={styles.descr}>{this.props.item.descr}</Text>
+        <Text style={styles.descr}>{this.props.item.description}</Text>
+        <Text style={styles.descr}>{this.props.item.timestamp}</Text>
         <Image style={styles.image} source={{ uri: this.props.item.url }} />
       </View>
     )
