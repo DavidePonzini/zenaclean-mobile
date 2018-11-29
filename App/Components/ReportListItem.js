@@ -1,13 +1,17 @@
 import React from 'react'
 import { Image, StyleSheet, Text, View } from 'react-native'
-
+import { Images } from '../Themes/Images'
 export default class ReportListItem extends React.Component {
+  constructor (props) {
+    super(props)
+    this.imgUri = (this.props.item.url == null) ? Images.defaultReportPicture : { uri: this.props.item.url }
+  }
   render () {
     return (
       <View style={styles.container}>
         <Text style={styles.title}>{this.props.item.title}</Text>
         <Text style={styles.descr}>{this.props.item.descr}</Text>
-        <Image style={styles.image} source={{ uri: this.props.item.url }} />
+        <Image style={styles.image} source={this.imgUri} />
       </View>
     )
   }
