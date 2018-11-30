@@ -25,6 +25,7 @@ export default class MapScreen extends React.Component {
     }
 
     render () {
+      const { navigate } = this.props.navigation
       return (
         <View style={styles.map}>
           <MapView
@@ -33,7 +34,7 @@ export default class MapScreen extends React.Component {
             onRegionChange={this.onRegionChange}
           />
 
-          <ActionButton buttonColor='#0022EE' onPress={() => {}} />
+          <ActionButton buttonColor='#0022EE' onPress={() => navigate('AddReport', { lat: '44.398609', long: '8.985178' })} />
         </View>
       )
     }
