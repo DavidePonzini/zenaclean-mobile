@@ -1,29 +1,38 @@
 import React from 'react'
-import { Image, StyleSheet, Text, View } from 'react-native'
-import { Images } from '../Themes/Images'
+import { Image, StyleSheet, Text, TouchableOpacity } from 'react-native'
+import Images from '../Themes/Images'
+import Fonts from '../Themes/Fonts'
+import DateParser from '../Utils/DateParser'
+
 export default class ReportListItem extends React.Component {
   constructor (props) {
     super(props)
-    this.imgUri = (this.props.item.url == null) ? Images.defaultReportPicture : { uri: this.props.item.url }
+    this.imgUri = (this.props.marker.url == null) ? Images.defaultReportPicture : { uri: this.props.marker.url }
+    const { date, time } = DateParser.timestampToItalianDate(this.props.marker.timestamp)
+    this.date = date
+    this.time = time
   }
   render () {
+    const description = this.props.marker.description.length > 80 ? this.props.marker.description.substring(0, 80) + '...' : this.props.marker.description
     return (
-      <View style={styles.container}>
-        <Text style={styles.title}>{this.props.item.title}</Text>
-        <Text style={styles.descr}>{this.props.item.descr}</Text>
+      <TouchableOpacity onPress={() => { this.props.onPress(this.props.marker) }} style={styles.container}>
+        <Text style={styles.title}>{this.props.marker.title}</Text>
+        <Text style={styles.descr}>{description}</Text>
+        <Text style={styles.timestamp}>{this.date + ' alle ' + this.time}</Text>
         <Image style={styles.image} source={this.imgUri} />
-      </View>
+      </TouchableOpacity>
     )
   }
 }
 
 const styles = StyleSheet.create({
   title: {
-    fontSize: 30,
-    fontWeight: 'bold'
+    ...Fonts.style.h2
   },
   descr: {
-
+    ...Fonts.style.description
+  },
+  timestamp: {
   },
   container: {
     flex: 1,

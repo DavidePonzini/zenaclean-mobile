@@ -41,6 +41,7 @@ export default class MapScreen extends React.Component {
                 coordinate={{ latitude: marker.latitude, longitude: marker.longitude }}
                 title={marker.title}
                 description={marker.description}
+                onCalloutPress={() => navigate('SingleReport', { marker })}
               />
             )
             )}

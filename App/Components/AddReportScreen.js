@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { StyleSheet, View, Image, ScrollView } from 'react-native'
 import { FormInput, FormLabel, FormValidationMessage, Button, Text } from 'react-native-elements'
-import { widthPercentageToDP as wp, heightPercentageToDP as hp, listenOrientationChange as loc, removeOrientationListener as rol } from 'react-native-responsive-screen'
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import ImagePicker from 'react-native-image-picker'
 import api from '../Services/ApiService'
 
@@ -46,11 +46,7 @@ export default class AddReportScreen extends Component {
   }
 
   componentDidMount () {
-    loc(this)
     this.convertAddress(this.state.lat, this.state.lng)
-  }
-  componentWillUnmount () {
-    rol()
   }
 
   imageUpload () {
@@ -80,6 +76,7 @@ export default class AddReportScreen extends Component {
   }
 
   render () {
+    const { goBack } = this.props.navigation
     return (
       <ScrollView style={styles.container_scroll}>
         <View style={styles.container}>
@@ -107,6 +104,7 @@ export default class AddReportScreen extends Component {
               containerViewStyle={{ borderRadius: 10 }}
               iconRight={{ name: 'ios-close', type: 'ionicon', color: '#FFFFFF', size: 25 }}
               buttonStyle={[styles.form_button, styles.btn_cancel]}
+              onPress={() => { goBack() }}
               title='Annulla' />
             <Button
               raised
