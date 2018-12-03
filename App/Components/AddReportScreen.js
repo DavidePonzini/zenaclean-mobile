@@ -3,6 +3,7 @@ import { StyleSheet, View, Image, ScrollView } from 'react-native'
 import { FormInput, FormLabel, FormValidationMessage, Button, Text } from 'react-native-elements'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp, listenOrientationChange as loc, removeOrientationListener as rol } from 'react-native-responsive-screen'
 import ImagePicker from 'react-native-image-picker'
+import api from '../Services/ApiService'
 
 const options = {
   title: 'Carica foto',
@@ -15,6 +16,14 @@ const options = {
   }
 }
 
+const formItems = {
+  title: 'Titolo Segnalazione',
+  titleErrorMessage: 'Inserisci un titolo per la segnalazione',
+  descrErrorMessage: 'Inserisci una descrizione per la segnalazione',
+  address: 'Indirizzo',
+  descr: 'Descrizione'
+}
+
 export default class AddReportScreen extends Component {
   constructor (props) {
     super(props)
@@ -22,26 +31,23 @@ export default class AddReportScreen extends Component {
     this.state = {
       photoSource: null,
       lat: this.props.navigation.state.params.lat,
-      long: this.props.navigation.state.params.long,
+      lng: this.props.navigation.state.params.lng,
       nameFile: 'Aggiungi Foto',
-      address: 'Caricamento in corso..'
+      address: 'Caricamento in corso..',
+      titleError: false,
+      descrError: false
     }
   }
 
-  convertAddress = (lat, long) => {
-    fetch('https://maps.googleapis.com/maps/api/geocode/json?address=' + lat + ',' + long + '&key= AIzaSyB8BtVSZekNUxDxYIOksUoxhGkHx8i0iR8')
-      .then((response) => response.json())
-      .then((responseJson) => {
-        console.log('ADDRESS GEOCODE is BACK!! => ' + JSON.stringify(responseJson))
-        this.setState({
-          address: JSON.stringify(responseJson)
-        })
-      })
+  convertAddress = (lat, lng) => {
+    api.getAddressFromCoords({ lat, lng }, (res) => {
+      /* in theory we should get an address and plug it into the dom */
+    })
   }
 
   componentDidMount () {
     loc(this)
-    //this.convertAddress(this.state.lat, this.state.long)
+    this.convertAddress(this.state.lat, this.state.lng)
   }
   componentWillUnmount () {
     rol()
@@ -77,16 +83,16 @@ export default class AddReportScreen extends Component {
     return (
       <ScrollView style={styles.container_scroll}>
         <View style={styles.container}>
-          <FormLabel labelStyle={styles.title_label}>Titolo Segnalazione</FormLabel>
+          <FormLabel labelStyle={styles.title_label}>{formItems.title}</FormLabel>
           <FormInput inputStyle={styles.input} />
-          <FormValidationMessage>Errore messaggio Segnalazione</FormValidationMessage>
+          { this.state.titleError && <FormValidationMessage>{formItems.titleErrorMessage}</FormValidationMessage> }
 
-          <FormLabel labelStyle={[styles.title_label, styles.margin_top]}>Indirizzo</FormLabel>
+          <FormLabel labelStyle={[styles.title_label, styles.margin_top]}>{formItems.address}</FormLabel>
           <Text style={styles.place}>{this.state.address}</Text>
 
-          <FormLabel labelStyle={[styles.title_label, styles.margin_top]}>Descrizione</FormLabel>
+          <FormLabel labelStyle={[styles.title_label, styles.margin_top]}>{formItems.descr}</FormLabel>
           <FormInput inputStyle={[styles.input, styles.input_desc]} multiline />
-          <FormValidationMessage>Errore messaggio Descrizione</FormValidationMessage>
+          { this.state.descrError && <FormValidationMessage>{formItems.descrErrorMessage}</FormValidationMessage> }
 
           <View style={[styles.view_button, styles.margin_top]}>
             <ScrollView horizontal style={{ maxWidth: wp('60%') }}>
@@ -118,7 +124,8 @@ export default class AddReportScreen extends Component {
 const styles = StyleSheet.create({
   container_scroll: {
     flex: 1,
-    width: wp('100%')
+    width: wp('100%'),
+    height: hp('100%')
   },
   container: {
     justifyContent: 'center',

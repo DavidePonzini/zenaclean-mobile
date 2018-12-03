@@ -1,27 +1,29 @@
 import React from 'react'
-import MapView from 'react-native-maps/lib/components/MapView'
+import MapView, { Marker } from 'react-native-maps'
 import { StyleSheet, View } from 'react-native'
 import ActionButton from 'react-native-action-button'
+import api from '../Services/ApiService'
 
 export default class MapScreen extends React.Component {
   constructor (props) {
     super(props)
-    this.state = this.getInitialState()
-  }
-
-  getInitialState () {
-    return {
+    this.state = {
       region: {
         latitude: 44.4056,
         longitude: 8.9463,
         latitudeDelta: 0.1,
         longitudeDelta: 0.1
-      }
+      },
+      markers: []
     }
   }
 
     onRegionChange = (region) => {
       this.setState({ region })
+    }
+
+    componentWillMount () {
+      api.getMarkers((res) => { this.setState({ markers: res }) })
     }
 
     render () {
@@ -32,9 +34,18 @@ export default class MapScreen extends React.Component {
             style={styles.map}
             initialRegion={this.state.region}
             onRegionChange={this.onRegionChange}
-          />
-
-          <ActionButton buttonColor='#0022EE' onPress={() => navigate('AddReport', { lat: '44.398609', long: '8.985178' })} />
+          >
+            {this.state.markers.map((marker, key) => (
+              <Marker
+                key={key}
+                coordinate={{ latitude: marker.latitude, longitude: marker.longitude }}
+                title={marker.title}
+                description={marker.description}
+              />
+            )
+            )}
+          </MapView>
+          <ActionButton buttonColor='#0022EE' onPress={() => navigate('AddReport', { lat: this.state.region.latitude, lng: this.state.region.latitude })} />
         </View>
       )
     }
