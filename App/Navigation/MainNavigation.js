@@ -5,7 +5,10 @@ import SingleReportScreen from '../Components/SingleReportScreen'
 
 const MainNavigator = createStackNavigator({
   Main: {
-    screen: TabNavigator
+    screen: TabNavigator,
+    navigationOptions: {
+      header: null
+    }
   },
   AddReport: {
     screen: AddReportScreen
@@ -15,8 +18,7 @@ const MainNavigator = createStackNavigator({
   }
 },
 {
-  initialRouteName: 'Main',
-  headerMode: 'none'
+  initialRouteName: 'Main'
 }
 )
 
