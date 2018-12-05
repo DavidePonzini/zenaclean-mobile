@@ -1,5 +1,5 @@
 import React from 'react'
-import MapView, { Marker } from 'react-native-maps'
+import MapView from 'react-native-maps'
 import { StyleSheet, View } from 'react-native'
 import ActionButton from 'react-native-action-button'
 import api from '../Services/ApiService'
@@ -37,18 +37,7 @@ export default class MapScreen extends React.Component {
             style={styles.map}
             initialRegion={this.state.region}
             onRegionChange={this.onRegionChange}
-          >
-            {this.state.markers.map((marker, key) => (
-              <Marker
-                key={key}
-                coordinate={{ latitude: marker.latitude, longitude: marker.longitude }}
-                title={marker.title}
-                description={marker.description}
-                onCalloutPress={() => navigate('SingleReport', { marker })}
-              />
-            )
-            )}
-          </MapView>
+          />
           <ActionButton buttonColor='dodgerblue' onPress={() => navigate('AddReport', { lat: this.state.region.latitude, lng: this.state.region.latitude })} />
         </View>
       )
