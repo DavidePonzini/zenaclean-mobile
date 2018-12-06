@@ -20,10 +20,12 @@
     "react-native-maps": "^0.22.1",
     "react-native-responsive-screen": "^1.1.10",
     "react-native-vector-icons": "^6.1.0",
-    "react-navigation": "^3.0.2"
+    "react-navigation": "^3.0.2",
+    "prop-types": "latest"
   },
   "devDependencies": {
-    "babel-core": "^6.26.3",
+    "@babel/plugin-proposal-class-properties": "^7.1.0",
+    "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "^10.0.1",
     "babel-jest": "23.6.0",
     "jest": "23.6.0",
@@ -42,10 +44,22 @@
       "XMLHttpRequest",
       "FormData",
       "React$Element",
-      "WebSocket"
+      "WebSocket",
+      "jest",
+      "expect",
+      "test"
     ]
   },
   "jest": {
+    "testMatch": [
+      "<rootDir>/__tests__/**/*.js",
+      "**/?(*.)(spec|test).js?(x)"
+    ],
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "<rootDir>/__tests__/Setup.js"
+    ],
+    "setupFiles": [],
     "preset": "react-native"
   }
 }
