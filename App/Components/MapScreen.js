@@ -26,7 +26,7 @@ export default class MapScreen extends React.Component {
     }
 
     componentWillMount () {
-      api.getMarkers((res) => { this.setState({ markers: res }) })
+      return api.getMarkers((res) => { this.setState({ markers: res }) })
     }
 
     render () {

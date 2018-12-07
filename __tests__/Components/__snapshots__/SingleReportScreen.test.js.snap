@@ -1,0 +1,58 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<RCTScrollView>
+  <View>
+    <View
+      style={
+        Object {
+          "alignItems": "center",
+          "flex": 1,
+          "margin": 10,
+        }
+      }
+    >
+      <Text
+        style={
+          Object {
+            "fontFamily": "HelveticaNeue-Italic",
+            "fontSize": 30,
+          }
+        }
+      >
+        Divano abbandonato
+      </Text>
+      <Text>
+        28 Febbraio 2018 alle 8:35
+      </Text>
+      <Text
+        style={
+          Object {
+            "fontFamily": "Avenir-Book",
+            "fontSize": 14,
+          }
+        }
+      >
+        In mezzo alla strada
+      </Text>
+      <Text />
+      <Text>
+        
+      </Text>
+      <Image
+        source={
+          Object {
+            "testUri": "../../../App/Assets/Images/default_report_image.png",
+          }
+        }
+        style={
+          Object {
+            "height": 400,
+            "width": 400,
+          }
+        }
+      />
+    </View>
+  </View>
+</RCTScrollView>
+`;

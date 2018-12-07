@@ -1,8 +1,14 @@
 import React from 'react'
 import MapScreen from '../../App/Components/MapScreen'
 
+import { fixtureMarkers } from '../../App/Services/FixtureApiService'
+import { shallow, configure } from 'enzyme'
+import Adapter from 'enzyme-adapter-react-16'
 import renderer from 'react-test-renderer'
 import 'isomorphic-fetch'
+
+configure({ adapter: new Adapter() })
+
 jest
   .mock('react-native-maps', () => {
     // eslint-disable-next-line import/no-unresolved
@@ -35,8 +41,18 @@ jest
     }
   })
 
+jest.mock('../../App/Services/ApiService', () => require('../../App/Services/FixtureApiService'))
+
+const navigation = { navigate: jest.fn() }
+
 test('renders correctly', () => {
-  const navigation = { navigate: jest.fn() }
   const tree = renderer.create(<MapScreen navigation={navigation} />).toJSON()
   expect(tree).toMatchSnapshot()
+})
+
+test('markers downloaded', async () => {
+  const wrapper = shallow(<MapScreen navigation={navigation} />)
+  const instance = wrapper.instance()
+  await instance.componentWillMount()
+  expect(instance.state.markers.length).toBe(fixtureMarkers.length)
 })

@@ -4,10 +4,9 @@ const baseUrl = Secrets.API_URL
 
 const getAddressFromCoords = ({ lat, lng }, cb) => {
   const googleApiUrl = 'https://maps.googleapis.com/maps/api/geocode/json?address='
-
-  fetch(googleApiUrl + lat + ',' + lng + '&key=' + Secrets.GOOGLE_MAPS_API_KEY)
+  return fetch(googleApiUrl + lat + ',' + lng + '&key=' + Secrets.GOOGLE_MAPS_API_KEY)
     .then((response) => response.json())
-    .then((responseJson) => cb(responseJson))
+    .then((responseJson) => { cb(responseJson) })
 }
 
 const getMarkers = (cb) => {

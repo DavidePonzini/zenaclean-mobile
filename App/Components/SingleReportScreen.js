@@ -30,8 +30,10 @@ export default class SingleReportScreen extends Component {
   }
 
   componentWillMount () {
-    api.getAddressFromCoords({ lat: this.state.marker.latitude, lng: this.state.marker.longitude }, (res) => {
-      /* this.setState({ address: res }) */
+    return api.getAddressFromCoords({ lat: this.state.marker.latitude, lng: this.state.marker.longitude }, (res) => {
+      if (typeof res === 'string') {
+        this.setState({ address: res })
+      }
     })
   }
 
