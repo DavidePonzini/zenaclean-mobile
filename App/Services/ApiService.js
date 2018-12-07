@@ -15,7 +15,15 @@ const getMarkers = (cb) => {
     .then((response) => response.json())
     .then((responseJson) => { cb(responseJson) })
 }
+
+const uploadReport = (infoReport) => {
+  return fetch(baseUrl + 'markers.json', {
+    method: 'POST',
+    body: JSON.stringify(infoReport)
+  })
+}
 export default {
   getAddressFromCoords,
-  getMarkers
+  getMarkers,
+  uploadReport
 }

@@ -49,7 +49,7 @@ export default class MapScreen extends React.Component {
             )
             )}
           </MapView>
-          <ActionButton buttonColor='dodgerblue' onPress={() => navigate('AddReport', { lat: this.state.region.latitude, lng: this.state.region.latitude })} />
+          <ActionButton buttonColor='dodgerblue' onPress={() => navigate('AddReport', { lat: this.state.region.latitude, lng: this.state.region.longitude })} />
         </View>
       )
     }
