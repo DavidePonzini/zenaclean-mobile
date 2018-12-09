@@ -47,16 +47,6 @@ export default class AddReportScreen extends Component {
     })
   }
 
-  getData = () => {
-    let day = new Date().getDate()
-    let month = new Date().getMonth() + 1
-    let year = new Date().getFullYear()
-    let hour = new Date().getHours()
-    let min = new Date().getMinutes()
-    let sec = new Date().getSeconds()
-    return { currentDate: year + '-' + month + '-' + day + 'T' + hour + ':' + min + ':' + sec }
-  }
-
   handleTitle = (title) => {
     this.setState({ title: title })
   }
@@ -74,7 +64,7 @@ export default class AddReportScreen extends Component {
       description: this.state.description,
       latitude: this.state.lat,
       longitude: this.state.lng,
-      timestamp: this.getData(),
+      timestamp: new Date().toISOString(),
       title: this.state.title
     }
     api.uploadReport(data)
