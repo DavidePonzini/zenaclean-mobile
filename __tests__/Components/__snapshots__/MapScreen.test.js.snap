@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`renders correctly 1`] = `
+exports[`MapScreen tests renders correctly 1`] = `
 <View
   style={
     Object {
@@ -31,12 +31,51 @@ exports[`renders correctly 1`] = `
         "top": 0,
       }
     }
-  />
-  <ActionButton
-    buttonColor="dodgerblue"
-    onPress={[Function]}
   >
-    
-  </ActionButton>
+    <MapMarker
+      coordinate={
+        Object {
+          "latitude": 44.1234,
+          "longitude": 8.1234,
+        }
+      }
+      description="Divano abbandonato in via Gramsci"
+      key="0"
+      stopPropagation={false}
+      title="Divano abbandonato"
+    >
+      <MapCallout
+        onPress={[Function]}
+        tooltip={false}
+      />
+    </MapMarker>
+  </MapView>
+  <ActionButton
+    active={false}
+    activeOpacity={0.85}
+    autoInactive={true}
+    backdrop={false}
+    backgroundTappable={false}
+    bgColor="transparent"
+    bgOpacity={1}
+    buttonColor="dodgerblue"
+    buttonText="+"
+    buttonTextStyle={Object {}}
+    degrees={45}
+    fixNativeFeedbackRadius={false}
+    nativeFeedbackRippleColor="rgba(255,255,255,0.75)"
+    offsetX={30}
+    offsetY={30}
+    onPress={[Function]}
+    onPressIn={[Function]}
+    onPressOn={[Function]}
+    outRangeScale={1}
+    position="right"
+    resetToken={null}
+    size={56}
+    spacing={20}
+    useNativeFeedback={true}
+    verticalOrientation="up"
+  />
 </View>
 `;

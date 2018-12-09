@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`List tests renders correctly 1`] = `
+<SafeAreaView>
+  <FlatList
+    data={
+      Array [
+        Object {
+          "description": "Divano abbandonato in via Gramsci",
+          "latitude": 44.1234,
+          "longitude": 8.1234,
+          "timestamp": "2018-12-09T14:40:35 -02:00",
+          "title": "Divano abbandonato",
+        },
+      ]
+    }
+    disableVirtualization={false}
+    horizontal={false}
+    initialNumToRender={10}
+    keyExtractor={[Function]}
+    maxToRenderPerBatch={10}
+    numColumns={1}
+    onEndReachedThreshold={2}
+    refreshing={false}
+    renderItem={[Function]}
+    scrollEventThrottle={50}
+    updateCellsBatchingPeriod={50}
+    windowSize={21}
+  />
+</SafeAreaView>
+`;

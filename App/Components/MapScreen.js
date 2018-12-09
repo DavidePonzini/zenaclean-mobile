@@ -1,5 +1,5 @@
 import React from 'react'
-import MapView, { Marker } from 'react-native-maps'
+import MapView, { Marker, Callout } from 'react-native-maps'
 import { StyleSheet, View } from 'react-native'
 import ActionButton from 'react-native-action-button'
 import api from '../Services/ApiService'
@@ -29,6 +29,16 @@ export default class MapScreen extends React.Component {
       return api.getMarkers((res) => { this.setState({ markers: res }) })
     }
 
+    renderMarker = (marker, key) => (
+      <Marker
+        key={key}
+        coordinate={{ latitude: marker.latitude, longitude: marker.longitude }}
+        title={marker.title}
+        description={marker.description}
+      >
+        <Callout onPress={() => this.props.navigation.navigate('SingleReport', { marker })} />
+      </Marker>)
+
     render () {
       const { navigate } = this.props.navigation
       return (
@@ -38,16 +48,7 @@ export default class MapScreen extends React.Component {
             initialRegion={this.state.region}
             onRegionChange={this.onRegionChange}
           >
-            {this.state.markers.map((marker, key) => (
-              <Marker
-                key={key}
-                coordinate={{ latitude: marker.latitude, longitude: marker.longitude }}
-                title={marker.title}
-                description={marker.description}
-                onCalloutPress={() => navigate('SingleReport', { marker })}
-              />
-            )
-            )}
+            {this.state.markers.map(this.renderMarker)}
           </MapView>
           <ActionButton buttonColor='dodgerblue' onPress={() => navigate('AddReport', { lat: this.state.region.latitude, lng: this.state.region.latitude })} />
         </View>

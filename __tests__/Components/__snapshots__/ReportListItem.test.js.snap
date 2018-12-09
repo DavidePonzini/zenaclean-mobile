@@ -1,0 +1,55 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`List tests renders correctly 1`] = `
+<TouchableOpacity
+  activeOpacity={0.2}
+  onPress={[Function]}
+  style={
+    Object {
+      "borderColor": "black",
+      "borderWidth": 1,
+      "flex": 1,
+      "paddingBottom": 5,
+    }
+  }
+>
+  <Text
+    style={
+      Object {
+        "fontSize": 34,
+        "fontWeight": "bold",
+      }
+    }
+  >
+    Divano abbandonato
+  </Text>
+  <Text
+    style={
+      Object {
+        "fontFamily": "Avenir-Book",
+        "fontSize": 14,
+      }
+    }
+  >
+    Divano abbandonato in via Gramsci
+  </Text>
+  <Text
+    style={Object {}}
+  >
+    9 Dicembre 2018 alle 17:40
+  </Text>
+  <Component
+    source={
+      Object {
+        "testUri": "../../../App/Assets/Images/default_report_image.png",
+      }
+    }
+    style={
+      Object {
+        "height": 100,
+        "width": 100,
+      }
+    }
+  />
+</TouchableOpacity>
+`;

@@ -4,55 +4,45 @@ import MapScreen from '../../App/Components/MapScreen'
 import { fixtureMarkers } from '../../App/Services/FixtureApiService'
 import { shallow, configure } from 'enzyme'
 import Adapter from 'enzyme-adapter-react-16'
-import renderer from 'react-test-renderer'
 import 'isomorphic-fetch'
+import { shallowToJson } from 'enzyme-to-json'
+import { Marker, Callout } from 'react-native-maps'
 
 configure({ adapter: new Adapter() })
-
-jest
-  .mock('react-native-maps', () => {
-    // eslint-disable-next-line import/no-unresolved
-    const React = require('React')
-    const PropTypes = require('prop-types')
-    return class MockPicker extends React.Component {
-      static Item = props => React.createElement('Item', props, props.children);
-      static propTypes = { children: PropTypes.any };
-      static defaultProps = { children: '' };
-
-      render () {
-        return React.createElement('MapView', this.props, this.props.children)
-      }
-    }
-  })
-
-jest
-  .mock('react-native-action-button', () => {
-    // eslint-disable-next-line import/no-unresolved
-    const React = require('React')
-    const PropTypes = require('prop-types')
-    return class MockPicker extends React.Component {
-      static Item = props => React.createElement('Item', props, props.children);
-      static propTypes = { children: PropTypes.any };
-      static defaultProps = { children: '' };
-
-      render () {
-        return React.createElement('ActionButton', this.props, this.props.children)
-      }
-    }
-  })
 
 jest.mock('../../App/Services/ApiService', () => require('../../App/Services/FixtureApiService'))
 
 const navigation = { navigate: jest.fn() }
 
-test('renders correctly', () => {
-  const tree = renderer.create(<MapScreen navigation={navigation} />).toJSON()
-  expect(tree).toMatchSnapshot()
-})
-
-test('markers downloaded', async () => {
+describe('MapScreen tests', () => {
   const wrapper = shallow(<MapScreen navigation={navigation} />)
-  const instance = wrapper.instance()
-  await instance.componentWillMount()
-  expect(instance.state.markers.length).toBe(fixtureMarkers.length)
+  it('renders correctly', async () => {
+    const instance = wrapper.instance()
+    await instance.componentWillMount()
+    wrapper.update()
+    expect(shallowToJson(wrapper)).toMatchSnapshot()
+  })
+
+  it('downloads markers', async () => {
+    const instance = wrapper.instance()
+    await instance.componentWillMount()
+    expect(instance.state.markers.length).toBe(fixtureMarkers.length)
+  })
+
+  it('renders markers', () => {
+    const instance = wrapper.instance()
+    const marker = instance.renderMarker(fixtureMarkers[0])
+    expect(marker.type).toBe(Marker)
+  })
+
+  it('navigates when marker callout is pressed', async () => {
+    const instance = wrapper.instance()
+    await instance.componentWillMount()
+    const marker = wrapper.find(Marker).first()
+    marker.simulate('Press')
+    wrapper.update()
+    const callout = wrapper.find(Callout).first()
+    callout.simulate('Press')
+    expect(navigation.navigate).toHaveBeenCalled()
+  })
 })

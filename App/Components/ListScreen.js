@@ -8,24 +8,32 @@ export default class ListScreen extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      markers: []
+      markers: [],
+      fetching: true
     }
   }
+  // this is used by the navigator to set the title in the header
   static navigationOptions = {
     tabBarLabel: 'Lista'
   }
 
   componentWillMount () {
-    api.getMarkers((res) => { this.setState({ markers: res }) })
+    this.setState({ fetching: true })
+    return api.getMarkers((res) => { this.setState({ markers: res, fetching: false }) })
   }
 
+  renderItem = ({ item }) => (
+    <ReportListItem
+      onPress={(marker) => this.props.navigation.navigate('SingleReport', { marker })}
+      marker={item} />)
+
   render () {
-    const { navigate } = this.props.navigation
     return (
       <SafeAreaView>
         <FlatList
           data={this.state.markers}
-          renderItem={({ item }) => <ReportListItem onPress={(marker) => { navigate('SingleReport', { marker }) }} marker={item} />}
+          refreshing={this.state.fetching}
+          renderItem={this.renderItem}
           keyExtractor={(item, index) => ('' + index)}
         />
       </SafeAreaView>
