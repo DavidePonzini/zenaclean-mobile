@@ -1,8 +1,14 @@
 import React from 'react'
-import { FlatList } from 'react-native'
+import { FlatList, Text } from 'react-native'
 import { SafeAreaView } from 'react-navigation'
 import ReportListItem from './ReportListItem'
 import api from '../Services/ApiService'
+
+export class NoReportsLeftComponent extends React.Component {
+  render () {
+    return (<Text>Congratulazioni! Non ci sono segnalazioni nella tua zona!</Text>)
+  }
+}
 
 export default class ListScreen extends React.Component {
   constructor (props) {
@@ -35,6 +41,7 @@ export default class ListScreen extends React.Component {
           refreshing={this.state.fetching}
           renderItem={this.renderItem}
           keyExtractor={(item, index) => ('' + index)}
+          ListEmptyComponent={!this.state.fetching && <NoReportsLeftComponent />}
         />
       </SafeAreaView>
     )

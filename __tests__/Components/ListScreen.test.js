@@ -5,7 +5,7 @@ import { shallowToJson } from 'enzyme-to-json'
 import Adapter from 'enzyme-adapter-react-16'
 import 'isomorphic-fetch'
 
-import ListScreen from '../../App/Components/ListScreen'
+import ListScreen, { EmptyList } from '../../App/Components/ListScreen'
 import ReportListItem from '../../App/Components/ReportListItem'
 configure({ adapter: new Adapter() })
 
@@ -21,6 +21,16 @@ describe('List tests', () => {
     await instance.componentWillMount()
     wrapper.update()
     expect(shallowToJson(wrapper)).toMatchSnapshot()
+  })
+  it('displays empty list before markers are loaded', () => {
+    const list = wrapper.find('FlatList').first()
+    expect(list.props().data).toEqual([])
+  })
+  it('displays EmptyList if no markers are present', () => {
+    const instance = wrapper.instance()
+    instance.setState({ markers: [] })
+    wrapper.update()
+    expect(wrapper.find('NoReportsLeftComponent').first()).toBeTruthy()
   })
   it('downloads markers', async () => {
     const instance = wrapper.instance()

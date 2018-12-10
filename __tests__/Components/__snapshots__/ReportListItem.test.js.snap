@@ -16,8 +16,8 @@ exports[`List tests renders correctly 1`] = `
   <Text
     style={
       Object {
-        "fontSize": 34,
-        "fontWeight": "bold",
+        "fontFamily": "HelveticaNeue-Italic",
+        "fontSize": 30,
       }
     }
   >
@@ -34,7 +34,22 @@ exports[`List tests renders correctly 1`] = `
     Divano abbandonato in via Gramsci
   </Text>
   <Text
-    style={Object {}}
+    style={
+      Object {
+        "fontFamily": "Avenir-Book",
+        "fontSize": 12,
+      }
+    }
+  >
+    Indirizzo sconosciuto
+  </Text>
+  <Text
+    style={
+      Object {
+        "fontFamily": "Avenir-Book",
+        "fontSize": 12,
+      }
+    }
   >
     9 Dicembre 2018 alle 17:40
   </Text>

@@ -18,6 +18,7 @@ export default class ReportListItem extends React.Component {
       <TouchableOpacity onPress={() => { this.props.onPress(this.props.marker) }} style={styles.container}>
         <Text style={styles.title}>{this.props.marker.title}</Text>
         <Text style={styles.descr}>{description}</Text>
+        <Text style={styles.timestamp}>{this.props.marker.address == null ? 'Indirizzo sconosciuto' : this.props.marker.address}</Text>
         <Text style={styles.timestamp}>{this.date + ' alle ' + this.time}</Text>
         <Image style={styles.image} source={this.imgUri} />
       </TouchableOpacity>
@@ -27,12 +28,13 @@ export default class ReportListItem extends React.Component {
 
 const styles = StyleSheet.create({
   title: {
-    ...Fonts.style.h2
+    ...Fonts.style.h3
   },
   descr: {
     ...Fonts.style.description
   },
   timestamp: {
+    ...Fonts.style.footer
   },
   container: {
     flex: 1,

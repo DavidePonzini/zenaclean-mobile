@@ -1,11 +1,17 @@
 import Secrets from 'react-native-config'
 
 const baseUrl = Secrets.API_URL
+const googleApiUrl = 'https://maps.googleapis.com/maps/api/geocode/json?address='
 
 const getAddressFromCoords = ({ lat, lng }, cb) => {
-  const googleApiUrl = 'https://maps.googleapis.com/maps/api/geocode/json?address='
   return fetch(googleApiUrl + lat + ',' + lng + '&key=' + Secrets.GOOGLE_MAPS_API_KEY)
-    .then((response) => response.json())
+    .then((response) => {
+      if (response.ok) {
+        return response.json()
+      } else {
+        return 'Indirizzo sconosciuto'
+      }
+    })
     .then((responseJson) => { cb(responseJson) })
 }
 

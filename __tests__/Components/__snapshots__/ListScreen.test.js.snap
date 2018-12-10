@@ -3,6 +3,7 @@
 exports[`List tests renders correctly 1`] = `
 <SafeAreaView>
   <FlatList
+    ListEmptyComponent={<NoReportsLeftComponent />}
     data={
       Array [
         Object {
