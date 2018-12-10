@@ -16,15 +16,15 @@ const navigation = { navigate: jest.fn() }
 
 describe('List tests', () => {
   const wrapper = shallow(<ListScreen navigation={navigation} />)
+  it('displays empty list before markers are loaded', () => {
+    const list = wrapper.find('FlatList').first()
+    expect(list.props().data).toEqual([])
+  })
   it('renders correctly', async () => {
     const instance = wrapper.instance()
     await instance.componentWillMount()
     wrapper.update()
     expect(shallowToJson(wrapper)).toMatchSnapshot()
-  })
-  it('displays empty list before markers are loaded', () => {
-    const list = wrapper.find('FlatList').first()
-    expect(list.props().data).toEqual([])
   })
   it('displays NoReportsLeftComponent if no markers are present', () => {
     const instance = wrapper.instance()
