@@ -53,6 +53,7 @@ const style = {
   },
   footer: {
     fontFamily: type.base,
+    color: '#808080',
     fontSize: size.small
   }
 }

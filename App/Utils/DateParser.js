@@ -11,7 +11,7 @@ const timestampToItalianDate = (timestamp) => {
   const date = (day + ' ' + month + ' ' + year)
 
   const hours = datetime.getHours()
-  const minutes = datetime.getMinutes()
+  const minutes = String(datetime.getMinutes()).padStart(2, '0')
   const time = (hours + ':' + minutes)
   return { date, time }
 }

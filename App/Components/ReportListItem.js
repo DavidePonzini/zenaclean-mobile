@@ -1,5 +1,5 @@
 import React from 'react'
-import { Image, StyleSheet, Text, TouchableOpacity } from 'react-native'
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import Images from '../Themes/Images'
 import Fonts from '../Themes/Fonts'
 import DateParser from '../Utils/DateParser'
@@ -15,34 +15,70 @@ export default class ReportListItem extends React.Component {
   render () {
     const description = this.props.marker.description.length > 80 ? this.props.marker.description.substring(0, 80) + '...' : this.props.marker.description
     return (
-      <TouchableOpacity onPress={() => { this.props.onPress(this.props.marker) }} style={styles.container}>
-        <Text style={styles.title}>{this.props.marker.title}</Text>
-        <Text style={styles.descr}>{description}</Text>
-        <Text style={styles.timestamp}>{this.props.marker.address == null ? 'Indirizzo sconosciuto' : this.props.marker.address}</Text>
-        <Text style={styles.timestamp}>{this.date + ' alle ' + this.time}</Text>
-        <Image style={styles.image} source={this.imgUri} />
-      </TouchableOpacity>
+      <View style={styles.container}>
+        <TouchableOpacity onPress={() => { this.props.onPress(this.props.marker) }} style={styles.card}>
+          <Text style={styles.title}>{this.props.marker.title}</Text>
+          <View style={styles.row}>
+            <View style={styles.innerContainer}>
+              <Text style={styles.address}>{this.props.marker.address == null ? 'Indirizzo sconosciuto' : this.props.marker.address}</Text>
+              <Text style={styles.descr}>{description}</Text>
+              <Text style={styles.timestamp}>{this.date + ' alle ' + this.time}</Text>
+            </View>
+            <Image style={styles.image} source={this.imgUri} />
+          </View>
+        </TouchableOpacity>
+      </View>
     )
   }
 }
 
 const styles = StyleSheet.create({
   title: {
-    ...Fonts.style.h3
+    ...Fonts.style.h4,
+    borderBottomColor: '#EAEAEA',
+    textAlign: 'center',
+    paddingBottom: 5,
+    marginBottom: 10,
+    borderBottomWidth: 1
   },
   descr: {
-    ...Fonts.style.description
+    ...Fonts.style.description,
+    flex: 0.8
   },
   timestamp: {
-    ...Fonts.style.footer
+    ...Fonts.style.footer,
+    flex: 0.1
+  },
+  address: {
+    fontSize: Fonts.size.small,
+    flex: 0.1
+  },
+  card: {
+    margin: 10,
+    padding: 10,
+    backgroundColor: '#FAFAFA',
+    shadowColor: 'black',
+    shadowOffset: {
+      width: 0,
+      height: 1
+    },
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    elevation: 5
   },
   container: {
-    flex: 1,
-    borderColor: 'black',
-    borderWidth: 1,
-    paddingBottom: 5
+    backgroundColor: '#FEFEFE',
+    flex: 1
+  },
+  row: {
+    flexDirection: 'row'
+  },
+  innerContainer: {
+    flexDirection: 'column',
+    flex: 0.75
   },
   image: {
+    flex: 0.25,
     width: 100,
     height: 100
   }
