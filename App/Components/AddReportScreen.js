@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { StyleSheet, View, Image, ScrollView } from 'react-native'
+import { StyleSheet, View, Image, ScrollView, Alert } from 'react-native'
 import { FormInput, FormLabel, FormValidationMessage, Button, Text } from 'react-native-elements'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import ImagePicker from 'react-native-image-picker'
@@ -35,7 +35,9 @@ export default class AddReportScreen extends Component {
       nameFile: 'Aggiungi Foto',
       address: 'Caricamento in corso..',
       titleError: false,
-      descrError: false
+      descrError: false,
+      title: '',
+      description: ''
     }
   }
 
@@ -45,8 +47,40 @@ export default class AddReportScreen extends Component {
     })
   }
 
+  handleTitle = (title) => {
+    this.setState({ title: title })
+  }
+
+  handleDescr = (descr) => {
+    this.setState({ description: descr })
+  }
+
   componentDidMount () {
     this.convertAddress(this.state.lat, this.state.lng)
+  }
+
+  uploadData () {
+    const data = {
+      description: this.state.description,
+      latitude: this.state.lat,
+      longitude: this.state.lng,
+      timestamp: new Date().toISOString(),
+      title: this.state.title
+    }
+    api.uploadReport(data)
+      .then(() => this.showAlert())
+  }
+
+  showAlert = () => {
+    let that = this
+    Alert.alert(
+      'Segnalazione riuscita',
+      '',
+      [
+        { text: 'OK', onPress: () => { that.props.navigation.goBack() } }
+      ],
+      { cancelable: false }
+    )
   }
 
   imageUpload () {
@@ -81,14 +115,14 @@ export default class AddReportScreen extends Component {
       <ScrollView style={styles.container_scroll}>
         <View style={styles.container}>
           <FormLabel labelStyle={styles.title_label}>{formItems.title}</FormLabel>
-          <FormInput inputStyle={styles.input} />
+          <FormInput inputStyle={styles.input} value={this.state.title} onChangeText={this.handleTitle} />
           { this.state.titleError && <FormValidationMessage>{formItems.titleErrorMessage}</FormValidationMessage> }
 
           <FormLabel labelStyle={[styles.title_label, styles.margin_top]}>{formItems.address}</FormLabel>
           <Text style={styles.place}>{this.state.address}</Text>
 
           <FormLabel labelStyle={[styles.title_label, styles.margin_top]}>{formItems.descr}</FormLabel>
-          <FormInput inputStyle={[styles.input, styles.input_desc]} multiline />
+          <FormInput inputStyle={[styles.input, styles.input_desc]} value={this.state.descr} onChangeText={this.handleDescr} multiline />
           { this.state.descrError && <FormValidationMessage>{formItems.descrErrorMessage}</FormValidationMessage> }
 
           <View style={[styles.view_button, styles.margin_top]}>
@@ -111,6 +145,8 @@ export default class AddReportScreen extends Component {
               containerViewStyle={{ borderRadius: 10 }}
               iconRight={{ name: 'md-arrow-round-up', type: 'ionicon', color: 'lightgreen', size: 20 }}
               buttonStyle={[styles.form_button, styles.btn_send]}
+              disabled={!this.state.title}
+              onPress={() => this.uploadData()}
               title='Invia' />
           </View>
         </View>

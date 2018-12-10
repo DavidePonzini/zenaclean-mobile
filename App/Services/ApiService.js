@@ -12,9 +12,28 @@ const getAddressFromCoords = ({ lat, lng }, cb) => {
 const getMarkers = (cb) => {
   fetch(baseUrl + 'markers.json')
     .then((response) => response.json())
-    .then((responseJson) => { cb(responseJson) })
+    .then((responseJson) => {
+      let markers = []
+      Object.keys(responseJson).map((k) => {
+        const marker = responseJson[k]
+        markers.push({
+          ...marker,
+          id: k
+        })
+      })
+      console.log(markers)
+      cb(markers)
+    })
+}
+
+const uploadReport = (infoReport) => {
+  return fetch(baseUrl + 'markers.json', {
+    method: 'POST',
+    body: JSON.stringify(infoReport)
+  })
 }
 export default {
   getAddressFromCoords,
-  getMarkers
+  getMarkers,
+  uploadReport
 }
