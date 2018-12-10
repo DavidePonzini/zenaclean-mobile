@@ -26,7 +26,7 @@ describe('List tests', () => {
     const list = wrapper.find('FlatList').first()
     expect(list.props().data).toEqual([])
   })
-  it('displays EmptyList if no markers are present', () => {
+  it('displays NoReportsLeftComponent if no markers are present', () => {
     const instance = wrapper.instance()
     instance.setState({ markers: [] })
     wrapper.update()
