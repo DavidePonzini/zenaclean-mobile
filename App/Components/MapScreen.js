@@ -1,8 +1,10 @@
 import React from 'react'
 import MapView, { Marker, Callout } from 'react-native-maps'
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet, Text, View } from 'react-native'
 import ActionButton from 'react-native-action-button'
 import api from '../Services/ApiService'
+import Fonts from '../Themes/Fonts'
+import DateParser from '../Utils/DateParser'
 
 export default class MapScreen extends React.Component {
   constructor (props) {
@@ -29,15 +31,26 @@ export default class MapScreen extends React.Component {
       return api.getMarkers((res) => { this.setState({ markers: res }) })
     }
 
-    renderMarker = (marker, key) => (
-      <Marker
-        key={key}
-        coordinate={{ latitude: marker.latitude, longitude: marker.longitude }}
-        title={marker.title}
-        description={marker.description}
-      >
-        <Callout onPress={() => this.props.navigation.navigate('SingleReport', { marker })} />
-      </Marker>)
+    renderMarker = (marker, key) => {
+      const { date, time } = DateParser.timestampToItalianDate(marker.timestamp)
+      const description = marker.description.length > 80 ? marker.description.substring(0, 80) + '...' : marker.description
+      return (
+        <Marker
+          key={key}
+          coordinate={{ latitude: marker.latitude, longitude: marker.longitude }}
+        >
+          <Callout style={styles.callout} onPress={() => this.props.navigation.navigate('SingleReport', { marker })}>
+            <Text style={styles.calloutTitle}>{marker.title}</Text>
+            <View style={styles.row}>
+              <View style={styles.innerContainer}>
+                <Text style={styles.address}>{marker.address == null ? 'Indirizzo sconosciuto' : marker.address}</Text>
+                <Text style={styles.calloutDescr}>{description}</Text>
+                <Text style={styles.timestamp}>{date + ' alle ' + time}</Text>
+              </View>
+            </View>
+          </Callout>
+        </Marker>)
+    }
 
     render () {
       const { navigate } = this.props.navigation
@@ -50,14 +63,47 @@ export default class MapScreen extends React.Component {
           >
             {this.state.markers.map(this.renderMarker)}
           </MapView>
-          <ActionButton buttonColor='dodgerblue' onPress={() => navigate('AddReport', { lat: this.state.region.latitude, lng: this.state.region.longitude })} />
+          <ActionButton buttonColor='dodgerblue' offsetY={50} onPress={() => navigate('AddReport', { lat: this.state.region.latitude, lng: this.state.region.longitude })} />
         </View>
       )
     }
 }
 
 const styles = StyleSheet.create({
+  calloutTitle: {
+    ...Fonts.style.h6,
+    borderBottomColor: '#EAEAEA',
+    textAlign: 'center',
+    paddingBottom: 2.5,
+    marginBottom: 5,
+    borderBottomWidth: 1
+  },
+  calloutDescr: {
+    ...Fonts.style.description,
+    flex: 0.8
+  },
+  timestamp: {
+    ...Fonts.style.footer,
+    flex: 0.2
+  },
+  address: {
+    fontSize: Fonts.size.small,
+    flex: 0.2
+  },
+  row: {
+    flexDirection: 'row',
+    flex: 1,
+    padding: 2.5
+  },
+  innerContainer: {
+    flexDirection: 'column',
+    flex: 0.6
+  },
   map: {
     ...StyleSheet.absoluteFillObject
+  },
+  callout: {
+    width: 250,
+    height: 150
   }
 })
