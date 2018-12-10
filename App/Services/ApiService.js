@@ -9,10 +9,16 @@ const getAddressFromCoords = ({ lat, lng }, cb) => {
       if (response.ok) {
         return response.json()
       } else {
-        return 'Indirizzo sconosciuto'
+        return new Promise((resolve) => { resolve('Indirizzo sconosciuto') })
       }
     })
-    .then((responseJson) => { cb(responseJson) })
+    .then((responseJson) => {
+      if (responseJson.status === 'REQUEST_DENIED') {
+        cb('Indirizzo sconosciuto')
+      } else {
+        cb(responseJson)
+      }
+    })
 }
 
 const getMarkers = (cb) => {
