@@ -12,7 +12,14 @@ const getMarkers = (cb) => {
   }).then((res) => { cb(JSON.parse(res)) })
 }
 
+const uploadReport = () => {
+  return new Promise((resolve) => {
+    resolve({ ok: true })
+  })
+}
+
 export default {
   getAddressFromCoords,
-  getMarkers
+  getMarkers,
+  uploadReport
 }

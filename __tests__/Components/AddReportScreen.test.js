@@ -1,5 +1,5 @@
 import React from 'react'
-import SingleReportScreen from '../../App/Components/SingleReportScreen'
+import AddReportScreen from '../../App/Components/AddReportScreen'
 
 import { shallow, configure } from 'enzyme'
 import Adapter from 'enzyme-adapter-react-16'
@@ -12,22 +12,37 @@ configure({ adapter: new Adapter() })
 const fixtureNavigation = { navigate: jest.fn(),
   state: {
     params: {
-      marker: fixtureMarkers[0]
+      lat: fixtureMarkers[0].latitude,
+      lng: fixtureMarkers[0].longitude
     }
   }
 }
 
 jest.mock('../../App/Services/ApiService', () => require('../../App/Services/FixtureApiService'))
 
-describe('SingleReportScreen tests', () => {
-  const wrapper = shallow(<SingleReportScreen navigation={fixtureNavigation} />)
+describe('AddReportScreen tests', () => {
+  const wrapper = shallow(<AddReportScreen navigation={fixtureNavigation} />)
   it('renders correctly', () => {
     expect(shallowToJson(wrapper)).toMatchSnapshot()
   })
-
+  const instance = wrapper.instance()
   it('converts coordinates to address', async () => {
-    const instance = wrapper.instance()
     await instance.componentWillMount()
     expect(instance.state.address).toBe('Via del Camoscio')
+  })
+  const submitButton = wrapper.findWhere((element) => element.props().title === 'Invia').first()
+  it('initializes title with empty string', () => {
+    const titleComponent = wrapper.findWhere((element) => element.props().onChangeText === instance.handleTitle).first()
+    expect(titleComponent.props().value).toEqual('')
+  })
+  it('prevents submit with empty title', () => {
+    expect(submitButton.props().disabled).toBeTruthy()
+  })
+  it('uploads data successfully', async () => {
+    instance.uploadData = jest.fn()
+    instance.handleTitle('Divano abbandonato')
+    wrapper.update()
+    submitButton.simulate('Press')
+    expect(instance.uploadData).toHaveBeenCalled()
   })
 })

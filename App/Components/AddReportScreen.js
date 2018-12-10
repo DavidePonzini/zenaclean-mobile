@@ -42,8 +42,8 @@ export default class AddReportScreen extends Component {
   }
 
   convertAddress = (lat, lng) => {
-    api.getAddressFromCoords({ lat, lng }, (res) => {
-      /* in theory we should get an address and plug it into the dom */
+    return api.getAddressFromCoords({ lat, lng }, (res) => {
+      this.setState({ address: res })
     })
   }
 
@@ -55,8 +55,8 @@ export default class AddReportScreen extends Component {
     this.setState({ description: descr })
   }
 
-  componentDidMount () {
-    this.convertAddress(this.state.lat, this.state.lng)
+  componentWillMount () {
+    return this.convertAddress(this.state.lat, this.state.lng)
   }
 
   uploadData () {

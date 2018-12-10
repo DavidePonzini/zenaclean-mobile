@@ -10,7 +10,7 @@ const getAddressFromCoords = ({ lat, lng }, cb) => {
 }
 
 const getMarkers = (cb) => {
-  fetch(baseUrl + 'markers.json')
+  return fetch(baseUrl + 'markers.json')
     .then((response) => response.json())
     .then((responseJson) => {
       let markers = []
@@ -21,7 +21,6 @@ const getMarkers = (cb) => {
           id: k
         })
       })
-      console.log(markers)
       cb(markers)
     })
 }

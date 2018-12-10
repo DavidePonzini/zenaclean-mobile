@@ -1,0 +1,232 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AddReportScreen tests renders correctly 1`] = `
+<ScrollView
+  style={
+    Object {
+      "flex": 1,
+      "height": 1334,
+      "width": 750,
+    }
+  }
+>
+  <View
+    style={
+      Object {
+        "alignItems": "center",
+        "backgroundColor": "#F5FCFF",
+        "justifyContent": "center",
+      }
+    }
+  >
+    <FormLabel
+      labelStyle={
+        Object {
+          "fontSize": 25,
+          "marginBottom": 37.5,
+          "maxWidth": 600,
+        }
+      }
+    >
+      Titolo Segnalazione
+    </FormLabel>
+    <FormInput
+      inputStyle={
+        Object {
+          "width": 600,
+        }
+      }
+      normalizeFontSize={true}
+      onChangeText={[Function]}
+      value=""
+    />
+    <FormLabel
+      labelStyle={
+        Array [
+          Object {
+            "fontSize": 25,
+            "marginBottom": 37.5,
+            "maxWidth": 600,
+          },
+          Object {
+            "marginTop": 75,
+          },
+        ]
+      }
+    >
+      Indirizzo
+    </FormLabel>
+    <TextElement
+      style={
+        Object {
+          "fontSize": 20,
+        }
+      }
+    >
+      Caricamento in corso..
+    </TextElement>
+    <FormLabel
+      labelStyle={
+        Array [
+          Object {
+            "fontSize": 25,
+            "marginBottom": 37.5,
+            "maxWidth": 600,
+          },
+          Object {
+            "marginTop": 75,
+          },
+        ]
+      }
+    >
+      Descrizione
+    </FormLabel>
+    <FormInput
+      inputStyle={
+        Array [
+          Object {
+            "width": 600,
+          },
+          Object {
+            "maxHeight": 200,
+          },
+        ]
+      }
+      multiline={true}
+      normalizeFontSize={true}
+      onChangeText={[Function]}
+    />
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "justifyContent": "center",
+            "marginTop": 75,
+          },
+          Object {
+            "marginTop": 75,
+          },
+        ]
+      }
+    >
+      <ScrollView
+        horizontal={true}
+        style={
+          Object {
+            "maxWidth": 450,
+          }
+        }
+      >
+        <FormLabel
+          labelStyle={
+            Object {
+              "fontSize": 25,
+              "marginBottom": 37.5,
+              "maxWidth": 600,
+            }
+          }
+        >
+          Aggiungi Foto
+        </FormLabel>
+      </ScrollView>
+      <Button
+        buttonStyle={
+          Object {
+            "backgroundColor": "#BDBDBD",
+            "borderRadius": 40,
+            "height": 112.5,
+            "width": 112.5,
+          }
+        }
+        containerViewStyle={
+          Object {
+            "borderRadius": 40,
+          }
+        }
+        onPress={[Function]}
+        raised={true}
+        title="+"
+      />
+    </View>
+    <Component
+      source={null}
+    />
+    <View
+      style={
+        Object {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "justifyContent": "center",
+          "marginTop": 75,
+        }
+      }
+    >
+      <Button
+        buttonStyle={
+          Array [
+            Object {
+              "alignItems": "center",
+              "borderRadius": 10,
+              "justifyContent": "center",
+              "width": 262.5,
+            },
+            Object {
+              "backgroundColor": "#D32F2F",
+            },
+          ]
+        }
+        containerViewStyle={
+          Object {
+            "borderRadius": 10,
+          }
+        }
+        iconRight={
+          Object {
+            "color": "#FFFFFF",
+            "name": "ios-close",
+            "size": 25,
+            "type": "ionicon",
+          }
+        }
+        onPress={[Function]}
+        raised={true}
+        title="Annulla"
+      />
+      <Button
+        buttonStyle={
+          Array [
+            Object {
+              "alignItems": "center",
+              "borderRadius": 10,
+              "justifyContent": "center",
+              "width": 262.5,
+            },
+            Object {
+              "backgroundColor": "green",
+            },
+          ]
+        }
+        containerViewStyle={
+          Object {
+            "borderRadius": 10,
+          }
+        }
+        disabled={true}
+        iconRight={
+          Object {
+            "color": "lightgreen",
+            "name": "md-arrow-round-up",
+            "size": 20,
+            "type": "ionicon",
+          }
+        }
+        onPress={[Function]}
+        raised={true}
+        title="Invia"
+      />
+    </View>
+  </View>
+</ScrollView>
+`;
