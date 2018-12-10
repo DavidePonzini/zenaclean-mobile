@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { StyleSheet, View, Image, ScrollView, Alert } from 'react-native'
 import { FormInput, FormLabel, FormValidationMessage, Button, Text } from 'react-native-elements'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
-import ImagePicker from 'react-native-image-picker'
 import api from '../Services/ApiService'
 
 const options = {
@@ -81,32 +80,6 @@ export default class AddReportScreen extends Component {
       ],
       { cancelable: false }
     )
-  }
-
-  imageUpload () {
-    ImagePicker.showImagePicker(options, (response) => {
-      console.log('Response = ', response)
-
-      if (response.didCancel) {
-        console.log('User cancelled image picker')
-      } else if (response.error) {
-        console.log('ImagePicker Error: ', response.error)
-      } else if (response.customButton) {
-        console.log('User tapped custom button: ', response.customButton)
-      } else {
-        // const source = { uri: response.uri };
-
-        // You can also display the image using data:
-        const source = { uri: 'data:image/jpeg;base64,' + response.data }
-
-        this.setState({
-          photoSource: source,
-          nameFile: response.fileName
-        })
-
-        console.log(this.state.photoSource)
-      }
-    })
   }
 
   render () {
