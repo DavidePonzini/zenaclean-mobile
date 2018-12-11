@@ -15,7 +15,7 @@ export default class ListScreen extends React.Component {
     super(props)
     this.state = {
       markers: [],
-      fetching: true
+      fetching: false
     }
   }
   // this is used by the navigator to set the title in the header

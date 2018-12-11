@@ -24,7 +24,7 @@ export default class MapScreen extends React.Component {
     }
 
     onRegionChange = (region) => {
-      this.setState({ region })
+      this.region = region
     }
 
     componentWillMount () {
@@ -63,7 +63,7 @@ export default class MapScreen extends React.Component {
           >
             {this.state.markers.map(this.renderMarker)}
           </MapView>
-          <ActionButton buttonColor='dodgerblue' offsetY={50} onPress={() => navigate('AddReport', { lat: this.state.region.latitude, lng: this.state.region.longitude })} />
+          <ActionButton buttonColor='dodgerblue' offsetY={50} onPress={() => navigate('AddReport', { lat: this.region.latitude, lng: this.region.longitude })} />
         </View>
       )
     }
