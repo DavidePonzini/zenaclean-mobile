@@ -1,41 +1,58 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`SingleReportScreen tests renders correctly 1`] = `
-<ScrollView>
+<View
+  style={
+    Object {
+      "alignItems": "center",
+      "backgroundColor": "#FEFEFE",
+      "flex": 1,
+    }
+  }
+>
   <View
     style={
       Object {
-        "alignItems": "center",
-        "flex": 1,
-        "margin": 10,
+        "padding": 5,
       }
     }
   >
     <Text
       style={
         Object {
+          "borderBottomColor": "#EAEAEA",
+          "borderBottomWidth": 1,
           "fontFamily": "HelveticaNeue-Italic",
           "fontSize": 30,
+          "marginBottom": 10,
+          "paddingBottom": 5,
+          "textAlign": "center",
         }
       }
     >
       Divano abbandonato
     </Text>
-    <Text>
-      9 Dicembre 2018 alle 17:40
-    </Text>
     <Text
       style={
         Object {
-          "fontFamily": "Avenir-Book",
-          "fontSize": 14,
+          "fontSize": 12,
+          "padding": 5,
+          "textAlign": "center",
         }
       }
     >
-      Divano abbandonato in via Gramsci
+      Indirizzo sconosciuto
+      , 
+      9 Dicembre 2018 alle 17:40
     </Text>
-    <Text />
-    <Text />
+  </View>
+  <ScrollView
+    style={
+      Object {
+        "flexDirection": "column",
+      }
+    }
+  >
     <Component
       source={
         Object {
@@ -44,11 +61,29 @@ exports[`SingleReportScreen tests renders correctly 1`] = `
       }
       style={
         Object {
-          "height": 400,
-          "width": 400,
+          "height": 750,
+          "width": 750,
         }
       }
     />
-  </View>
-</ScrollView>
+    <View
+      style={
+        Object {
+          "padding": 15,
+        }
+      }
+    >
+      <Text>
+        Divano abbandonato in via Gramsci
+      </Text>
+      <View
+        style={
+          Object {
+            "flex": 0.1,
+          }
+        }
+      />
+    </View>
+  </ScrollView>
+</View>
 `;

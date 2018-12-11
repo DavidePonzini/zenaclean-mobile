@@ -28,21 +28,6 @@ exports[`List tests renders correctly 1`] = `
       }
     }
   >
-    <Text
-      style={
-        Object {
-          "borderBottomColor": "#EAEAEA",
-          "borderBottomWidth": 1,
-          "fontFamily": "Avenir-Book",
-          "fontSize": 26,
-          "marginBottom": 10,
-          "paddingBottom": 5,
-          "textAlign": "center",
-        }
-      }
-    >
-      Divano abbandonato
-    </Text>
     <View
       style={
         Object {
@@ -53,59 +38,124 @@ exports[`List tests renders correctly 1`] = `
       <View
         style={
           Object {
-            "flex": 0.75,
-            "flexDirection": "column",
+            "flex": 0.9,
           }
         }
       >
         <Text
           style={
             Object {
-              "flex": 0.1,
-              "fontSize": 12,
+              "borderBottomColor": "#EAEAEA",
+              "borderBottomWidth": 1,
+              "fontFamily": "Avenir-Book",
+              "fontSize": 26,
+              "margin": 10,
+              "padding": 5,
+              "textAlign": "center",
             }
           }
         >
-          Indirizzo sconosciuto
+          Divano abbandonato
         </Text>
-        <Text
+        <View
           style={
             Object {
-              "flex": 0.8,
-              "fontFamily": "Avenir-Book",
-              "fontSize": 14,
+              "flexDirection": "row",
             }
           }
         >
-          Divano abbandonato in via Gramsci
-        </Text>
-        <Text
-          style={
-            Object {
-              "color": "#808080",
-              "flex": 0.1,
-              "fontFamily": "Avenir-Book",
-              "fontSize": 12,
+          <View
+            style={
+              Object {
+                "flex": 0.25,
+                "padding": 5,
+              }
             }
-          }
-        >
-          9 Dicembre 2018 alle 17:40
-        </Text>
+          >
+            <Component
+              source={
+                Object {
+                  "testUri": "../../../App/Assets/Images/default_report_image.png",
+                }
+              }
+              style={
+                Object {
+                  "height": 80,
+                  "width": 80,
+                }
+              }
+            />
+          </View>
+          <View
+            style={
+              Object {
+                "flex": 0.75,
+                "flexDirection": "column",
+              }
+            }
+          >
+            <Text
+              style={
+                Object {
+                  "flex": 0.1,
+                  "fontSize": 14,
+                }
+              }
+            >
+              Indirizzo sconosciuto
+            </Text>
+            <Text
+              style={
+                Object {
+                  "flex": 0.8,
+                  "fontFamily": "Avenir-Book",
+                  "fontSize": 14,
+                }
+              }
+            >
+              Divano abbandonato in via Gramsci
+            </Text>
+            <Text
+              style={
+                Object {
+                  "color": "#808080",
+                  "flex": 0.1,
+                  "fontFamily": "Avenir-Book",
+                  "fontSize": 12,
+                }
+              }
+            >
+              9 Dicembre 2018 alle 17:40
+            </Text>
+          </View>
+        </View>
       </View>
-      <Component
-        source={
-          Object {
-            "testUri": "../../../App/Assets/Images/default_report_image.png",
-          }
-        }
+      <View
         style={
           Object {
-            "flex": 0.25,
-            "height": 100,
-            "width": 100,
+            "alignItems": "center",
+            "borderLeftColor": "#EAEAEA",
+            "borderLeftWidth": 1,
+            "flex": 0.1,
+            "flexDirection": "row",
+            "justifyContent": "center",
+            "paddingLeft": 5,
           }
         }
-      />
+      >
+        <Icon
+          allowFontScaling={false}
+          color="gray"
+          name="chevron-right"
+          size={20}
+          style={
+            Object {
+              "flex": 1,
+              "textAlign": "center",
+            }
+          }
+        />
+      </View>
     </View>
   </TouchableOpacity>
 </View>
