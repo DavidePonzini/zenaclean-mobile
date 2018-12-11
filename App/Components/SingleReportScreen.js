@@ -6,14 +6,6 @@ import Images from '../Themes/Images'
 import Fonts from '../Themes/Fonts'
 import Metrics from '../Themes/Metrics'
 
-const labels = {
-  title: 'Titolo Segnalazione',
-  titleErrorMessage: 'Inserisci un titolo per la segnalazione',
-  descrErrorMessage: 'Inserisci una descrizione per la segnalazione',
-  address: 'Indirizzo',
-  descr: 'Descrizione'
-}
-
 export default class SingleReportScreen extends Component {
   constructor (props) {
     super(props)
@@ -27,6 +19,15 @@ export default class SingleReportScreen extends Component {
     const { date, time } = DateParser.timestampToItalianDate(marker.timestamp)
     this.date = date
     this.time = time
+  }
+  static navigationOptions = {
+    headerStyle: {
+      backgroundColor: 'dodgerblue'
+    },
+    headerTintColor: '#fff',
+    headerTitleStyle: {
+      fontWeight: 'bold'
+    }
   }
 
   componentWillMount () {
@@ -43,34 +44,59 @@ export default class SingleReportScreen extends Component {
   render () {
     const { marker } = this.state
     return (
-      <ScrollView>
-        <View style={styles.container}>
+      <View style={styles.container}>
+        <View style={styles.header}>
           <Text style={styles.title}>{marker.title}</Text>
-          <Text style={styles.timestamp}>{this.date + ' alle ' + this.time}</Text>
-          <Text style={styles.description}>{marker.description}</Text>
-          <Text>{labels.addr}</Text>
-          <Text>{this.state.address}</Text>
-          <Image style={styles.image} source={this.imgUri} />
+          <Text style={styles.address}>{marker.address == null ? 'Indirizzo sconosciuto' : this.props.marker.address}, {this.date + ' alle ' + this.time}</Text>
         </View>
-      </ScrollView>
+        <ScrollView style={styles.scrollable}>
+          <Image style={styles.image} source={this.imgUri} />
+          <View style={styles.innerContainer}>
+            <Text style={styles.description}>{marker.description}</Text>
+            <View style={styles.footer} />
+          </View>
+        </ScrollView>
+      </View>
     )
   }
 }
 
 const styles = StyleSheet.create({
   container: {
-    margin: Metrics.baseMargin,
     flex: 1,
-    alignItems: 'center'
+    alignItems: 'center',
+    backgroundColor: '#FEFEFE'
   },
-  title: {
-    ...Fonts.style.h3
+  header: {
+    padding: 5,
   },
-  description: {
-    ...Fonts.style.description
+  scrollable: {
+    flexDirection: 'column'
+  },
+  innerContainer: {
+    padding: 15
+  },
+  footer: {
+    flex: 0.1
   },
   image: {
-    width: 400,
-    height: 400
+    width: Metrics.screenWidth,
+    height: Metrics.screenWidth
+  },
+  title: {
+    ...Fonts.style.h3,
+    borderBottomColor: '#EAEAEA',
+    textAlign: 'center',
+    paddingBottom: 5,
+    marginBottom: 10,
+    borderBottomWidth: 1
+  },
+  address: {
+    fontSize: Fonts.size.small,
+    textAlign: 'center',
+    padding: 5
+  },
+  row: {
+    flexDirection: 'row'
   }
 })

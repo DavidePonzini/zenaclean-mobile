@@ -1,5 +1,6 @@
 import React from 'react'
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import Icon from 'react-native-vector-icons/FontAwesome'
 import Images from '../Themes/Images'
 import Fonts from '../Themes/Fonts'
 import DateParser from '../Utils/DateParser'
@@ -17,14 +18,23 @@ export default class ReportListItem extends React.Component {
     return (
       <View style={styles.container}>
         <TouchableOpacity onPress={() => { this.props.onPress(this.props.marker) }} style={styles.card}>
-          <Text style={styles.title}>{this.props.marker.title}</Text>
           <View style={styles.row}>
-            <View style={styles.innerContainer}>
-              <Text style={styles.address}>{this.props.marker.address == null ? 'Indirizzo sconosciuto' : this.props.marker.address}</Text>
-              <Text style={styles.descr}>{description}</Text>
-              <Text style={styles.timestamp}>{this.date + ' alle ' + this.time}</Text>
+            <View style={styles.outerContainer}>
+              <Text style={styles.title}>{this.props.marker.title}</Text>
+              <View style={styles.row}>
+                <View style={styles.imageContainer}>
+                  <Image style={styles.image} source={this.imgUri} />
+                </View>
+                <View style={styles.innerContainer}>
+                  <Text style={styles.address}>{this.props.marker.address == null ? 'Indirizzo sconosciuto' : this.props.marker.address}</Text>
+                  <Text style={styles.descr}>{description}</Text>
+                  <Text style={styles.timestamp}>{this.date + ' alle ' + this.time}</Text>
+                </View>
+              </View>
             </View>
-            <Image style={styles.image} source={this.imgUri} />
+            <View style={styles.iconContainer}>
+              <Icon style={styles.icon} color='gray' name='chevron-right' size={20} />
+            </View>
           </View>
         </TouchableOpacity>
       </View>
@@ -37,8 +47,8 @@ const styles = StyleSheet.create({
     ...Fonts.style.h4,
     borderBottomColor: '#EAEAEA',
     textAlign: 'center',
-    paddingBottom: 5,
-    marginBottom: 10,
+    padding: 5,
+    margin: 10,
     borderBottomWidth: 1
   },
   descr: {
@@ -50,7 +60,7 @@ const styles = StyleSheet.create({
     flex: 0.1
   },
   address: {
-    fontSize: Fonts.size.small,
+    fontSize: Fonts.size.medium,
     flex: 0.1
   },
   card: {
@@ -73,13 +83,32 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: 'row'
   },
+  outerContainer: {
+    flex: 0.9
+  },
   innerContainer: {
     flexDirection: 'column',
     flex: 0.75
   },
+  imageContainer: {
+    padding: 5,
+    flex: 0.25
+  },
   image: {
-    flex: 0.25,
-    width: 100,
-    height: 100
+    width: 80,
+    height: 80
+  },
+  iconContainer: {
+    borderLeftWidth: 1,
+    borderLeftColor: '#EAEAEA',
+    flex: 0.1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingLeft: 5
+  },
+  icon: {
+    flex: 1,
+    textAlign: 'center'
   }
 })
