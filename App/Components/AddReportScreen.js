@@ -17,7 +17,7 @@ const options = {
 }
 
 const formItems = {
-  title: 'Titolo Segnalazione',
+  title: 'Titolo',
   titleErrorMessage: 'Inserisci un titolo per la segnalazione',
   descrErrorMessage: 'Inserisci una descrizione per la segnalazione',
   address: 'Indirizzo',
@@ -25,6 +25,11 @@ const formItems = {
 }
 
 export default class AddReportScreen extends Component {
+  static navigationOptions = ({ navigation }) => {
+    return {
+      title: 'Segnalazione'
+    }
+  }
   constructor (props) {
     super(props)
 
@@ -42,9 +47,19 @@ export default class AddReportScreen extends Component {
   }
 
   convertAddress = (lat, lng) => {
-    return api.getAddressFromCoords({ lat, lng }, (res) => {
-      this.setState({ address: res })
+    api.getAddressFromCoords({ lat, lng }, (res) => {
+      /* in theory we should get an address and plug it into the dom */
     })
+  }
+
+  getData = () => {
+    let day = new Date().getDate()
+    let month = new Date().getMonth() + 1
+    let year = new Date().getFullYear()
+    let hour = new Date().getHours()
+    let min = new Date().getMinutes()
+    let sec = new Date().getSeconds()
+    return { currentDate: year + '-' + month + '-' + day + 'T' + hour + ':' + min + ':' + sec }
   }
 
   handleTitle = (title) => {
@@ -55,8 +70,8 @@ export default class AddReportScreen extends Component {
     this.setState({ description: descr })
   }
 
-  componentWillMount () {
-    return this.convertAddress(this.state.lat, this.state.lng)
+  componentDidMount () {
+    this.convertAddress(this.state.lat, this.state.lng)
   }
 
   uploadData () {
@@ -64,7 +79,7 @@ export default class AddReportScreen extends Component {
       description: this.state.description,
       latitude: this.state.lat,
       longitude: this.state.lng,
-      timestamp: new Date().toISOString(),
+      timestamp: this.getData(),
       title: this.state.title
     }
     api.uploadReport(data)
@@ -129,20 +144,11 @@ export default class AddReportScreen extends Component {
             <ScrollView horizontal style={{ maxWidth: wp('60%') }}>
               <FormLabel labelStyle={styles.title_label}>{this.state.nameFile}</FormLabel>
             </ScrollView>
-            <Button onPress={() => this.imageUpload()} containerViewStyle={{ borderRadius: 40 }} raised buttonStyle={styles.btn_foto} title='+' />
+            <Button onPress={() => this.imageUpload()} containerViewStyle={{ borderRadius: 40 }} buttonStyle={styles.btn_foto} title='+' />
           </View>
           <Image source={this.state.photoSource} />
           <View style={styles.view_button}>
             <Button
-              raised
-              containerViewStyle={{ borderRadius: 10 }}
-              iconRight={{ name: 'ios-close', type: 'ionicon', color: '#FFFFFF', size: 25 }}
-              buttonStyle={[styles.form_button, styles.btn_cancel]}
-              onPress={() => { goBack() }}
-              title='Annulla' />
-            <Button
-              raised
-              containerViewStyle={{ borderRadius: 10 }}
               iconRight={{ name: 'md-arrow-round-up', type: 'ionicon', color: 'lightgreen', size: 20 }}
               buttonStyle={[styles.form_button, styles.btn_send]}
               disabled={!this.state.title}
@@ -158,13 +164,11 @@ export default class AddReportScreen extends Component {
 const styles = StyleSheet.create({
   container_scroll: {
     flex: 1,
-    width: wp('100%'),
-    height: hp('100%')
+    backgroundColor: '#F5FCFF'
   },
   container: {
     justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF'
+    alignItems: 'center'
   },
   title_label: {
     fontSize: 25,
@@ -175,28 +179,31 @@ const styles = StyleSheet.create({
     fontSize: 20
   },
   input: {
-    width: wp('80%')
+    width: wp('90%'),
+    backgroundColor: 'white',
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#d6d7da',
+    fontSize: 20
   },
   input_desc: {
-    maxHeight: hp('15%')
+    maxHeight: hp('10%')
   },
   margin_top: {
-    marginTop: wp('10%')
+    marginTop: wp('5%')
   },
   view_button: {
     flexDirection: 'row',
-    marginTop: wp('10%'),
+    marginTop: wp('15%'),
     justifyContent: 'center',
     alignItems: 'center'
   },
   form_button: {
-    width: wp('35%'),
-    borderRadius: 10,
+    width: wp('80%'),
+    height: 50,
+    borderRadius: 20,
     justifyContent: 'center',
     alignItems: 'center'
-  },
-  btn_cancel: {
-    backgroundColor: '#D32F2F'
   },
   btn_send: {
     backgroundColor: 'green'
