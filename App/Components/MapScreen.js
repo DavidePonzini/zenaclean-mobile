@@ -9,13 +9,15 @@ import DateParser from '../Utils/DateParser'
 export default class MapScreen extends React.Component {
   constructor (props) {
     super(props)
+    // initial Rrgion
+    this.region = {
+      latitude: 44.4056,
+      longitude: 8.9463,
+      latitudeDelta: 0.1,
+      longitudeDelta: 0.1
+    }
     this.state = {
-      region: {
-        latitude: 44.4056,
-        longitude: 8.9463,
-        latitudeDelta: 0.1,
-        longitudeDelta: 0.1
-      },
+      region: this.region,
       markers: []
     }
   }
@@ -97,7 +99,7 @@ const styles = StyleSheet.create({
   },
   innerContainer: {
     flexDirection: 'column',
-    flex: 0.6
+    flex: 1
   },
   map: {
     ...StyleSheet.absoluteFillObject
