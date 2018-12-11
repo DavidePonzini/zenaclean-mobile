@@ -15,7 +15,6 @@ const options = {
     path: 'images'
   }
 }
-
 const formItems = {
   title: 'Titolo',
   titleErrorMessage: 'Inserisci un titolo per la segnalazione',
@@ -23,16 +22,9 @@ const formItems = {
   address: 'Indirizzo',
   descr: 'Descrizione'
 }
-
 export default class AddReportScreen extends Component {
-  static navigationOptions = ({ navigation }) => {
-    return {
-      title: 'Segnalazione'
-    }
-  }
   constructor (props) {
     super(props)
-
     this.state = {
       photoSource: null,
       lat: this.props.navigation.state.params.lat,
@@ -45,47 +37,31 @@ export default class AddReportScreen extends Component {
       description: ''
     }
   }
-
   convertAddress = (lat, lng) => {
-    api.getAddressFromCoords({ lat, lng }, (res) => {
-      /* in theory we should get an address and plug it into the dom */
+    return api.getAddressFromCoords({ lat, lng }, (res) => {
+      this.setState({ address: res })
     })
   }
-
-  getData = () => {
-    let day = new Date().getDate()
-    let month = new Date().getMonth() + 1
-    let year = new Date().getFullYear()
-    let hour = new Date().getHours()
-    let min = new Date().getMinutes()
-    let sec = new Date().getSeconds()
-    return { currentDate: year + '-' + month + '-' + day + 'T' + hour + ':' + min + ':' + sec }
-  }
-
   handleTitle = (title) => {
     this.setState({ title: title })
   }
-
   handleDescr = (descr) => {
     this.setState({ description: descr })
   }
-
-  componentDidMount () {
-    this.convertAddress(this.state.lat, this.state.lng)
+  componentWillMount () {
+    return this.convertAddress(this.state.lat, this.state.lng)
   }
-
   uploadData () {
     const data = {
       description: this.state.description,
       latitude: this.state.lat,
       longitude: this.state.lng,
-      timestamp: this.getData(),
+      timestamp: new Date().toISOString(),
       title: this.state.title
     }
     api.uploadReport(data)
       .then(() => this.showAlert())
   }
-
   showAlert = () => {
     let that = this
     Alert.alert(
@@ -97,11 +73,9 @@ export default class AddReportScreen extends Component {
       { cancelable: false }
     )
   }
-
   imageUpload () {
     ImagePicker.showImagePicker(options, (response) => {
       console.log('Response = ', response)
-
       if (response.didCancel) {
         console.log('User cancelled image picker')
       } else if (response.error) {
@@ -110,20 +84,16 @@ export default class AddReportScreen extends Component {
         console.log('User tapped custom button: ', response.customButton)
       } else {
         // const source = { uri: response.uri };
-
         // You can also display the image using data:
         const source = { uri: 'data:image/jpeg;base64,' + response.data }
-
         this.setState({
           photoSource: source,
           nameFile: response.fileName
         })
-
         console.log(this.state.photoSource)
       }
     })
   }
-
   render () {
     const { goBack } = this.props.navigation
     return (
@@ -132,14 +102,11 @@ export default class AddReportScreen extends Component {
           <FormLabel labelStyle={styles.title_label}>{formItems.title}</FormLabel>
           <FormInput inputStyle={styles.input} value={this.state.title} onChangeText={this.handleTitle} />
           { this.state.titleError && <FormValidationMessage>{formItems.titleErrorMessage}</FormValidationMessage> }
-
           <FormLabel labelStyle={[styles.title_label, styles.margin_top]}>{formItems.address}</FormLabel>
           <Text style={styles.place}>{this.state.address}</Text>
-
           <FormLabel labelStyle={[styles.title_label, styles.margin_top]}>{formItems.descr}</FormLabel>
           <FormInput inputStyle={[styles.input, styles.input_desc]} value={this.state.descr} onChangeText={this.handleDescr} multiline />
           { this.state.descrError && <FormValidationMessage>{formItems.descrErrorMessage}</FormValidationMessage> }
-
           <View style={[styles.view_button, styles.margin_top]}>
             <ScrollView horizontal style={{ maxWidth: wp('60%') }}>
               <FormLabel labelStyle={styles.title_label}>{this.state.nameFile}</FormLabel>
@@ -160,7 +127,6 @@ export default class AddReportScreen extends Component {
     )
   }
 }
-
 const styles = StyleSheet.create({
   container_scroll: {
     flex: 1,
@@ -214,5 +180,4 @@ const styles = StyleSheet.create({
     borderRadius: 40,
     backgroundColor: '#BDBDBD'
   }
-
 })
