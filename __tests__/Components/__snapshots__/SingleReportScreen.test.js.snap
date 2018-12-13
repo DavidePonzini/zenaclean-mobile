@@ -41,7 +41,7 @@ exports[`SingleReportScreen tests renders correctly 1`] = `
         }
       }
     >
-      Indirizzo sconosciuto
+      Via del Camoscio
       , 
       9 Dicembre 2018 alle 17:40
     </Text>

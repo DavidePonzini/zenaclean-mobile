@@ -38,8 +38,11 @@ export default class AddReportScreen extends Component {
     }
   }
   convertAddress = (lat, lng) => {
-    return api.getAddressFromCoords({ lat, lng }, (res) => {
-      this.setState({ address: res })
+    return api.getAddressFromCoords({ lat, lng }, (error, result) => {
+      if (error) {
+        console.log(error)
+      }
+      this.setState({ address: result })
     })
   }
   handleTitle = (title) => {
@@ -57,7 +60,8 @@ export default class AddReportScreen extends Component {
       latitude: this.state.lat,
       longitude: this.state.lng,
       timestamp: new Date().toISOString(),
-      title: this.state.title
+      title: this.state.title,
+      address: this.state.address
     }
     return api.uploadReport(data)
       .then(() => this.showAlert('Segnalazione riuscita'))
@@ -97,7 +101,6 @@ export default class AddReportScreen extends Component {
     })
   }
   render () {
-    const { goBack } = this.props.navigation
     return (
       <ScrollView style={styles.container_scroll}>
         <View style={styles.container}>

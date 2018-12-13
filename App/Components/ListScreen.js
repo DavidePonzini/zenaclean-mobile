@@ -40,7 +40,7 @@ export default class ListScreen extends React.Component {
           data={this.state.markers}
           refreshing={this.state.fetching}
           renderItem={this.renderItem}
-          keyExtractor={(item, index) => ('' + index)}
+          keyExtractor={(_, index) => ('' + index)}
           ListEmptyComponent={!this.state.fetching && <NoReportsLeftComponent />}
         />
       </SafeAreaView>

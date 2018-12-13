@@ -102,7 +102,7 @@ exports[`List tests renders correctly 1`] = `
                 }
               }
             >
-              Indirizzo sconosciuto
+              Via del Camoscio
             </Text>
             <Text
               style={

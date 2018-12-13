@@ -29,6 +29,7 @@ exports[`AddReportScreen tests renders correctly 1`] = `
       Titolo
     </FormLabel>
     <FormInput
+      accessibilityLabel="inputTitle"
       inputStyle={
         Object {
           "backgroundColor": "white",
@@ -41,6 +42,7 @@ exports[`AddReportScreen tests renders correctly 1`] = `
       }
       normalizeFontSize={true}
       onChangeText={[Function]}
+      testID="inputTitle"
       value=""
     />
     <FormLabel
@@ -85,6 +87,7 @@ exports[`AddReportScreen tests renders correctly 1`] = `
       Descrizione
     </FormLabel>
     <FormInput
+      accessibilityLabel="inputDescr"
       inputStyle={
         Array [
           Object {
@@ -103,6 +106,7 @@ exports[`AddReportScreen tests renders correctly 1`] = `
       multiline={true}
       normalizeFontSize={true}
       onChangeText={[Function]}
+      testID="inputDescr"
     />
     <View
       style={

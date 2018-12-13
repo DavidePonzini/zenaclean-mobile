@@ -14,8 +14,8 @@ describe('FixtureApi tests', () => {
 
   it('gets correct address', async () => {
     let address, lat, lng
-    await FixtureApiService.getAddressFromCoords({ lat, lng }, cb => {
-      address = cb
+    await FixtureApiService.getAddressFromCoords({ lat, lng }, (_, res) => {
+      address = res
     })
     expect(address).toEqual(fixtureAddress)
   })

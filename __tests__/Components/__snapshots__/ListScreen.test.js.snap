@@ -7,6 +7,7 @@ exports[`List tests renders correctly 1`] = `
     data={
       Array [
         Object {
+          "address": "Via del Camoscio",
           "description": "Divano abbandonato in via Gramsci",
           "latitude": 44.1234,
           "longitude": 8.1234,

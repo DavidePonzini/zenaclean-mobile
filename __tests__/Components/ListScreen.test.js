@@ -5,7 +5,7 @@ import { shallowToJson } from 'enzyme-to-json'
 import Adapter from 'enzyme-adapter-react-16'
 import 'isomorphic-fetch'
 
-import ListScreen, { EmptyList } from '../../App/Components/ListScreen'
+import ListScreen from '../../App/Components/ListScreen'
 import ReportListItem from '../../App/Components/ReportListItem'
 configure({ adapter: new Adapter() })
 

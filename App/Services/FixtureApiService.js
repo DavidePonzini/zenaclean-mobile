@@ -1,10 +1,10 @@
-export const fixtureMarkers = [{ title: 'Divano abbandonato', latitude: 44.1234, longitude: 8.1234, description: 'Divano abbandonato in via Gramsci', timestamp: '2018-12-09T14:40:35 -02:00' }]
 export const fixtureAddress = 'Via del Camoscio'
+export const fixtureMarkers = [{ address: fixtureAddress, title: 'Divano abbandonato', latitude: 44.1234, longitude: 8.1234, description: 'Divano abbandonato in via Gramsci', timestamp: '2018-12-09T14:40:35 -02:00' }]
 
 const getAddressFromCoords = ({ lat, lng }, cb) => {
   return new Promise((resolve) => {
     resolve(fixtureAddress)
-  }).then((res) => { cb(res) })
+  }).then((res) => { cb(null, res) })
 }
 
 const getMarkers = (cb) => {

@@ -1,10 +1,10 @@
 import Secrets from 'react-native-config'
-
+import { composeAddress } from '../Utils/GeoUtils'
 const baseUrl = Secrets.API_URL
-const googleApiUrl = 'https://maps.googleapis.com/maps/api/geocode/json?address='
+const googleApiUrl = 'https://maps.googleapis.com/maps/api/geocode/json?key=' + Secrets.GOOGLE_MAPS_API_KEY + '&address='
 
 const getAddressFromCoords = ({ lat, lng }, cb) => {
-  return fetch(googleApiUrl + lat + ',' + lng + '&key=' + Secrets.GOOGLE_MAPS_API_KEY)
+  return fetch(googleApiUrl + lat + ',' + lng)
     .then((response) => {
       if (response.ok) {
         return response.json()
@@ -13,10 +13,18 @@ const getAddressFromCoords = ({ lat, lng }, cb) => {
       }
     })
     .then((responseJson) => {
-      if (responseJson.status === 'REQUEST_DENIED') {
-        cb('Indirizzo sconosciuto')
+      if (responseJson.status === 'OK') {
+        try {
+          let address = composeAddress(responseJson.results[0].address_components)
+          cb(null, address)
+        } catch (e) {
+          console.error(e)
+          cb(new Error('no address'), 'Indirizzo sconosciuto')
+        }
+      } else if (responseJson.status === 'REQUEST_DENIED') {
+        cb(new Error('invalid api key'), 'Indirizzo sconosciuto')
       } else {
-        cb(responseJson)
+        cb(new Error('no address'), 'Indirizzo sconosciuto')
       }
     })
 }

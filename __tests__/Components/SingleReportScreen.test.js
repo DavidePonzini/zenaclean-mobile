@@ -24,10 +24,4 @@ describe('SingleReportScreen tests', () => {
   it('renders correctly', () => {
     expect(shallowToJson(wrapper)).toMatchSnapshot()
   })
-
-  it('converts coordinates to address', async () => {
-    const instance = wrapper.instance()
-    await instance.componentWillMount()
-    expect(instance.state.address).toBe('Via del Camoscio')
-  })
 })
