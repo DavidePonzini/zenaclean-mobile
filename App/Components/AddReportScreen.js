@@ -59,13 +59,13 @@ export default class AddReportScreen extends Component {
       timestamp: new Date().toISOString(),
       title: this.state.title
     }
-    api.uploadReport(data)
-      .then(() => this.showAlert())
+    return api.uploadReport(data)
+      .then(() => this.showAlert('Segnalazione riuscita'))
   }
-  showAlert = () => {
+  showAlert = (title) => {
     let that = this
     Alert.alert(
-      'Segnalazione riuscita',
+      title,
       '',
       [
         { text: 'OK', onPress: () => { that.props.navigation.goBack() } }
@@ -82,9 +82,11 @@ export default class AddReportScreen extends Component {
         console.log('ImagePicker Error: ', response.error)
       } else if (response.customButton) {
         console.log('User tapped custom button: ', response.customButton)
+      } else if (response.fileSize > 4000000) {
+        this.showAlert('Dimensione immagine troppo grande')
+      } else if (!(/\/(gif|jpg|jpeg|tiff|png)$/i).test(response.type)) {
+        this.showAlert('Estensione immagine non valida')
       } else {
-        // const source = { uri: response.uri };
-        // You can also display the image using data:
         const source = { uri: 'data:image/jpeg;base64,' + response.data }
         this.setState({
           photoSource: source,
@@ -100,12 +102,12 @@ export default class AddReportScreen extends Component {
       <ScrollView style={styles.container_scroll}>
         <View style={styles.container}>
           <FormLabel labelStyle={styles.title_label}>{formItems.title}</FormLabel>
-          <FormInput inputStyle={styles.input} value={this.state.title} onChangeText={this.handleTitle} />
+          <FormInput accessibilityLabel='inputTitle' testID={'inputTitle'} inputStyle={styles.input} value={this.state.title} onChangeText={this.handleTitle} />
           { this.state.titleError && <FormValidationMessage>{formItems.titleErrorMessage}</FormValidationMessage> }
           <FormLabel labelStyle={[styles.title_label, styles.margin_top]}>{formItems.address}</FormLabel>
           <Text style={styles.place}>{this.state.address}</Text>
           <FormLabel labelStyle={[styles.title_label, styles.margin_top]}>{formItems.descr}</FormLabel>
-          <FormInput inputStyle={[styles.input, styles.input_desc]} value={this.state.descr} onChangeText={this.handleDescr} multiline />
+          <FormInput accessibilityLabel='inputDescr' testID={'inputDescr'} inputStyle={[styles.input, styles.input_desc]} value={this.state.descr} onChangeText={this.handleDescr} multiline />
           { this.state.descrError && <FormValidationMessage>{formItems.descrErrorMessage}</FormValidationMessage> }
           <View style={[styles.view_button, styles.margin_top]}>
             <ScrollView horizontal style={{ maxWidth: wp('60%') }}>
