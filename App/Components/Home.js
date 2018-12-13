@@ -11,11 +11,11 @@ export default class Home extends Component {
         <ScrollView ref={(node) => this.scroll = node}>
           <Content>
             <Login navigation={this.props.navigation} />
-            <View style={styles.scroll_down}>
-              <Button transparent onPress={() => { this.scroll.scrollTo({ y: 610, animated: true }) }}>
+            <View >
+              <Button style={styles.scroll_down} transparent onPress={() => { this.scroll.scrollTo({ y: 630, animated: true }) }}>
                 <Text style={styles.color}>Scorri per più informazioni </Text>
+                <Icon style={[styles.color, styles.icon]} name='ios-arrow-down' />
               </Button>
-              <Icon style={[styles.color, styles.icon]} name='ios-arrow-down' />
             </View>
             <View style={styles.container}>
               <Text style={styles.text}>
@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignSelf: 'center',
     alignItems: 'center',
-    marginTop: 20
+    marginTop: 47
   },
   color: {
     color: 'black'
