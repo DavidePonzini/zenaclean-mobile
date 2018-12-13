@@ -9,6 +9,8 @@
     "fixcode": "standard --fix"
   },
   "dependencies": {
+    "native-base": "^2.8.1",
+    "prop-types": "latest",
     "react": "16.6.1",
     "react-native": "0.57.7",
     "react-native-action-button": "^2.8.5",
@@ -19,8 +21,7 @@
     "react-native-maps": "^0.22.1",
     "react-native-responsive-screen": "^1.1.10",
     "react-native-vector-icons": "^6.1.0",
-    "react-navigation": "^3.0.2",
-    "prop-types": "latest"
+    "react-navigation": "^3.0.2"
   },
   "devDependencies": {
     "babel-core": "^7.0.0-bridge.0",
