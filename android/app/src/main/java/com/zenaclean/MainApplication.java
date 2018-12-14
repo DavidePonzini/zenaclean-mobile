@@ -3,10 +3,6 @@ package com.zenaclean;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
-import com.oblador.vectoricons.VectorIconsPackage;
-import com.airbnb.android.react.maps.MapsPackage;
-import com.imagepicker.ImagePickerPackage;
-import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 import com.lugg.ReactNativeConfig.ReactNativeConfigPackage;
 import com.imagepicker.ImagePickerPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
@@ -37,12 +33,7 @@ public class MainApplication extends Application implements ReactApplication {
             new MapsPackage(),
             new ImagePickerPackage(),
             new RNGestureHandlerPackage(),
-            new ReactNativeConfigPackage(),
-            new ImagePickerPackage(),
-            new VectorIconsPackage(),
-            new ReactNativeConfigPackage(),
-            new MapsPackage(),
-            new RNGestureHandlerPackage()
+            new ReactNativeConfigPackage()
       );
     }
 
