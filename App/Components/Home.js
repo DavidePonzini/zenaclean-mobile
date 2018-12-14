@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Button, Container, Content, Footer, FooterTab, Icon, Text } from 'native-base'
 import Login from './Login'
 import { View, StyleSheet, ScrollView } from 'react-native'
+import Colors from '../Themes/Colors'
 
 export default class Home extends Component {
   render () {
@@ -46,10 +47,10 @@ export default class Home extends Component {
               </Text>
             </View>
           </Content>
-          <Footer>
-            <FooterTab>
+          <Footer >
+            <FooterTab style={styles.colorFooter}>
               <Button full onPress={() => { navigate('TabNavigator') }}>
-                <Text style={styles.text_footer} primary >Prova Demo</Text>
+                <Text style={styles.text_footer}>Prova Demo</Text>
               </Button>
             </FooterTab>
           </Footer>
@@ -76,12 +77,16 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignSelf: 'center',
     alignItems: 'center',
-    marginTop: 47
+    marginTop: 47,
+    height: 70
   },
   color: {
     color: 'black'
   },
   icon: {
     fontSize: 40
+  },
+  colorFooter: {
+    backgroundColor: Colors.accent
   }
 })

@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { StyleSheet, View, Image } from 'react-native'
 import { Button, Text, Input, Item, Container, Content, Icon } from 'native-base'
+import Colors from '../Themes/Colors'
 import api from '../Services/ApiService'
 
 export default class Login extends Component {
@@ -26,10 +27,10 @@ export default class Login extends Component {
             </Button>
             <View style={styles.fpwd_nuser}>
               <Button transparent >
-                <Text primary onPress={() => { navigate('SignIn') }}>Registrati</Text>
+                <Text style={styles.color} onPress={() => { navigate('SignIn') }}>Registrati</Text>
               </Button>
               <Button transparent >
-                <Text primary>Password Dimenticata</Text>
+                <Text style={styles.color}>Password Dimenticata</Text>
               </Button>
             </View>
           </View>
@@ -55,7 +56,8 @@ const styles = StyleSheet.create({
     marginTop: 20,
     width: '90%',
     alignSelf: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    backgroundColor: Colors.accent
   },
   width_items: {
     width: '90%'
@@ -69,5 +71,8 @@ const styles = StyleSheet.create({
     marginTop: 20,
     justifyContent: 'space-between',
     alignItems: 'center'
+  },
+  color: {
+    color: Colors.accent
   }
 })
