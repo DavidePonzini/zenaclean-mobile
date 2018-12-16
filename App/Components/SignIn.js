@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { StyleSheet, View, Image } from 'react-native'
 import { Button, Text, Input, Item, Container, Content, Icon } from 'native-base'
 import api from '../Services/ApiService'
+import Colors from '../Themes/Colors'
 
 export default class SignIn extends Component {
   render () {
@@ -9,7 +10,7 @@ export default class SignIn extends Component {
       <Container>
         <Content>
           <Image style={styles.logo}
-            source={require('../Assets/Images/logo.jpg')}
+            source={require('../Assets/Images/logo.png')}
           />
           <View style={styles.container}>
             <Item rounded style={styles.width_items}>
@@ -54,7 +55,8 @@ const styles = StyleSheet.create({
     marginTop: 40,
     width: '90%',
     alignSelf: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    backgroundColor: Colors.accent
   },
   width_items: {
     width: '90%'

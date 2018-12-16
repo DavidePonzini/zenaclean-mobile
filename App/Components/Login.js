@@ -11,7 +11,7 @@ export default class Login extends Component {
       <Container style={{ height: '200%' }}>
         <Content>
           <Image style={styles.logo}
-            source={require('../Assets/Images/logo.jpg')}
+            source={require('../Assets/Images/logo.png')}
           />
           <View style={styles.container}>
             <Item rounded style={styles.width_items}>
