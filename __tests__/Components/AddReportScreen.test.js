@@ -1,6 +1,6 @@
 import React from 'react'
 import AddReportScreen from '../../App/Components/AddReportScreen'
-
+import Alert from 'Alert'
 import { shallow, configure } from 'enzyme'
 import Adapter from 'enzyme-adapter-react-16'
 import 'isomorphic-fetch'
@@ -8,6 +8,12 @@ import { shallowToJson } from 'enzyme-to-json'
 import { fixtureMarkers } from '../../App/Services/FixtureApiService'
 
 configure({ adapter: new Adapter() })
+
+jest.mock('Alert', () => {
+  return {
+    alert: jest.fn()
+  }
+})
 
 const fixtureNavigation = { navigate: jest.fn(),
   state: {
@@ -43,6 +49,7 @@ describe('AddReportScreen tests', () => {
     instance.handleTitle('Divano abbandonato')
     wrapper.update()
     submitButton.simulate('Press')
+    Alert.alert.mock.calls[0][2][1].onPress()
     expect(instance.uploadData).toHaveBeenCalled()
   })
 })
