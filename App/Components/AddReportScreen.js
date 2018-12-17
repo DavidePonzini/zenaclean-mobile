@@ -66,6 +66,7 @@ export default class AddReportScreen extends Component {
     return api.uploadReport(data)
       .then(() => this.showAlert('Segnalazione riuscita'))
   }
+
   showAlert = (title) => {
     let that = this
     Alert.alert(
@@ -73,6 +74,18 @@ export default class AddReportScreen extends Component {
       '',
       [
         { text: 'OK', onPress: () => { that.props.navigation.goBack() } }
+      ],
+      { cancelable: false }
+    )
+  }
+
+  showAlertConfirm = (title) => {
+    Alert.alert(
+      title,
+      '',
+      [
+        { text: 'Annulla' },
+        { text: 'OK', onPress: () => { this.uploadData() } }
       ],
       { cancelable: false }
     )
@@ -124,7 +137,7 @@ export default class AddReportScreen extends Component {
               iconRight={{ name: 'md-arrow-round-up', type: 'ionicon', color: 'lightgreen', size: 20 }}
               buttonStyle={[styles.form_button, styles.btn_send]}
               disabled={!this.state.title}
-              onPress={() => this.uploadData()}
+              onPress={() => this.showAlertConfirm('Vuoi inviare la segnalazione?')}
               title='Invia' />
           </View>
         </View>
