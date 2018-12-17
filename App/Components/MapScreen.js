@@ -5,11 +5,12 @@ import ActionButton from 'react-native-action-button'
 import api from '../Services/ApiService'
 import Fonts from '../Themes/Fonts'
 import DateParser from '../Utils/DateParser'
+import Icon from 'react-native-vector-icons/FontAwesome'
 
 export default class MapScreen extends React.Component {
   constructor (props) {
     super(props)
-    // initial Rrgion
+    // initial Region
     this.region = {
       latitude: 44.4056,
       longitude: 8.9463,
@@ -18,6 +19,7 @@ export default class MapScreen extends React.Component {
     }
     this.state = {
       region: this.region,
+      inserting: false,
       markers: []
     }
   }
@@ -31,6 +33,16 @@ export default class MapScreen extends React.Component {
 
     componentWillMount () {
       return api.getMarkers((res) => { this.setState({ markers: res }) })
+    }
+
+    navigateToAddReport = () => this.props.navigation.navigate('AddReport', { lat: this.region.latitude, lng: this.region.longitude })
+
+    beginMarkerPlacement = () => {
+      this.setState({ inserting: true })
+    }
+
+    cancelMarkerPlacement = () => {
+      this.setState({ inserting: false })
     }
 
     renderMarker = (marker, key) => {
@@ -55,7 +67,6 @@ export default class MapScreen extends React.Component {
     }
 
     render () {
-      const { navigate } = this.props.navigation
       return (
         <View style={styles.map}>
           <MapView
@@ -63,9 +74,23 @@ export default class MapScreen extends React.Component {
             initialRegion={this.state.region}
             onRegionChange={this.onRegionChange}
           >
-            {this.state.markers.map(this.renderMarker)}
+            {!this.state.inserting && this.state.markers.map(this.renderMarker)}
           </MapView>
-          <ActionButton buttonColor='dodgerblue' offsetY={50} onPress={() => navigate('AddReport', { lat: this.region.latitude, lng: this.region.longitude })} />
+          { this.state.inserting &&
+            <View pointerEvents='none' style={styles.floatingMarkerContainer}>
+              <Icon name='map-marker' style={styles.floatingMarker} />
+            </View>
+          }
+          <ActionButton fixNativeFeedbackRadius backgroundTappable
+            buttonColor='dodgerblue'
+            offsetY={50}
+            onPress={this.beginMarkerPlacement}
+            onReset={this.cancelMarkerPlacement}
+          >
+            <ActionButton.Item buttonColor='dodgerblue' title='Scegli questa posizione' onPress={this.navigateToAddReport}>
+              <Icon name='check' style={{ color: 'white' }} />
+            </ActionButton.Item>
+          </ActionButton>
         </View>
       )
     }
@@ -107,5 +132,19 @@ const styles = StyleSheet.create({
   callout: {
     width: 250,
     height: 150
+  },
+  floatingMarkerContainer: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    zIndex: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '100%'
+  },
+  floatingMarker: {
+    fontSize: 50
   }
 })

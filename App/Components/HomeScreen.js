@@ -1,17 +1,17 @@
 import React, { Component } from 'react'
 import { Button, Container, Content, Footer, FooterTab, Icon, Text } from 'native-base'
-import Login from './Login'
+import LoginComponent from './LoginComponent'
 import { View, StyleSheet, ScrollView } from 'react-native'
 import Colors from '../Themes/Colors'
 
-export default class Home extends Component {
+export default class HomeScreen extends Component {
   render () {
     const { navigate } = this.props.navigation
     return (
       <Container>
-        <ScrollView ref={(node) => this.scroll = node}>
+        <ScrollView ref={node => { this.scroll = node }} >
           <Content>
-            <Login navigation={this.props.navigation} />
+            <LoginComponent navigation={this.props.navigation} />
             <View >
               <Button style={styles.scroll_down} transparent onPress={() => { this.scroll.scrollTo({ y: 630, animated: true }) }}>
                 <Text style={styles.color}>Scorri per più informazioni </Text>

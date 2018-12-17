@@ -1,23 +1,20 @@
 import React, { Component } from 'react'
 import { StyleSheet, View, Image } from 'react-native'
 import { Button, Text, Input, Item, Container, Content, Icon } from 'native-base'
-import api from '../Services/ApiService'
 import Colors from '../Themes/Colors'
+import api from '../Services/ApiService'
 
-export default class SignIn extends Component {
+export default class LoginComponent extends Component {
   render () {
+    const { navigate } = this.props.navigation
     return (
-      <Container>
+      <Container style={{ height: '200%' }}>
         <Content>
           <Image style={styles.logo}
             source={require('../Assets/Images/logo.png')}
           />
           <View style={styles.container}>
             <Item rounded style={styles.width_items}>
-              <Icon name='ios-person' />
-              <Input placeholder='Codice Fiscale' />
-            </Item>
-            <Item rounded style={[styles.width_items, styles.input_pwd]}>
               <Icon name='ios-at' />
               <Input placeholder='Email' />
             </Item>
@@ -25,13 +22,17 @@ export default class SignIn extends Component {
               <Icon name='ios-lock' />
               <Input placeholder='Password' secureTextEntry />
             </Item>
-            <Item rounded style={[styles.width_items, styles.input_pwd]}>
-              <Icon name='ios-lock' />
-              <Input placeholder='Conferma Password' secureTextEntry />
-            </Item>
-            <Button rounded style={styles.button_sign_in}>
-              <Text>Registrati</Text>
+            <Button rounded style={styles.button_login}>
+              <Text>Login</Text>
             </Button>
+            <View style={styles.fpwd_nuser}>
+              <Button transparent >
+                <Text style={styles.color} onPress={() => { navigate('SignUp') }}>Registrati</Text>
+              </Button>
+              <Button transparent >
+                <Text style={styles.color}>Password Dimenticata</Text>
+              </Button>
+            </View>
           </View>
         </Content>
       </Container>
@@ -40,19 +41,19 @@ export default class SignIn extends Component {
 }
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 50,
+    paddingTop: 80,
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center'
   },
   logo: {
-    marginTop: 20,
-    width: 150,
-    height: 150,
+    marginTop: 40,
+    width: 180,
+    height: 180,
     alignSelf: 'center'
   },
-  button_sign_in: {
-    marginTop: 40,
+  button_login: {
+    marginTop: 20,
     width: '90%',
     alignSelf: 'center',
     justifyContent: 'center',
@@ -64,8 +65,14 @@ const styles = StyleSheet.create({
   input_pwd: {
     marginTop: 20
   },
-  text_footer: {
-    fontSize: 15,
-    color: 'white'
+  fpwd_nuser: {
+    width: '95%',
+    flexDirection: 'row',
+    marginTop: 20,
+    justifyContent: 'space-between',
+    alignItems: 'center'
+  },
+  color: {
+    color: Colors.accent
   }
 })

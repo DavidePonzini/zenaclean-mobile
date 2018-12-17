@@ -127,20 +127,21 @@ exports[`MapScreen tests renders correctly 1`] = `
     activeOpacity={0.85}
     autoInactive={true}
     backdrop={false}
-    backgroundTappable={false}
+    backgroundTappable={true}
     bgColor="transparent"
     bgOpacity={1}
     buttonColor="dodgerblue"
     buttonText="+"
     buttonTextStyle={Object {}}
     degrees={45}
-    fixNativeFeedbackRadius={false}
+    fixNativeFeedbackRadius={true}
     nativeFeedbackRippleColor="rgba(255,255,255,0.75)"
     offsetX={30}
     offsetY={50}
     onPress={[Function]}
     onPressIn={[Function]}
     onPressOn={[Function]}
+    onReset={[Function]}
     outRangeScale={1}
     position="right"
     resetToken={null}
@@ -148,6 +149,29 @@ exports[`MapScreen tests renders correctly 1`] = `
     spacing={20}
     useNativeFeedback={true}
     verticalOrientation="up"
-  />
+  >
+    <ActionButtonItem
+      active={true}
+      activeOpacity={0.85}
+      buttonColor="dodgerblue"
+      fixNativeFeedbackRadius={false}
+      nativeFeedbackRippleColor="rgba(255,255,255,0.75)"
+      onPress={[Function]}
+      spaceBetween={15}
+      title="Scegli questa posizione"
+      useNativeFeedback={true}
+    >
+      <Icon
+        allowFontScaling={false}
+        name="check"
+        size={12}
+        style={
+          Object {
+            "color": "white",
+          }
+        }
+      />
+    </ActionButtonItem>
+  </ActionButton>
 </View>
 `;

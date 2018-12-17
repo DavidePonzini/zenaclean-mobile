@@ -2,12 +2,12 @@ import { createStackNavigator, createAppContainer } from 'react-navigation'
 import TabNavigator from './TabNavigator'
 import AddReportScreen from '../Components/AddReportScreen'
 import SingleReportScreen from '../Components/SingleReportScreen'
-import Home from '../Components/Home'
-import SignInScreen from '../Components/SignIn'
+import HomeScreen from '../Components/HomeScreen'
+import SignUpScreen from '../Components/SignUpScreen'
 
 const MainNavigator = createStackNavigator({
   Main: {
-    screen: Home,
+    screen: HomeScreen,
     navigationOptions: {
       header: null
     }
@@ -18,8 +18,8 @@ const MainNavigator = createStackNavigator({
   SingleReport: {
     screen: SingleReportScreen
   },
-  SignIn: {
-    screen: SignInScreen
+  SignUp: {
+    screen: SignUpScreen
   },
   TabNavigator: {
     screen: TabNavigator,
