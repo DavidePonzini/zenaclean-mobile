@@ -61,7 +61,7 @@ export default class AddReportScreen extends Component {
       longitude: this.state.lng,
       timestamp: new Date().toISOString(),
       title: this.state.title,
-      address: this.state.address
+      address: this.state.address,
     }
     return api.uploadReport(data)
       .then(() => this.showAlert('Segnalazione riuscita'))

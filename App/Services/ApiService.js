@@ -3,6 +3,22 @@ import { composeAddress } from '../Utils/GeoUtils'
 const baseUrl = Secrets.API_URL
 const googleApiUrl = 'https://maps.googleapis.com/maps/api/geocode/json?key=' + Secrets.GOOGLE_MAPS_API_KEY + '&address='
 
+const registerUser = (email, ssn, password, cb) => {
+  return fetch(baseUrl + 'users/register', {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      email: email,
+      ssn: ssn,
+      password: password
+    })
+  }).then(res => res.json())
+    .then(cb)
+}
+
 const getAddressFromCoords = ({ lat, lng }, cb) => {
   return fetch(googleApiUrl + lat + ',' + lng)
     .then((response) => {
@@ -30,7 +46,7 @@ const getAddressFromCoords = ({ lat, lng }, cb) => {
 }
 
 const getMarkers = (cb) => {
-  return fetch(baseUrl + 'markers.json')
+  return fetch(baseUrl + 'reports')
     .then((response) => response.json())
     .then((responseJson) => {
       let markers = []
@@ -46,13 +62,18 @@ const getMarkers = (cb) => {
 }
 
 const uploadReport = (infoReport) => {
-  return fetch(baseUrl + 'markers.json', {
+  return fetch(baseUrl + 'reports', {
     method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json'
+    },
     body: JSON.stringify(infoReport)
   })
 }
 export default {
   getAddressFromCoords,
   getMarkers,
-  uploadReport
+  uploadReport,
+  registerUser
 }
