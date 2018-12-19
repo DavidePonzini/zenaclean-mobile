@@ -4,6 +4,7 @@ import { FormInput, FormLabel, FormValidationMessage, Button, Text } from 'react
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import ImagePicker from 'react-native-image-picker'
 import api from '../Services/ApiService'
+import ActionButton from 'react-native-action-button'
 
 const options = {
   title: 'Carica foto',
@@ -141,11 +142,18 @@ export default class AddReportScreen extends Component {
             <ScrollView horizontal style={{ maxWidth: wp('60%') }}>
               <FormLabel labelStyle={styles.title_label}>{this.state.nameFile}</FormLabel>
             </ScrollView>
-            <Button onPress={() => this.imageUpload()} containerViewStyle={{ borderRadius: 40 }} buttonStyle={styles.btn_foto} title='+' />
+            <Button accessibilityLabel='button-image'
+              testID={'button-image'}
+              onPress={() => this.imageUpload()}
+              containerViewStyle={{ borderRadius: 40 }}
+              buttonStyle={styles.btn_foto}
+              title='+' />
           </View>
           <Image source={this.state.photoSource} />
           <View style={styles.view_button}>
             <Button
+              accessibilityLabel='button-send'
+              testID={'button-send'}
               iconRight={{ name: 'md-arrow-round-up', type: 'ionicon', color: 'lightgreen', size: 20 }}
               buttonStyle={[styles.form_button, styles.btn_send]}
               disabled={!this.state.title}

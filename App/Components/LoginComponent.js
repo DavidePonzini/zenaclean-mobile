@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { StyleSheet, View, Image } from 'react-native'
 import { Button, Text, Input, Item, Container, Content, Icon } from 'native-base'
 import Colors from '../Themes/Colors'
-import api from '../Services/ApiService'
+import ActionButton from 'react-native-action-button'
 
 export default class LoginComponent extends Component {
   render () {
@@ -16,20 +16,33 @@ export default class LoginComponent extends Component {
           <View style={styles.container}>
             <Item rounded style={styles.width_items}>
               <Icon name='ios-at' />
-              <Input placeholder='Email' />
+              <Input
+                accessibilityLabel='login-email'
+                testID={'login-email'}
+                placeholder='Email' />
             </Item>
             <Item rounded style={[styles.width_items, styles.input_pwd]}>
               <Icon name='ios-lock' />
-              <Input placeholder='Password' secureTextEntry />
+              <Input
+                accessibilityLabel='login-password'
+                testID={'login-password'}
+                placeholder='Password' secureTextEntry />
             </Item>
-            <Button rounded style={styles.button_login}>
+            <Button
+              accessibilityLabel='login-button'
+              testID={'login-button'}
+              rounded style={styles.button_login}>
               <Text>Login</Text>
             </Button>
             <View style={styles.fpwd_nuser}>
-              <Button transparent >
+              <Button transparent
+                accessibilityLabel='login-button'
+                testID={'login-button'}>
                 <Text style={styles.color} onPress={() => { navigate('SignUp') }}>Registrati</Text>
               </Button>
-              <Button transparent >
+              <Button transparent
+                accessibilityLabel='login-forgot'
+                testID={'login-forgot'}>
                 <Text style={styles.color}>Password Dimenticata</Text>
               </Button>
             </View>

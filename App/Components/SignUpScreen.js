@@ -3,6 +3,7 @@ import { StyleSheet, View, Image, Alert } from 'react-native'
 import { Button, Text, Input, Item, Container, Content, Icon } from 'native-base'
 import Colors from '../Themes/Colors'
 import api from '../Services/ApiService'
+import ActionButton from 'react-native-action-button'
 
 export default class SignUpScreen extends Component {
   constructor (props) {
@@ -71,7 +72,10 @@ export default class SignUpScreen extends Component {
               success={typeof this.state.validCV !== 'undefined' ? this.state.validCV : undefined}
               error={typeof this.state.validCV !== 'undefined' ? !(this.state.validCV) : undefined}>
               <Icon name='ios-person' />
-              <Input placeholder='Codice Fiscale'
+              <Input
+                accessibilityLabel='ssn-signup'
+                testID={'ssn-signup'}
+                placeholder='Codice Fiscale'
                 onChangeText={(cv) => this.checkInputCV(cv)} />
             </Item>
             {typeof this.state.validCV !== 'undefined' && !this.state.validCV && <Text style={styles.errorInputMessage}>{'CV non valido'}</Text> }
@@ -80,6 +84,8 @@ export default class SignUpScreen extends Component {
               error={typeof this.state.validEmail !== 'undefined' ? !(this.state.validEmail) : undefined}>
               <Icon name='ios-at' />
               <Input
+                accessibilityLabel='signup-email'
+                testID={'signup-email'}
                 placeholder='Email'
                 onChangeText={(email) => this.checkInputEmail(email)} />
             </Item>
@@ -88,7 +94,10 @@ export default class SignUpScreen extends Component {
               success={typeof this.state.validPassword !== 'undefined' ? this.state.validPassword : undefined}
               error={typeof this.state.validPassword !== 'undefined' ? !(this.state.validPassword) : undefined}>
               <Icon name='ios-lock' />
-              <Input placeholder='Password' secureTextEntry
+              <Input placeholder='Password'
+                secureTextEntry
+                accessibilityLabel='signup-password'
+                testID={'signup-password'}
                 onChangeText={(password) => this.checkInputPassword(password)} />
             </Item>
             {typeof this.state.validPassword !== 'undefined' && !this.state.validPassword && <Text style={styles.errorInputMessage}>{'La password deve essere almeno di 8 caratteri'}</Text> }
@@ -96,11 +105,17 @@ export default class SignUpScreen extends Component {
               success={typeof this.state.validRePassword !== 'undefined' ? this.state.validRePassword : undefined}
               error={typeof this.state.validRePassword !== 'undefined' ? !(this.state.validRePassword) : undefined}>
               <Icon name='ios-lock' />
-              <Input placeholder='Conferma Password' secureTextEntry
+              <Input placeholder='Conferma Password'
+                secureTextEntry
+                accessibilityLabel='signup-confirmbutton'
+                testID={'signup-confirmbutton'}
                 onChangeText={(rePassword) => this.checkInputRePassword(rePassword)} />
             </Item>
             {typeof this.state.validRePassword !== 'undefined' && !this.state.validRePassword && <Text style={styles.errorInputMessage}>{'Le password non coincidono'}</Text> }
-            <Button rounded style={styles.button_sign_in} onPress={() => this.submit()}>
+            <Button rounded style={styles.button_sign_in}
+              accessibilityLabel='signup-button'
+              testID={'signup-button'}
+              onPress={() => this.submit()}>
               <Text>Registrati</Text>
             </Button>
           </View>

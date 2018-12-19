@@ -3,6 +3,7 @@ import { FlatList, Text } from 'react-native'
 import { SafeAreaView } from 'react-navigation'
 import ReportListItem from './ReportListItem'
 import api from '../Services/ApiService'
+import ActionButton from 'react-native-action-button'
 
 export class NoReportsLeftComponent extends React.Component {
   render () {
@@ -37,6 +38,8 @@ export default class ListScreen extends React.Component {
     return (
       <SafeAreaView>
         <FlatList
+          accessibilityLabel='list-report'
+          testID={'list-report'}
           data={this.state.markers}
           refreshing={this.state.fetching}
           renderItem={this.renderItem}

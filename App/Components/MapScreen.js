@@ -82,12 +82,16 @@ export default class MapScreen extends React.Component {
             </View>
           }
           <ActionButton fixNativeFeedbackRadius backgroundTappable
+            accessibilityLabel='button-add'
+            testID={'button-add'}
             buttonColor='dodgerblue'
             offsetY={50}
             onPress={this.beginMarkerPlacement}
             onReset={this.cancelMarkerPlacement}
           >
-            <ActionButton.Item buttonColor='dodgerblue' title='Scegli questa posizione' onPress={this.navigateToAddReport}>
+            <ActionButton.Item accessibilityLabel='button-confirm' testID={'button-confirm'}
+              buttonColor='dodgerblue' title='Scegli questa posizione'
+              onPress={this.navigateToAddReport}>
               <Icon name='check' style={{ color: 'white' }} />
             </ActionButton.Item>
           </ActionButton>

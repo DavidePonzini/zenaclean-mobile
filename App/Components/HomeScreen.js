@@ -14,7 +14,9 @@ export default class HomeScreen extends Component {
             <LoginComponent navigation={this.props.navigation} />
             <View >
               <Button style={styles.scroll_down} transparent onPress={() => { this.scroll.scrollTo({ y: 630, animated: true }) }}>
-                <Text style={styles.color}>Scorri per più informazioni </Text>
+                <Text accessibilityLabel='text-below'
+                  testID={'text-below'}
+                  style={styles.color}>Scorri per più informazioni </Text>
                 <Icon style={[styles.color, styles.icon]} name='ios-arrow-down' />
               </Button>
             </View>
@@ -49,7 +51,9 @@ export default class HomeScreen extends Component {
           </Content>
           <Footer >
             <FooterTab style={styles.colorFooter}>
-              <Button full onPress={() => { navigate('TabNavigator') }}>
+              <Button accessibilityLabel='demo-button'
+                testID={'demo-button'}
+                full onPress={() => { navigate('TabNavigator') }}>
                 <Text style={styles.text_footer}>Prova Demo</Text>
               </Button>
             </FooterTab>

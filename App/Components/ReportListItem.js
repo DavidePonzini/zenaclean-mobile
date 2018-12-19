@@ -4,6 +4,7 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import Images from '../Themes/Images'
 import Fonts from '../Themes/Fonts'
 import DateParser from '../Utils/DateParser'
+import ActionButton from 'react-native-action-button'
 
 export default class ReportListItem extends React.Component {
   constructor (props) {
@@ -20,14 +21,20 @@ export default class ReportListItem extends React.Component {
         <TouchableOpacity onPress={() => { this.props.onPress(this.props.marker) }} style={styles.card}>
           <View style={styles.row}>
             <View style={styles.outerContainer}>
-              <Text style={styles.title}>{this.props.marker.title}</Text>
+              <Text
+                accessibilityLabel='title-report'
+                testID={'title-report'}
+                style={styles.title}>{this.props.marker.title}</Text>
               <View style={styles.row}>
                 <View style={styles.imageContainer}>
                   <Image style={styles.image} source={this.imgUri} />
                 </View>
                 <View style={styles.innerContainer}>
                   <Text style={styles.address}>{this.props.marker.address == null ? 'Indirizzo sconosciuto' : this.props.marker.address}</Text>
-                  <Text style={styles.descr}>{description}</Text>
+                  <Text
+                    accessibilityLabel='description-report'
+                    testID={'description-report'}
+                    style={styles.descr}>{description}</Text>
                   <Text style={styles.timestamp}>{this.date + ' alle ' + this.time}</Text>
                 </View>
               </View>

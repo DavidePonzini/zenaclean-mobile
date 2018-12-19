@@ -4,6 +4,7 @@ import DateParser from '../Utils/DateParser'
 import Images from '../Themes/Images'
 import Fonts from '../Themes/Fonts'
 import Metrics from '../Themes/Metrics'
+import ActionButton from 'react-native-action-button'
 
 export default class SingleReportScreen extends Component {
   constructor (props) {
@@ -28,13 +29,19 @@ export default class SingleReportScreen extends Component {
     return (
       <View style={styles.container}>
         <View style={styles.header}>
-          <Text style={styles.title}>{this.marker.title}</Text>
-          <Text style={styles.address}>{this.marker.address == null ? 'Indirizzo sconosciuto' : this.marker.address}, {this.date + ' alle ' + this.time}</Text>
+          <Text accessibilityLabel='title-singlereport'
+            testID={'title-singlereport'}
+            style={styles.title}>{this.marker.title}</Text>
+          <Text accessibilityLabel='address-singlereport'
+            testID={'address-singlereport'}
+            style={styles.address}>{this.marker.address == null ? 'Indirizzo sconosciuto' : this.marker.address}, {this.date + ' alle ' + this.time}</Text>
         </View>
         <ScrollView style={styles.scrollable}>
           <Image style={styles.image} source={this.imgUri} />
           <View style={styles.innerContainer}>
-            <Text style={styles.description}>{this.marker.description}</Text>
+            <Text accessibilityLabel='description-singlereport'
+              testID={'description-singlereport'}
+              style={styles.description}>{this.marker.description}</Text>
             <View style={styles.footer} />
           </View>
         </ScrollView>
