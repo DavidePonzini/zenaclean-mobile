@@ -1,5 +1,7 @@
 import Secrets from 'react-native-config'
 import { composeAddress } from '../Utils/GeoUtils'
+import { Alert } from 'react-native'
+import type { AlertButtonStyle } from 'react-native/Libraries/Alert/AlertIOS'
 const baseUrl = Secrets.API_URL
 const googleApiUrl = 'https://maps.googleapis.com/maps/api/geocode/json?key=' + Secrets.GOOGLE_MAPS_API_KEY + '&address='
 
@@ -13,6 +15,21 @@ const registerUser = (email, ssn, password, cb) => {
     body: JSON.stringify({
       email: email,
       ssn: ssn,
+      password: password
+    })
+  }).then(res => res.json())
+    .then(cb)
+}
+
+const logInUser = (email, password, cb) => {
+  return fetch(baseUrl + 'users/login', {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      email: email,
       password: password
     })
   }).then(res => res.json())
@@ -73,10 +90,10 @@ const getMarkers = (cb) => {
     })
 }
 
-
 export default {
   getAddressFromCoords,
   getMarkers,
   uploadReport,
-  registerUser
+  registerUser,
+  logInUser
 }

@@ -1,10 +1,31 @@
 import React, { Component } from 'react'
-import { StyleSheet, View, Image } from 'react-native'
+import { StyleSheet, View, Image} from 'react-native'
 import { Button, Text, Input, Item, Container, Content, Icon } from 'native-base'
 import Colors from '../Themes/Colors'
-import ActionButton from 'react-native-action-button'
+import api from '../Services/ApiService'
 
 export default class LoginComponent extends Component {
+  constructor (props) {
+    super(props)
+    this.state = {
+      inputEmail: '',
+      inputPassword: '',
+      loginChecked: ''
+    }
+  }
+
+  loginPressed = () => {
+    let that = this
+    api.logInUser(this.state.inputEmail, this.state.inputPassword, res => {
+      if (res.status === 'ok') {
+        that.props.navigation.navigate('TabNavigator')
+      }
+      if (res.status === 'failed') {
+        this.setState({ loginChecked: 'failed' })
+      }
+    })
+  }
+
   render () {
     const { navigate } = this.props.navigation
     return (
@@ -19,21 +40,25 @@ export default class LoginComponent extends Component {
               <Input
                 accessibilityLabel='login-email'
                 testID={'login-email'}
-                placeholder='Email' />
+                placeholder='Email'
+                onChangeText={(email) => this.setState({ inputEmail: email })} />
             </Item>
             <Item rounded style={[styles.width_items, styles.input_pwd]}>
               <Icon name='ios-lock' />
               <Input
                 accessibilityLabel='login-password'
                 testID={'login-password'}
-                placeholder='Password' secureTextEntry />
+                placeholder='Password' secureTextEntry
+                onChangeText={(password) => this.setState({ inputPassword: password })} />
             </Item>
             <Button
               accessibilityLabel='login-button'
               testID={'login-button'}
-              rounded style={styles.button_login}>
+              rounded style={styles.button_login}
+              onPress={() => this.loginPressed()}>
               <Text>Login</Text>
             </Button>
+            {this.state.loginChecked === 'failed' && <Text style={styles.errorInputMessage}>{'Email e/o password errati'}</Text> }
             <View style={styles.fpwd_nuser}>
               <Button transparent
                 accessibilityLabel='login-button'
@@ -87,5 +112,9 @@ const styles = StyleSheet.create({
   },
   color: {
     color: Colors.accent
+  },
+  errorInputMessage: {
+    color: 'red',
+    fontSize: 12
   }
 })

@@ -5,6 +5,7 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import ImagePicker from 'react-native-image-picker'
 import api from '../Services/ApiService'
 import ActionButton from 'react-native-action-button'
+import Images from '../Themes/Images'
 
 const options = {
   title: 'Carica foto',
@@ -56,17 +57,18 @@ export default class AddReportScreen extends Component {
     return this.convertAddress(this.state.lat, this.state.lng)
   }
   uploadData () {
-    const data = {
+    let data = {
       description: this.state.description,
       latitude: this.state.lat,
       longitude: this.state.lng,
       timestamp: new Date().toISOString(),
       title: this.state.title,
-      address: this.state.address,
-      url: this.state.photoSource
+      address: this.state.address
     }
-    if (data.url == null) data.url = '/Assets/Images/default_report_image.png'
 
+    if (this.state.photoSource) {
+      data.url = this.state.photoSource
+    }
     api.uploadReport(data, res => {
       let that = this
       console.log(res)
