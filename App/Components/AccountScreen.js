@@ -31,7 +31,8 @@ export default class AccountScreen extends Component {
         { text: 'Più tardi',
           onPress: that.navigateBack
         }
-      ])
+      ], { onDismiss: that.navigateBack }
+      )
     }
   }
 
