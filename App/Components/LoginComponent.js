@@ -60,13 +60,13 @@ export default class LoginComponent extends Component {
           {this.state.loginChecked === 'failed' && <Text style={styles.errorInputMessage}>{'Email e/o password errati'}</Text> }
           <View style={styles.fpwd_nuser}>
             <Button transparent>
-              <Text accessibilityLabel='login-button'
-                testID={'login-button'}
+              <Text accessibilityLabel='signup-button'
+                testID={'signup-button'}
                 style={styles.color} onPress={() => { navigate('SignUp') }}>Registrati</Text>
             </Button>
             <Button transparent
-              accessibilityLabel='login-forgot'
-              testID={'login-forgot'}>
+              accessibilityLabel='signup-forgot'
+              testID={'signup-forgot'}>
               <Text style={styles.color}>Password Dimenticata</Text>
             </Button>
           </View>
