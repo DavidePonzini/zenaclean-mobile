@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { StyleSheet, View, Image, Alert } from 'react-native'
 import { Button, Text, Input, Item, Container, Content, Icon } from 'native-base'
-// import api from '../Services/ApiService'
 import Colors from '../Themes/Colors'
 import api from '../Services/ApiService'
 

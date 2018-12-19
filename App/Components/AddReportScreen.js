@@ -62,9 +62,21 @@ export default class AddReportScreen extends Component {
       timestamp: new Date().toISOString(),
       title: this.state.title,
       address: this.state.address,
+      url: this.state.photoSource
     }
-    return api.uploadReport(data)
-      .then(() => this.showAlert('Segnalazione riuscita'))
+    if (data.url == null) data.url = '/Assets/Images/default_report_image.png'
+
+    api.uploadReport(data, res => {
+      let that = this
+      console.log(res)
+      if (res.status === 'ok') {
+        Alert.alert('Segnalazione effettuata con successo!', '', [
+          { text: 'OK', onPress: () => { that.props.navigation.goBack() } }
+        ])
+      } else {
+        Alert.alert(res.error)
+      }
+    })
   }
 
   showAlert = (title) => {

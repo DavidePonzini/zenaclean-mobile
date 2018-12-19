@@ -19,6 +19,18 @@ const registerUser = (email, ssn, password, cb) => {
     .then(cb)
 }
 
+const uploadReport = (infoReport, cb) => {
+  return fetch(baseUrl + 'reports', {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(infoReport)
+  }).then(res => res.json())
+    .then(cb)
+}
+
 const getAddressFromCoords = ({ lat, lng }, cb) => {
   return fetch(googleApiUrl + lat + ',' + lng)
     .then((response) => {
@@ -61,16 +73,7 @@ const getMarkers = (cb) => {
     })
 }
 
-const uploadReport = (infoReport) => {
-  return fetch(baseUrl + 'reports', {
-    method: 'POST',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(infoReport)
-  })
-}
+
 export default {
   getAddressFromCoords,
   getMarkers,
