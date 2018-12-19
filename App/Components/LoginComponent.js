@@ -16,11 +16,10 @@ export default class LoginComponent extends Component {
 
   loginPressed = () => {
     let that = this
-    api.logInUser(this.state.inputEmail, this.state.inputPassword, res => {
-      if (res.status === 'ok') {
+    api.logInUser(this.state.inputEmail, this.state.inputPassword, (err, res) => {
+      if (err == null) {
         that.props.navigation.navigate('TabNavigator')
-      }
-      if (res.status === 'failed') {
+      } else {
         this.setState({ loginChecked: 'failed' })
       }
     })
