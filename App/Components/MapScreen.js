@@ -43,6 +43,7 @@ export default class MapScreen extends React.Component {
     lat: this.region.latitude,
     lng: this.region.longitude
   })
+
   navigateToSignUp = () => {
     this.props.navigation.dispatch(StackActions.reset({
       index: 1,

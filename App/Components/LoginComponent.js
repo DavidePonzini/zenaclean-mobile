@@ -4,6 +4,7 @@ import { Button, Text, Input, Item, Icon } from 'native-base'
 import Colors from '../Themes/Colors'
 import Images from '../Themes/Images'
 import api from '../Services/ApiService'
+import { NavigationActions, StackActions } from 'react-navigation'
 
 export default class LoginComponent extends Component {
   constructor (props) {
@@ -19,7 +20,12 @@ export default class LoginComponent extends Component {
     let that = this
     api.logInUser(this.state.inputEmail, this.state.inputPassword, (err, res) => {
       if (err == null) {
-        that.props.navigation.navigate('TabNavigator', { logged: true })
+        that.props.navigation.dispatch(StackActions.reset({
+          index: 0,
+          actions: [
+            NavigationActions.navigate({ routeName: 'TabNavigator', params: { logged: true } }),
+          ]
+        }))
       } else {
         this.setState({ loginChecked: 'failed' })
       }

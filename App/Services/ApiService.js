@@ -1,7 +1,28 @@
 import Secrets from 'react-native-config'
+import { AsyncStorage } from 'react-native'
 import { composeAddress } from '../Utils/GeoUtils'
 const baseUrl = Secrets.API_URL
 const googleApiUrl = 'https://maps.googleapis.com/maps/api/geocode/json?key=' + Secrets.GOOGLE_MAPS_API_KEY + '&address='
+
+const _storeData = async () => {
+  try {
+    await AsyncStorage.setItem('@zenaclean:logged', 'true');
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+const _retrieveData = async () => {
+  try {
+    const value = await AsyncStorage.getItem('@zenaclean:logged');
+    if (value !== null) {
+      return value
+    }
+  } catch (error) {
+    console.log(error)
+    return null
+  }
+}
 
 const logInUser = (email, password, cb) => {
   return fetch(baseUrl + 'users/login', {
