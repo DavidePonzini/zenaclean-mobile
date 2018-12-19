@@ -59,10 +59,10 @@ export default class LoginComponent extends Component {
           </Button>
           {this.state.loginChecked === 'failed' && <Text style={styles.errorInputMessage}>{'Email e/o password errati'}</Text> }
           <View style={styles.fpwd_nuser}>
-            <Button transparent
-              accessibilityLabel='login-button'
-              testID={'login-button'}>
-              <Text style={styles.color} onPress={() => { navigate('SignUp') }}>Registrati</Text>
+            <Button transparent>
+              <Text accessibilityLabel='login-button'
+                testID={'login-button'}
+                style={styles.color} onPress={() => { navigate('SignUp') }}>Registrati</Text>
             </Button>
             <Button transparent
               accessibilityLabel='login-forgot'
@@ -77,7 +77,6 @@ export default class LoginComponent extends Component {
 }
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 80,
     alignItems: 'center',
     justifyContent: 'center'
   },

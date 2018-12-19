@@ -66,7 +66,7 @@ export default class HomeScreen extends Component {
           </View>
 
         </ScrollView>
-        { this.state.y > 0 && <Footer>
+        { this.state.y > Metrics.height - 10 && <Footer>
           <FooterTab style={styles.colorFooter}>
             <Button accessibilityLabel='demo-button'
               testID={'demo-button'}
