@@ -5,6 +5,18 @@ export const fixtureMessageNotOk = 'Utente già esistente'
 
 const SSNlist = ['LNGSVV60T17H509N', 'HTHHLG90R62B112N', 'BRTHZG56P68C982U']
 
+const logInUser = (email, password, cb) => {
+  return new Promise(resolve => {
+    resolve({ status: 'ok' })
+  }).then((res) => {
+    if (res.status === 'ok') {
+      cb(null)
+    } else {
+      cb(new Error('login failed'), res)
+    }
+  })
+}
+
 const getAddressFromCoords = ({ lat, lng }, cb) => {
   return new Promise((resolve) => {
     resolve(fixtureAddress)
@@ -17,9 +29,11 @@ const getMarkers = (cb) => {
   }).then((res) => { cb(JSON.parse(res)) })
 }
 
-const uploadReport = () => {
+const uploadReport = (infoReport, cb) => {
   return new Promise((resolve) => {
-    resolve({ ok: true })
+    resolve({ status: 'ok' })
+  }).then(() => {
+    cb(null)
   })
 }
 
@@ -37,6 +51,7 @@ const registerUser = (email, ssn, password, cb) => {
 export default {
   getAddressFromCoords,
   getMarkers,
+  uploadReport,
   registerUser,
-  uploadReport
+  logInUser
 }

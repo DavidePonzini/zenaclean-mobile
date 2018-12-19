@@ -18,6 +18,7 @@ exports[`SingleReportScreen tests renders correctly 1`] = `
     }
   >
     <Text
+      accessibilityLabel="title-singlereport"
       style={
         Object {
           "borderBottomColor": "#EAEAEA",
@@ -29,10 +30,12 @@ exports[`SingleReportScreen tests renders correctly 1`] = `
           "textAlign": "center",
         }
       }
+      testID="title-singlereport"
     >
       Divano abbandonato
     </Text>
     <Text
+      accessibilityLabel="address-singlereport"
       style={
         Object {
           "fontSize": 12,
@@ -40,6 +43,7 @@ exports[`SingleReportScreen tests renders correctly 1`] = `
           "textAlign": "center",
         }
       }
+      testID="address-singlereport"
     >
       Via del Camoscio
       , 
@@ -73,7 +77,10 @@ exports[`SingleReportScreen tests renders correctly 1`] = `
         }
       }
     >
-      <Text>
+      <Text
+        accessibilityLabel="description-singlereport"
+        testID="description-singlereport"
+      >
         Divano abbandonato in via Gramsci
       </Text>
       <View

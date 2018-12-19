@@ -43,6 +43,7 @@ exports[`List tests renders correctly 1`] = `
         }
       >
         <Text
+          accessibilityLabel="title-report"
           style={
             Object {
               "borderBottomColor": "#EAEAEA",
@@ -54,6 +55,7 @@ exports[`List tests renders correctly 1`] = `
               "textAlign": "center",
             }
           }
+          testID="title-report"
         >
           Divano abbandonato
         </Text>
@@ -105,6 +107,7 @@ exports[`List tests renders correctly 1`] = `
               Via del Camoscio
             </Text>
             <Text
+              accessibilityLabel="description-report"
               style={
                 Object {
                   "flex": 0.8,
@@ -112,6 +115,7 @@ exports[`List tests renders correctly 1`] = `
                   "fontSize": 14,
                 }
               }
+              testID="description-report"
             >
               Divano abbandonato in via Gramsci
             </Text>

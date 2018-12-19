@@ -3,7 +3,6 @@ import { StyleSheet, View, Image, Alert } from 'react-native'
 import { Button, Text, Input, Item, Container, Content, Icon } from 'native-base'
 import Colors from '../Themes/Colors'
 import api from '../Services/ApiService'
-import ActionButton from 'react-native-action-button'
 
 export default class SignUpScreen extends Component {
   constructor (props) {
@@ -23,8 +22,8 @@ export default class SignUpScreen extends Component {
   submit = () => {
     let that = this
     if (this.state.validCV && this.state.validEmail && this.state.validPassword && this.state.validRePassword) {
-      api.registerUser(this.state.inputEmail, this.state.inputCV, this.state.inputPassword, res => {
-        if (res.status === 'ok') {
+      api.registerUser(this.state.inputEmail, this.state.inputCV, this.state.inputPassword, (err, res) => {
+        if (err == null) {
           Alert.alert('Registrazione effettuata con successo!', '', [
             { text: 'OK', onPress: () => { that.props.navigation.goBack() } }
           ])

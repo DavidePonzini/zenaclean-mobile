@@ -144,6 +144,7 @@ exports[`AddReportScreen tests renders correctly 1`] = `
         </FormLabel>
       </ScrollView>
       <Button
+        accessibilityLabel="button-image"
         buttonStyle={
           Object {
             "backgroundColor": "#BDBDBD",
@@ -158,6 +159,7 @@ exports[`AddReportScreen tests renders correctly 1`] = `
           }
         }
         onPress={[Function]}
+        testID="button-image"
         title="+"
       />
     </View>
@@ -175,6 +177,7 @@ exports[`AddReportScreen tests renders correctly 1`] = `
       }
     >
       <Button
+        accessibilityLabel="button-send"
         buttonStyle={
           Array [
             Object {
@@ -199,6 +202,7 @@ exports[`AddReportScreen tests renders correctly 1`] = `
           }
         }
         onPress={[Function]}
+        testID="button-send"
         title="Invia"
       />
     </View>
