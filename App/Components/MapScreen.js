@@ -1,6 +1,7 @@
 import React from 'react'
 import MapView, { Marker, Callout } from 'react-native-maps'
-import { StyleSheet, Text, View } from 'react-native'
+import { Alert, StyleSheet, Text, View } from 'react-native'
+import { StackActions, NavigationActions } from 'react-navigation'
 import ActionButton from 'react-native-action-button'
 import api from '../Services/ApiService'
 import Fonts from '../Themes/Fonts'
@@ -22,82 +23,110 @@ export default class MapScreen extends React.Component {
       inserting: false,
       markers: []
     }
+
+    this.logged = this.props.navigation.state.params.logged
   }
-    static navigationOptions = {
-      tabBarLabel: 'Mappa'
-    }
 
-    onRegionChange = (region) => {
-      this.region = region
-    }
+  static navigationOptions = {
+    tabBarLabel: 'Mappa'
+  }
 
-    componentWillMount () {
-      return api.getMarkers((res) => { this.setState({ markers: res }) })
-    }
+  onRegionChange = (region) => {
+    this.region = region
+  }
 
-    navigateToAddReport = () => this.props.navigation.navigate('AddReport', { lat: this.region.latitude, lng: this.region.longitude })
+  componentWillMount () {
+    return api.getMarkers((res) => { this.setState({ markers: res }) })
+  }
 
-    beginMarkerPlacement = () => {
+  navigateToAddReport = () => this.props.navigation.navigate('AddReport', {
+    lat: this.region.latitude,
+    lng: this.region.longitude
+  })
+  navigateToSignUp = () => {
+    this.props.navigation.dispatch(StackActions.reset({
+      index: 1,
+      actions: [
+        NavigationActions.navigate({ routeName: 'Main' }),
+        NavigationActions.navigate({ routeName: 'SignUp' })
+      ]
+    }))
+  }
+
+  beginMarkerPlacement = () => {
+    if (this.logged) {
       this.setState({ inserting: true })
+    } else {
+      const that = this
+      Alert.alert('Attenzione!', 'Registrati per effettuare una segnalazione', [
+        {
+          text: 'OK',
+          onPress: that.navigateToSignUp
+        },
+        { text: 'Più tardi', style: 'cancel' }
+      ])
     }
+  }
 
-    cancelMarkerPlacement = () => {
-      this.setState({ inserting: false })
-    }
+  cancelMarkerPlacement = () => {
+    this.setState({ inserting: false })
+  }
 
-    renderMarker = (marker, key) => {
-      const { date, time } = DateParser.timestampToItalianDate(marker.timestamp)
-      const description = marker.description.length > 80 ? marker.description.substring(0, 80) + '...' : marker.description
-      return (
-        <Marker
-          key={key}
-          coordinate={{ latitude: marker.latitude, longitude: marker.longitude }}
+  renderMarker = (marker, key) => {
+    const { date, time } = DateParser.timestampToItalianDate(marker.timestamp)
+    const description = marker.description.length > 80 ? marker.description.substring(0, 80) + '...' : marker.description
+    return (
+      <Marker
+        key={key}
+        coordinate={{ latitude: marker.latitude, longitude: marker.longitude }}
+      >
+        <Callout style={styles.callout} onPress={() => this.props.navigation.navigate('SingleReport', { marker })}>
+          <Text style={styles.calloutTitle}>{marker.title}</Text>
+          <View style={styles.row}>
+            <View style={styles.innerContainer}>
+              <Text style={styles.address}>{marker.address == null ? 'Indirizzo sconosciuto' : marker.address}</Text>
+              <Text style={styles.calloutDescr}>{description}</Text>
+              <Text style={styles.timestamp}>{date + ' alle ' + time}</Text>
+            </View>
+          </View>
+        </Callout>
+      </Marker>)
+  }
+
+  render () {
+    return (
+      <View style={styles.map}>
+        <MapView
+          style={styles.map}
+          initialRegion={this.state.region}
+          onRegionChange={this.onRegionChange}
         >
-          <Callout style={styles.callout} onPress={() => this.props.navigation.navigate('SingleReport', { marker })}>
-            <Text style={styles.calloutTitle}>{marker.title}</Text>
-            <View style={styles.row}>
-              <View style={styles.innerContainer}>
-                <Text style={styles.address}>{marker.address == null ? 'Indirizzo sconosciuto' : marker.address}</Text>
-                <Text style={styles.calloutDescr}>{description}</Text>
-                <Text style={styles.timestamp}>{date + ' alle ' + time}</Text>
-              </View>
-            </View>
-          </Callout>
-        </Marker>)
-    }
-
-    render () {
-      return (
-        <View style={styles.map}>
-          <MapView
-            style={styles.map}
-            initialRegion={this.state.region}
-            onRegionChange={this.onRegionChange}
-          >
-            {!this.state.inserting && this.state.markers.map(this.renderMarker)}
-          </MapView>
-          { this.state.inserting &&
-            <View pointerEvents='none' style={styles.floatingMarkerContainer}>
-              <Icon name='map-marker' style={styles.floatingMarker} />
-            </View>
-          }
-          <ActionButton fixNativeFeedbackRadius backgroundTappable
-            accessibilityLabel='button-add'
-            testID={'button-add'}
-            buttonColor='dodgerblue'
-            offsetY={50}
-            onPress={this.beginMarkerPlacement}
-            onReset={this.cancelMarkerPlacement}
-          >
-            <ActionButton.Item accessibilityLabel='button-confirm' testID={'button-confirm'}
-              buttonColor='dodgerblue' title='Scegli questa posizione'
-              onPress={this.navigateToAddReport}>
-              <Icon name='check' style={{ color: 'white' }} />
-            </ActionButton.Item>
-          </ActionButton>
+          {!this.state.inserting && this.state.markers.map(this.renderMarker)}
+        </MapView>
+        {this.state.inserting &&
+        <View pointerEvents='none' style={styles.floatingMarkerContainer}>
+          <Icon name='map-marker' style={styles.floatingMarker} />
         </View>
-      )
-    }
+        }
+        <ActionButton fixNativeFeedbackRadius backgroundTappable
+          accessibilityLabel='button-add'
+          testID={'button-add'}
+          buttonColor='dodgerblue'
+          offsetY={50}
+          onPress={this.beginMarkerPlacement}
+          onReset={this.cancelMarkerPlacement}
+        >
+          {this.logged &&
+          <ActionButton.Item accessibilityLabel='button-confirm' testID={'button-confirm'}
+            buttonColor='dodgerblue' title='Scegli questa posizione'
+            onPress={this.navigateToAddReport}>
+            <Icon name='check' style={{ color: 'white' }} />
+          </ActionButton.Item>
+          }
+        </ActionButton>
+      </View>
+    )
+  }
 }
 
 const styles = StyleSheet.create({

@@ -12,7 +12,7 @@ configure({ adapter: new Adapter() })
 
 jest.mock('../../App/Services/ApiService', () => require('../../App/Services/FixtureApiService'))
 
-const navigation = { navigate: jest.fn() }
+const navigation = { navigate: jest.fn(), state: { params: { logged: true } } }
 
 describe('MapScreen tests', () => {
   const wrapper = shallow(<MapScreen navigation={navigation} />)

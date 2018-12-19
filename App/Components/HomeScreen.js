@@ -70,7 +70,7 @@ export default class HomeScreen extends Component {
           <FooterTab style={styles.colorFooter}>
             <Button accessibilityLabel='demo-button'
               testID={'demo-button'}
-              full onPress={() => { navigate('TabNavigator') }}>
+              full onPress={() => { navigate('TabNavigator', { logged: false }) }}>
               <Text style={styles.text_footer}>Prova Demo</Text>
             </Button>
           </FooterTab>

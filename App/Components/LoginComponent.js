@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { StyleSheet, View, Image } from 'react-native'
-import { Button, Text, Input, Item, Container, Content, Icon } from 'native-base'
+import { Button, Text, Input, Item, Icon } from 'native-base'
 import Colors from '../Themes/Colors'
 import Images from '../Themes/Images'
 import api from '../Services/ApiService'
@@ -19,7 +19,7 @@ export default class LoginComponent extends Component {
     let that = this
     api.logInUser(this.state.inputEmail, this.state.inputPassword, (err, res) => {
       if (err == null) {
-        that.props.navigation.navigate('TabNavigator')
+        that.props.navigation.navigate('TabNavigator', { logged: true })
       } else {
         this.setState({ loginChecked: 'failed' })
       }
