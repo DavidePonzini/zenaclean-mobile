@@ -7,7 +7,7 @@ import api from '../Services/ApiService'
 import Fonts from '../Themes/Fonts'
 import DateParser from '../Utils/DateParser'
 import Icon from 'react-native-vector-icons/FontAwesome'
-import { SearchBar } from 'react-native-elements'
+import { FormInput, SearchBar } from 'react-native-elements'
 
 export default class MapScreen extends React.Component {
   constructor (props) {
@@ -22,9 +22,10 @@ export default class MapScreen extends React.Component {
     this.state = {
       region: this.region,
       inserting: false,
-      markers: []
+      markers: [],
+      updateMaps: false
     }
-
+    // this.updateMaps = false
     this.logged = this.props.navigation.state.params.logged
   }
 
@@ -40,10 +41,26 @@ export default class MapScreen extends React.Component {
     return api.getMarkers((res) => { this.setState({ markers: res }) })
   }
 
-  navigateToAddReport = () => this.props.navigation.navigate('AddReport', {
-    lat: this.region.latitude,
-    lng: this.region.longitude
-  })
+  componentDidUpdate () {
+    if (this.state.updateMaps) {
+      const tmp = api.getMarkers((res) => { this.setState({ markers: res }) })
+      // this.updateMaps = false
+      this.setState({ updateMaps: false })
+      return tmp
+    }
+  }
+  onUpdateMaps = data => {
+    this.setState({ updateMaps: data })
+  };
+
+  navigateToAddReport = () => {
+    this.updateMaps = true
+    this.props.navigation.navigate('AddReport', {
+      lat: this.region.latitude,
+      lng: this.region.longitude,
+      onUpdateMaps: this.onUpdateMaps
+    })
+  }
 
   navigateToSignUp = () => {
     this.props.navigation.dispatch(StackActions.reset({
@@ -112,7 +129,7 @@ export default class MapScreen extends React.Component {
           </View>
         }
 
-        <SearchBar containerStyle={styles.searchBarStyle}
+        <SearchBar accessibilityLabel='searchBar' testID={'searchBar'} containerStyle={styles.searchBarStyle}
           searchIcon={{ size: 30 }}
           clearIcon
           round
