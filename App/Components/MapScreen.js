@@ -7,6 +7,7 @@ import api from '../Services/ApiService'
 import Fonts from '../Themes/Fonts'
 import DateParser from '../Utils/DateParser'
 import Icon from 'react-native-vector-icons/FontAwesome'
+import { SearchBar } from 'react-native-elements'
 
 export default class MapScreen extends React.Component {
   constructor (props) {
@@ -97,6 +98,7 @@ export default class MapScreen extends React.Component {
   render () {
     return (
       <View style={styles.map}>
+
         <MapView
           style={styles.map}
           initialRegion={this.state.region}
@@ -105,10 +107,20 @@ export default class MapScreen extends React.Component {
           {!this.state.inserting && this.state.markers.map(this.renderMarker)}
         </MapView>
         {this.state.inserting &&
-        <View pointerEvents='none' style={styles.floatingMarkerContainer}>
-          <Icon name='map-marker' style={styles.floatingMarker} />
-        </View>
+          <View pointerEvents='none' style={styles.floatingMarkerContainer}>
+            <Icon name='map-marker' style={styles.floatingMarker} />
+          </View>
         }
+
+        <SearchBar containerStyle={styles.searchBarStyle}
+          searchIcon={{ size: 30 }}
+          clearIcon
+          round
+          lightTheme
+          placeholderTextColor={'#848484'}
+          inputStyle={styles.textSearchBar}
+          placeholder='Cerca Indirizzo' />
+
         <ActionButton fixNativeFeedbackRadius backgroundTappable
           accessibilityLabel='button-add'
           testID={'button-add'}
@@ -118,11 +130,11 @@ export default class MapScreen extends React.Component {
           onReset={this.cancelMarkerPlacement}
         >
           {this.logged &&
-          <ActionButton.Item accessibilityLabel='button-confirm' testID={'button-confirm'}
-            buttonColor='dodgerblue' title='Scegli questa posizione'
-            onPress={this.navigateToAddReport}>
-            <Icon name='check' style={{ color: 'white' }} />
-          </ActionButton.Item>
+            <ActionButton.Item accessibilityLabel='button-confirm' testID={'button-confirm'}
+              buttonColor='dodgerblue' title='Scegli questa posizione'
+              onPress={this.navigateToAddReport}>
+              <Icon name='check' style={{ color: 'white' }} />
+            </ActionButton.Item>
           }
         </ActionButton>
       </View>
@@ -138,6 +150,16 @@ const styles = StyleSheet.create({
     paddingBottom: 2.5,
     marginBottom: 5,
     borderBottomWidth: 1
+  },
+  searchBarStyle: {
+    backgroundColor: 'white',
+    opacity: 0.8,
+    marginTop: 15,
+    marginLeft: 10,
+    marginRight: 10
+  },
+  textSearchBar: {
+    color: '#848484'
   },
   calloutDescr: {
     ...Fonts.style.description,
