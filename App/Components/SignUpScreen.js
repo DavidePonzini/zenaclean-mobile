@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { StyleSheet, View, Image, Alert } from 'react-native'
 import { Button, Text, Input, Item, Container, Content, Icon } from 'native-base'
+import { CheckBox } from 'react-native-elements'
 import Colors from '../Themes/Colors'
 import api from '../Services/ApiService'
 
@@ -15,13 +16,14 @@ export default class SignUpScreen extends Component {
       validCV: undefined,
       validEmail: undefined,
       validPassword: undefined,
-      validRePassword: undefined
+      validRePassword: undefined,
+      checked: false
     }
   }
 
   submit = () => {
     let that = this
-    if (this.state.validCV && this.state.validEmail && this.state.validPassword && this.state.validRePassword) {
+    if (this.state.validCV && this.state.validEmail && this.state.validPassword && this.state.validRePassword && this.state.checked) {
       api.registerUser(this.state.inputEmail, this.state.inputCV, this.state.inputPassword, (err, res) => {
         if (err == null) {
           Alert.alert('Registrazione effettuata con successo!', '', [
@@ -32,7 +34,7 @@ export default class SignUpScreen extends Component {
         }
       })
     } else {
-      Alert.alert('Campi inseriti non validi')
+      Alert.alert('Campi inseriti non validi o mancanti')
     }
   }
 
@@ -60,6 +62,7 @@ export default class SignUpScreen extends Component {
   }
 
   render () {
+    const { navigate } = this.props.navigation
     return (
       <Container>
         <Content>
@@ -111,6 +114,14 @@ export default class SignUpScreen extends Component {
                 onChangeText={(rePassword) => this.checkInputRePassword(rePassword)} />
             </Item>
             {typeof this.state.validRePassword !== 'undefined' && !this.state.validRePassword && <Text style={styles.errorInputMessage}>{'Le password non coincidono'}</Text> }
+            <CheckBox
+              accessibilityLabel='gdpr-checkbox'
+              testID={'gdpr-checkbox'}
+              title='Acconsento al trattamento dei dati personali'
+              checked={this.state.checked}
+              onPress={() => this.setState({checked: !this.state.checked})}
+            />
+            <Text style={[styles.gdpr_moreinfo]} onPress={() => { navigate('Gdpr') }}> Maggiori informazioni</Text>
             <Button rounded style={styles.button_sign_in}
               accessibilityLabel='signup-button'
               testID={'signup-button'}
@@ -129,6 +140,10 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center'
+  },
+  gdpr_moreinfo: {
+    textDecorationLine: 'underline',
+    color: Colors.accent,
   },
   logo: {
     marginTop: 20,

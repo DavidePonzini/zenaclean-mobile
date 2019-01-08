@@ -21,7 +21,7 @@ const formItems = {
   title: 'Titolo',
   titleErrorMessage: 'Inserisci un titolo per la segnalazione',
   descrErrorMessage: 'Inserisci una descrizione per la segnalazione',
-  address: 'Indirizzo',
+  addressHeader: 'Stai segnalando in',
   descr: 'Descrizione'
 }
 export default class AddReportScreen extends Component {
@@ -131,11 +131,11 @@ export default class AddReportScreen extends Component {
     return (
       <ScrollView style={styles.container_scroll}>
         <View style={styles.container}>
+          <FormLabel labelStyle={[styles.title_label, styles.margin_top]}>{formItems.addressHeader}</FormLabel>
+          <Text style={styles.place}>{this.state.address}</Text>
           <FormLabel labelStyle={styles.title_label}>{formItems.title}</FormLabel>
           <FormInput accessibilityLabel='inputTitle' testID={'inputTitle'} inputStyle={styles.input} value={this.state.title} onChangeText={this.handleTitle} />
           { this.state.titleError && <FormValidationMessage>{formItems.titleErrorMessage}</FormValidationMessage> }
-          <FormLabel labelStyle={[styles.title_label, styles.margin_top]}>{formItems.address}</FormLabel>
-          <Text style={styles.place}>{this.state.address}</Text>
           <FormLabel labelStyle={[styles.title_label, styles.margin_top]}>{formItems.descr}</FormLabel>
           <FormInput accessibilityLabel='inputDescr' testID={'inputDescr'} inputStyle={[styles.input, styles.input_desc]} value={this.state.descr} onChangeText={this.handleDescr} multiline />
           { this.state.descrError && <FormValidationMessage>{formItems.descrErrorMessage}</FormValidationMessage> }
