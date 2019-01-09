@@ -7,7 +7,7 @@ import api from '../Services/ApiService'
 import Fonts from '../Themes/Fonts'
 import DateParser from '../Utils/DateParser'
 import Icon from 'react-native-vector-icons/FontAwesome'
-import { FormInput, SearchBar } from 'react-native-elements'
+import { SearchBar } from 'react-native-elements'
 
 export default class MapScreen extends React.Component {
   constructor (props) {
@@ -25,7 +25,6 @@ export default class MapScreen extends React.Component {
       markers: [],
       updateMaps: false
     }
-    // this.updateMaps = false
     this.logged = this.props.navigation.state.params.logged
   }
 
@@ -44,7 +43,6 @@ export default class MapScreen extends React.Component {
   componentDidUpdate () {
     if (this.state.updateMaps) {
       const tmp = api.getMarkers((res) => { this.setState({ markers: res }) })
-      // this.updateMaps = false
       this.setState({ updateMaps: false })
       return tmp
     }

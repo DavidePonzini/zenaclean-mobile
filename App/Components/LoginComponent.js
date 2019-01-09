@@ -23,7 +23,10 @@ export default class LoginComponent extends Component {
         that.props.navigation.dispatch(StackActions.reset({
           index: 0,
           actions: [
-            NavigationActions.navigate({ routeName: 'TabNavigator', params: { logged: true } }),
+            NavigationActions.navigate({ routeName: 'TabNavigator',
+              params: {
+                logged: true,
+                inputEmail: this.state.inputEmail } })
           ]
         }))
       } else {

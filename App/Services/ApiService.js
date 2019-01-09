@@ -67,6 +67,29 @@ const registerUser = (email, ssn, password, cb) => {
     })
 }
 
+const changePassword = (email, oldPassword, newPassword, confirmPassword, cb) => {
+  return fetch(baseUrl + 'users/change-password', {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      email: email,
+      oldPassword: oldPassword,
+      newPassword: newPassword,
+      confirmPassword: confirmPassword
+    })
+  }).then(res => res.json())
+    .then((res) => {
+      if (res.status === 'ok') {
+        cb(null)
+      } else {
+        cb(new Error('password restore failed'), res)
+      }
+    })
+}
+
 const uploadReport = (infoReport, cb) => {
   return fetch(baseUrl + 'reports', {
     method: 'POST',
@@ -132,5 +155,6 @@ export default {
   getMarkers,
   uploadReport,
   registerUser,
-  logInUser
+  logInUser,
+  changePassword
 }
