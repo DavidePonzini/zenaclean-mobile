@@ -6,7 +6,7 @@ const googleApiUrl = 'https://maps.googleapis.com/maps/api/geocode/json?key=' + 
 
 const _storeData = async () => {
   try {
-    await AsyncStorage.setItem('@zenaclean:logged', 'true');
+    await AsyncStorage.setItem('@zenaclean:logged', 'true')
   } catch (error) {
     console.log(error)
   }
@@ -14,7 +14,7 @@ const _storeData = async () => {
 
 const _retrieveData = async () => {
   try {
-    const value = await AsyncStorage.getItem('@zenaclean:logged');
+    const value = await AsyncStorage.getItem('@zenaclean:logged')
     if (value !== null) {
       return value
     }
@@ -134,8 +134,8 @@ const getAddressFromCoords = ({ lat, lng }, cb) => {
     })
 }
 
-const getMarkers = (cb) => {
-  return fetch(baseUrl + 'reports')
+const getMarkers = (ne_lat, sw_lat, sw_lng, ne_lng, cb) => {
+  return fetch(baseUrl + 'reports?ne_lat=' + ne_lat + '&sw_lat=' + sw_lat + '&sw_lng=' + sw_lng + '&ne_lng=' + ne_lng)
     .then((response) => response.json())
     .then((responseJson) => {
       let markers = []

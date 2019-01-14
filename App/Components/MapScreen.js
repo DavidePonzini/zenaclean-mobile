@@ -1,5 +1,6 @@
 import React from 'react'
 import MapView, { Marker, Callout } from 'react-native-maps'
+import { Button } from 'native-base'
 import { Alert, StyleSheet, Text, View } from 'react-native'
 import { StackActions, NavigationActions } from 'react-navigation'
 import ActionButton from 'react-native-action-button'
@@ -8,6 +9,7 @@ import Fonts from '../Themes/Fonts'
 import DateParser from '../Utils/DateParser'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { SearchBar } from 'react-native-elements'
+import Colors from '../Themes/Colors'
 
 export default class MapScreen extends React.Component {
   constructor (props) {
@@ -19,6 +21,7 @@ export default class MapScreen extends React.Component {
       latitudeDelta: 0.1,
       longitudeDelta: 0.1
     }
+
     this.state = {
       region: this.region,
       inserting: false,
@@ -33,11 +36,26 @@ export default class MapScreen extends React.Component {
   }
 
   onRegionChange = (region) => {
+    // console.log(this.region.latitudeDelta)
     this.region = region
   }
 
+  markerRegionUpdate = () => {
+    const ne_lat = this.region.latitude + this.region.latitudeDelta / 2
+    const sw_lat = this.region.latitude - this.region.latitudeDelta / 2
+    const sw_lng = this.region.longitude - this.region.longitudeDelta / 2
+    const ne_lng = this.region.longitude + this.region.longitudeDelta / 2
+
+    return api.getMarkers(ne_lat, sw_lat, sw_lng, ne_lng, (res) => { this.setState({ markers: res }) })
+  }
+
   componentWillMount () {
-    return api.getMarkers((res) => { this.setState({ markers: res }) })
+    const ne_lat = this.region.latitude + this.region.latitudeDelta / 2
+    const sw_lat = this.region.latitude - this.region.latitudeDelta / 2
+    const sw_lng = this.region.longitude - this.region.longitudeDelta / 2
+    const ne_lng = this.region.longitude + this.region.longitudeDelta / 2
+
+    return api.getMarkers(ne_lat, sw_lat, sw_lng, ne_lng, (res) => { this.setState({ markers: res }) })
   }
 
   componentDidUpdate () {
@@ -136,6 +154,15 @@ export default class MapScreen extends React.Component {
           inputStyle={styles.textSearchBar}
           placeholder='Cerca Indirizzo' />
 
+        <Button
+          accessibilityLabel='update-markers-button'
+          testID={'update-markers-button'}
+          rounded
+          style={styles.button_update_markers}
+          onPress={() => this.markerRegionUpdate()}>
+          <Text style={{ color: 'white', fontWeight: 'bold' }}>Update</Text>
+        </Button>
+
         <ActionButton fixNativeFeedbackRadius backgroundTappable
           accessibilityLabel='button-add'
           testID={'button-add'}
@@ -183,6 +210,15 @@ const styles = StyleSheet.create({
   timestamp: {
     ...Fonts.style.footer,
     flex: 0.2
+  },
+  button_update_markers: {
+    marginTop: 20,
+    width: '15%',
+    // alignSelf: 'center',
+    borderRadius: 30,
+    marginLeft: 330,
+    justifyContent: 'center',
+    backgroundColor: '#D55353'
   },
   address: {
     fontSize: Fonts.size.small,

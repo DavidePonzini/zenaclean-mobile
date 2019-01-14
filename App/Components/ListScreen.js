@@ -25,7 +25,6 @@ export default class ListScreen extends React.Component {
   }
 
   componentWillMount () {
-    this.setState({ fetching: true })
     return api.getMarkers((res) => { this.setState({ markers: res, fetching: false }) })
   }
 
