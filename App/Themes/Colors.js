@@ -1,3 +1,4 @@
 export default {
-  accent: 'dodgerblue'
+  accent: 'dodgerblue',
+  voteUp: 'lime'
 }

@@ -119,7 +119,7 @@ export default class SignUpScreen extends Component {
               testID={'gdpr-checkbox'}
               title='Acconsento al trattamento dei dati personali'
               checked={this.state.checked}
-              onPress={() => this.setState({checked: !this.state.checked})}
+              onPress={() => this.setState({ checked: !this.state.checked })}
             />
             <Text style={[styles.gdpr_moreinfo]} onPress={() => { navigate('Gdpr') }}> Maggiori informazioni</Text>
             <Button rounded style={styles.button_sign_in}
@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
   },
   gdpr_moreinfo: {
     textDecorationLine: 'underline',
-    color: Colors.accent,
+    color: Colors.accent
   },
   logo: {
     marginTop: 20,
