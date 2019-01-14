@@ -103,6 +103,10 @@ export default class MapScreen extends React.Component {
     }
   }
 
+  navigateToSingleReport = (marker) => {
+    this.props.navigation.navigate('SingleReport', { marker })
+  }
+
   cancelMarkerPlacement = () => {
     this.setState({ inserting: false })
   }
@@ -115,7 +119,7 @@ export default class MapScreen extends React.Component {
         key={key}
         coordinate={{ latitude: marker.latitude, longitude: marker.longitude }}
       >
-        <Callout style={styles.callout} onPress={() => this.props.navigation.navigate('SingleReport', { marker })}>
+        <Callout style={styles.callout} onPress={() => {this.navigateToSingleReport(marker)}}>
           <Text style={styles.calloutTitle}>{marker.title}</Text>
           <View style={styles.row}>
             <View style={styles.innerContainer}>

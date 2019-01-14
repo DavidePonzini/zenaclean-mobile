@@ -19,6 +19,31 @@ exports[`AddReportScreen tests renders correctly 1`] = `
   >
     <FormLabel
       labelStyle={
+        Array [
+          Object {
+            "fontSize": 25,
+            "marginBottom": 37.5,
+            "maxWidth": 600,
+          },
+          Object {
+            "marginTop": 37.5,
+          },
+        ]
+      }
+    >
+      Stai segnalando in
+    </FormLabel>
+    <TextElement
+      style={
+        Object {
+          "fontSize": 20,
+        }
+      }
+    >
+      Caricamento in corso..
+    </TextElement>
+    <FormLabel
+      labelStyle={
         Object {
           "fontSize": 25,
           "marginBottom": 37.5,
@@ -45,31 +70,6 @@ exports[`AddReportScreen tests renders correctly 1`] = `
       testID="inputTitle"
       value=""
     />
-    <FormLabel
-      labelStyle={
-        Array [
-          Object {
-            "fontSize": 25,
-            "marginBottom": 37.5,
-            "maxWidth": 600,
-          },
-          Object {
-            "marginTop": 37.5,
-          },
-        ]
-      }
-    >
-      Indirizzo
-    </FormLabel>
-    <TextElement
-      style={
-        Object {
-          "fontSize": 20,
-        }
-      }
-    >
-      Caricamento in corso..
-    </TextElement>
     <FormLabel
       labelStyle={
         Array [

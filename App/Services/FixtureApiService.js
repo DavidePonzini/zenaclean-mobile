@@ -48,10 +48,34 @@ const registerUser = (email, ssn, password, cb) => {
   }).then((res) => { cb(null, res) })
 }
 
+// To Fix
+const voteReport = (v, report, cb) => {
+  return new Promise((resolve) => {
+    resolve({ status: 'ok' })
+  }).then(() => {
+    cb(null)
+  })
+}
+
+// To Fix
+const changePassword = (email, oldPassword, newPassword, confirmPassword, cb) => {
+  return new Promise((resolve) => {
+    resolve({ status: 'ok' })
+  }).then(() => {
+    cb(null)
+  })
+}
+
+// To Fix
+const isLoggedIn = () => true
+
 export default {
   getAddressFromCoords,
   getMarkers,
   uploadReport,
   registerUser,
-  logInUser
+  logInUser,
+  changePassword,
+  voteReport,
+  isLoggedIn
 }

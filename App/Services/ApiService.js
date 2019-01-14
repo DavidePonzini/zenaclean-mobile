@@ -4,6 +4,8 @@ import { composeAddress } from '../Utils/GeoUtils'
 const baseUrl = Secrets.API_URL
 const googleApiUrl = 'https://maps.googleapis.com/maps/api/geocode/json?key=' + Secrets.GOOGLE_MAPS_API_KEY + '&address='
 
+let userId = null
+
 const _storeData = async () => {
   try {
     await AsyncStorage.setItem('@zenaclean:logged', 'true')
@@ -24,6 +26,18 @@ const _retrieveData = async () => {
   }
 }
 
+const voteReport = (v, report, cb) => {
+  return fetch(baseUrl + 'reports/vote?user=' + userId + '&report=' + report + '&vote=' + (v ? '1' : '0'))
+    .then((response) => {
+      console.log(response)
+      if (response.ok) {
+        cb(null)
+      } else {
+        cb(new Error('Error voting'))
+      }
+    })
+}
+
 const logInUser = (email, password, cb) => {
   return fetch(baseUrl + 'users/login', {
     method: 'POST',
@@ -38,6 +52,7 @@ const logInUser = (email, password, cb) => {
   }).then(res => res.json())
     .then((res) => {
       if (res.status === 'ok') {
+        userId = res.user.id
         cb(null)
       } else {
         cb(new Error('login failed'), res)
@@ -135,7 +150,8 @@ const getAddressFromCoords = ({ lat, lng }, cb) => {
 }
 
 const getMarkers = (ne_lat, sw_lat, sw_lng, ne_lng, cb) => {
-  return fetch(baseUrl + 'reports?ne_lat=' + ne_lat + '&sw_lat=' + sw_lat + '&sw_lng=' + sw_lng + '&ne_lng=' + ne_lng)
+  return fetch(baseUrl + 'reports?ne_lat=' + ne_lat + '&sw_lat=' + sw_lat + '&sw_lng=' + sw_lng + '&ne_lng=' + ne_lng +
+  (userId != null ? ('&user=' + userId) : ''))
     .then((response) => response.json())
     .then((responseJson) => {
       let markers = []
@@ -150,11 +166,15 @@ const getMarkers = (ne_lat, sw_lat, sw_lng, ne_lng, cb) => {
     })
 }
 
+const isLoggedIn = () => userId != null
+
 export default {
   getAddressFromCoords,
   getMarkers,
   uploadReport,
   registerUser,
   logInUser,
-  changePassword
+  changePassword,
+  voteReport,
+  isLoggedIn
 }
