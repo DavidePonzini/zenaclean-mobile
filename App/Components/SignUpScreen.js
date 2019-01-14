@@ -46,7 +46,7 @@ export default class SignUpScreen extends Component {
 
   checkInputEmail = (email) => {
     this.setState({ inputEmail: email })
-    let reg = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/
+    let reg = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,4})+$/
     reg.test(email) ? this.setState({ validEmail: true }) : this.setState({ validEmail: false })
   }
 
