@@ -11,7 +11,11 @@ import 'isomorphic-fetch'
 describe('FixtureApi tests', () => {
   it('gets correct markers', async () => {
     let markers = null
-    await FixtureApiService.getMarkers((res) => {
+    const neLat = 0
+    const swLat = 0
+    const swLng = 0
+    const neLng = 0
+    await FixtureApiService.getMarkers(neLat, swLat, swLng, neLng, (res) => {
       markers = res
     })
     expect(markers).toEqual(fixtureMarkers)
@@ -42,7 +46,18 @@ describe('FixtureApi tests', () => {
     expect(checked).toEqual(fixtureMessageOk)
   })
 
-  it('fails with non existing user', async () => {
+  it('fails with email already existing', async () => {
+    const email = 'prova@gmail.com'
+    const password = ''
+    let checked = null
+    const ssn = ''
+    await FixtureApiService.registerUser(email, ssn, password, (_, res) => {
+      checked = res
+    })
+    expect(checked).toEqual(fixtureMessageNotOk)
+  })
+
+  it('fails with ssn already existing', async () => {
     const email = ''
     const password = ''
     let checked = null
@@ -63,13 +78,33 @@ describe('FixtureApi tests', () => {
   })
 
   it('logs in correctly', async () => {
-    const email = ''
-    const password = ''
+    const email = 'prova@gmail.com'
+    const password = '12345678'
     let error = ''
     await FixtureApiService.logInUser(email, password, (err) => {
       error = err
     })
     expect(error).toBeNull()
+  })
+
+  it('logs in fail password uncorrectly', async () => {
+    const email = 'prova@gmail.com'
+    const password = ''
+    let error = ''
+    await FixtureApiService.logInUser(email, password, (err) => {
+      error = err
+    })
+    expect(error)
+  })
+
+  it('logs in fail password uncorrectly', async () => {
+    const email = ''
+    const password = '12345678'
+    let error = ''
+    await FixtureApiService.logInUser(email, password, (err) => {
+      error = err
+    })
+    expect(error)
   })
 
   it('checks whether the user is logged in', async () => {
@@ -82,5 +117,49 @@ describe('FixtureApi tests', () => {
   it('logs out correctly', () => {
     FixtureApiService.logoutUser()
     expect(FixtureApiService.isLoggedIn()).toBeFalsy()
+  })
+
+  it('checks success vote', async () => {
+    const vote = 1
+    const report = 0
+    let error = ''
+    await FixtureApiService.voteReport(vote, report, (err) => {
+      error = err
+    })
+    expect(error).toBeNull()
+  })
+
+  it('checks error vote', async () => {
+    const vote = 0
+    const report = 0
+    let error = ''
+    await FixtureApiService.voteReport(vote, report, (err) => {
+      error = err
+    })
+    expect(error)
+  })
+
+  it('unsuccess change password', async () => {
+    const email = 'prova@gmail.com'
+    const oldPassword = '12345678'
+    const newPassword = '87654321'
+    const corfirmPassword = '44444444'
+    let error = ''
+    await FixtureApiService.changePassword(email, oldPassword, newPassword, corfirmPassword, (err) => {
+      error = err
+    })
+    expect(error)
+  })
+
+  it('success change password', async () => {
+    const email = 'prova@gmail.com'
+    const oldPassword = '12345678'
+    const newPassword = '87654321'
+    const corfirmPassword = '87654321'
+    let error = ''
+    await FixtureApiService.changePassword(email, oldPassword, newPassword, corfirmPassword, (err) => {
+      error = err
+    })
+    expect(error).toBeNull()
   })
 })
