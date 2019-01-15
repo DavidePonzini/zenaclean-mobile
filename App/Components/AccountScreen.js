@@ -139,8 +139,8 @@ export default class AccountScreen extends Component {
             <Item rounded style={styles.resetPasswordItem}>
               <Icon name='ios-lock' />
               <Input
-                accessibilityLabel='account-password'
-                testID={'account-password'}
+                accessibilityLabel='account-new-password'
+                testID={'account-new-password'}
                 placeholder='NewPassword'
                 secureTextEntry
                 onChangeText={(password) => this.checkNewPassword(password)}
@@ -150,8 +150,8 @@ export default class AccountScreen extends Component {
             <Item rounded style={styles.resetPasswordItem}>
               <Icon name='ios-lock' />
               <Input
-                accessibilityLabel='account-password'
-                testID={'account-password'}
+                accessibilityLabel='account-confirm-password'
+                testID={'account-confirm-password'}
                 placeholder='RepeatNewPassword'
                 secureTextEntry
                 onChangeText={(password) => this.checkConfirmPassword(password)}
@@ -159,8 +159,8 @@ export default class AccountScreen extends Component {
             </Item>
             {typeof this.state.validConfirmPassword !== 'undefined' && !this.state.validConfirmPassword && <Text style={styles.errorInputMessage}>{'La password deve essere almeno di 8 caratteri'}</Text> }
             <Button rounded style={styles.resetButton}
-              accessibilityLabel='reset-password-button'
-              testID={'reset-password-button'}
+              accessibilityLabel='reset-button'
+              testID={'reset-button'}
               onPress={this.reset}>
               <Text>Reset</Text>
             </Button>
