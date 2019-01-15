@@ -14,22 +14,31 @@ export default class LoginComponent extends Component {
       inputPassword: '',
       loginChecked: ''
     }
+    api.rehydrateLogin().then(this.navigateAfterLogin)
   }
 
+  navigateAfterLogin = (user) => {
+    if (user != null) {
+      this.props.navigation.dispatch(StackActions.reset({
+        index: 0,
+        actions: [
+          NavigationActions.navigate({
+            routeName: 'TabNavigator',
+            params: {
+              logged: true,
+              inputEmail: user.email
+            }
+          })
+        ]
+      }))
+    }
+  }
   loginPressed = () => {
-    let that = this
-    api.logInUser(this.state.inputEmail, this.state.inputPassword, (err, res) => {
+    api.logInUser(this.state.inputEmail, this.state.inputPassword, (err, user) => {
       if (err == null) {
-        that.props.navigation.dispatch(StackActions.reset({
-          index: 0,
-          actions: [
-            NavigationActions.navigate({ routeName: 'TabNavigator',
-              params: {
-                logged: true,
-                inputEmail: this.state.inputEmail } })
-          ]
-        }))
+        this.navigateAfterLogin(user)
       } else {
+        console.log(err)
         this.setState({ loginChecked: 'failed' })
       }
     })

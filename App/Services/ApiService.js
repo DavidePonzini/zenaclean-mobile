@@ -6,20 +6,29 @@ const googleApiUrl = 'https://maps.googleapis.com/maps/api/geocode/json?key=' + 
 
 let userId = null
 
-const _storeData = async () => {
+const _storeData = async (key, value) => {
   try {
-    await AsyncStorage.setItem('@zenaclean:logged', 'true')
+    await AsyncStorage.setItem(key, JSON.stringify(value))
   } catch (error) {
     console.log(error)
   }
 }
 
-const _retrieveData = async () => {
+const _retrieveData = async (key) => {
   try {
-    const value = await AsyncStorage.getItem('@zenaclean:logged')
-    if (value !== null) {
-      return value
+    const value = await AsyncStorage.getItem(key)
+    if (value != null) {
+      return JSON.parse(value)
     }
+  } catch (error) {
+    console.log(error)
+    return null
+  }
+}
+
+const _unsetData = async (key) => {
+  try {
+    await AsyncStorage.removeItem(key)
   } catch (error) {
     console.log(error)
     return null
@@ -38,6 +47,17 @@ const voteReport = (v, report, cb) => {
     })
 }
 
+const rehydrateLogin = async () => {
+  try {
+    const user = _retrieveData('@zenaclean:user')
+    userId = user.id
+    return user
+  } catch (error) {
+    console.log(error)
+    return null
+  }
+}
+
 const logInUser = (email, password, cb) => {
   return fetch(baseUrl + 'users/login', {
     method: 'POST',
@@ -53,7 +73,8 @@ const logInUser = (email, password, cb) => {
     .then((res) => {
       if (res.status === 'ok') {
         userId = res.user.id
-        cb(null)
+        _storeData('@zenaclean:user', res.user).catch((err) => { console.log(err) })
+        cb(null, res.user)
       } else {
         cb(new Error('login failed'), res)
       }
@@ -166,6 +187,11 @@ const getMarkers = (ne_lat, sw_lat, sw_lng, ne_lng, cb) => {
     })
 }
 
+const logoutUser = (cb) => {
+  userId = null
+  _unsetData('@zenaclean:user').then(() => { cb(null) })
+}
+
 const isLoggedIn = () => userId != null
 
 export default {
@@ -176,5 +202,7 @@ export default {
   logInUser,
   changePassword,
   voteReport,
-  isLoggedIn
+  isLoggedIn,
+  logoutUser,
+  rehydrateLogin
 }

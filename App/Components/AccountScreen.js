@@ -104,7 +104,7 @@ export default class AccountScreen extends Component {
     Alert.alert('Attenzione!', 'Sei sicuro di voler effettuare il logout?', [
       {
         text: 'OK',
-        onPress: that.navigateToSignIn
+        onPress: () => { api.logoutUser(that.navigateToSignIn) }
       },
       { text: 'Annulla', style: 'cancel' }
     ])

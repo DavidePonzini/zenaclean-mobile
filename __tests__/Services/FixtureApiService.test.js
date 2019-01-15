@@ -71,4 +71,16 @@ describe('FixtureApi tests', () => {
     })
     expect(error).toBeNull()
   })
+
+  it('checks whether the user is logged in', async () => {
+    const email = ''
+    const password = ''
+    await FixtureApiService.logInUser(email, password, () => {})
+    expect(FixtureApiService.isLoggedIn()).toBeTruthy()
+  })
+
+  it('logs out correctly', () => {
+    FixtureApiService.logoutUser()
+    expect(FixtureApiService.isLoggedIn()).toBeFalsy()
+  })
 })
