@@ -49,7 +49,7 @@ const voteReport = (v, report, cb) => {
 
 const rehydrateLogin = async () => {
   try {
-    const user = _retrieveData('@zenaclean:user')
+    const user = await _retrieveData('@zenaclean:user')
     userId = user.id
     return user
   } catch (error) {
@@ -170,8 +170,8 @@ const getAddressFromCoords = ({ lat, lng }, cb) => {
     })
 }
 
-const getMarkers = (ne_lat, sw_lat, sw_lng, ne_lng, cb) => {
-  return fetch(baseUrl + 'reports?ne_lat=' + ne_lat + '&sw_lat=' + sw_lat + '&sw_lng=' + sw_lng + '&ne_lng=' + ne_lng +
+const getMarkers = (neLat, swLat, swLng, neLng, cb) => {
+  return fetch(baseUrl + 'reports?ne_lat=' + neLat + '&sw_lat=' + swLat + '&sw_lng=' + swLng + '&ne_lng=' + neLng +
   (userId != null ? ('&user=' + userId) : ''))
     .then((response) => response.json())
     .then((responseJson) => {
@@ -192,7 +192,7 @@ const logoutUser = (cb) => {
   _unsetData('@zenaclean:user').then(() => { cb(null) })
 }
 
-const isLoggedIn = () => userId != null
+const isLoggedIn = () => userId !== null
 
 export default {
   getAddressFromCoords,

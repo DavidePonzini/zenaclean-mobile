@@ -64,6 +64,9 @@
       "/node_modules/",
       "<rootDir>/__tests__/Setup.js"
     ],
+    "transformIgnorePatterns": [
+      "node_modules/(?!react-native|react-navigation|native-base|native-base-shoutem-theme|@shoutem/theme|@shoutem/animation|@shoutem/ui|tcomb-form-native)"
+    ],
     "setupFiles": [],
     "preset": "react-native"
   }

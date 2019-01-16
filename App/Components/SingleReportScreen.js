@@ -16,7 +16,6 @@ export default class SingleReportScreen extends Component {
     this.marker = props.navigation.state.params.marker
     this.imgUri = (this.marker.url == null) ? Images.defaultReportPicture : { uri: this.marker.url }
     let voted
-    console.log(this.marker)
     if (this.marker.voted_positive) {
       voted = true
     } else if (this.marker.voted_negative) {

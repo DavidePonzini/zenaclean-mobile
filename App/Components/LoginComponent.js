@@ -14,7 +14,7 @@ export default class LoginComponent extends Component {
       inputPassword: '',
       loginChecked: ''
     }
-    api.rehydrateLogin().then(this.navigateAfterLogin)
+    api.rehydrateLogin().then(res => this.navigateAfterLogin(res))
   }
 
   navigateAfterLogin = (user) => {
