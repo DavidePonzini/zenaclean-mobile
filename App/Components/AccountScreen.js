@@ -141,7 +141,7 @@ export default class AccountScreen extends Component {
               <Input
                 accessibilityLabel='account-new-password'
                 testID={'account-new-password'}
-                placeholder='NewPassword'
+                placeholder='New Password'
                 secureTextEntry
                 onChangeText={(password) => this.checkNewPassword(password)}
               />
@@ -152,7 +152,7 @@ export default class AccountScreen extends Component {
               <Input
                 accessibilityLabel='account-confirm-password'
                 testID={'account-confirm-password'}
-                placeholder='RepeatNewPassword'
+                placeholder='Repeat New Password'
                 secureTextEntry
                 onChangeText={(password) => this.checkConfirmPassword(password)}
               />
