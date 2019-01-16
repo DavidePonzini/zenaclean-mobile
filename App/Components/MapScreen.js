@@ -41,6 +41,7 @@ export default class MapScreen extends React.Component {
 
   centerOn (region) {
     this.setState({ region: region })
+    this.onRegionChange(region)
   }
 
   markerRegionUpdate = () => {
