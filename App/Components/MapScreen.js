@@ -9,10 +9,11 @@ import geolocationService from '../Services/GeolocationService'
 import Fonts from '../Themes/Fonts'
 import DateParser from '../Utils/DateParser'
 import Icon from 'react-native-vector-icons/FontAwesome'
-import { SearchBar } from 'react-native-elements'
 import Colors from '../Themes/Colors'
 import Images from '../Themes/Images'
 import Metrics from '../Themes/Metrics'
+import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete'
+import Secrets from 'react-native-config'
 
 export default class MapScreen extends React.Component {
   constructor (props) {
@@ -73,7 +74,7 @@ export default class MapScreen extends React.Component {
   componentDidUpdate () {
     if (this.state.updateMaps) {
       const tmp = api.getMarkers((res) => { this.setState({ markers: res }) })
-      this.setState({ updateMaps: false })
+      this.setState({ updateMaps: false, updatePosition: false })
       return tmp
     }
   }
@@ -167,12 +168,13 @@ export default class MapScreen extends React.Component {
         <MapView
           style={styles.map}
           initialRegion={this.state.region}
+          region={this.state.region}
           onRegionChange={this.onRegionChange}
           ref={(map) => { this.map = map }}
         >
           {this.state.geolocating &&
             <View>
-              <Marker anchor={{ x: 0.5, y: 0.5 }}image={Images.locationDot} coordinate={{ latitude: this.state.geolocation.latitude, longitude: this.state.geolocation.longitude }} />
+              <Marker anchor={{ x: 0.5, y: 0.5 }} image={Images.locationDot} coordinate={{ latitude: this.state.geolocation.latitude, longitude: this.state.geolocation.longitude }} />
               <Circle strokeColor='lightblue' fillColor='lightblue' center={{ latitude: this.state.geolocation.latitude, longitude: this.state.geolocation.longitude }} radius={this.state.geolocation.radius} />
             </View>
           }
@@ -184,15 +186,43 @@ export default class MapScreen extends React.Component {
           <Icon name='map-marker' style={styles.floatingMarker} />
         </View>
         }
-
-        <SearchBar accessibilityLabel='searchBar' testID={'searchBar'} containerStyle={styles.searchBarStyle}
-          searchIcon={{ size: 30 }}
-          clearIcon
-          round
-          lightTheme
-          placeholderTextColor={'#848484'}
-          inputStyle={styles.textSearchBar}
-          placeholder='Cerca Indirizzo' />
+        <GooglePlacesAutocomplete
+          placeholder='Search'
+          minLength={2}
+          autoFocus={false}
+          returnKeyType='search'
+          listViewDisplayed='false'
+          fetchDetails
+          renderDescription={row => row.description}
+          onPress={(data, details = null) => {
+            const region = {
+              latitude: details.geometry.location.lat,
+              longitude: details.geometry.location.lng,
+              latitudeDelta: 0.1,
+              longitudeDelta: 0.1
+            }
+            this.onRegionChange(region)
+          }}
+          getDefaultValue={() => ''}
+          query={{
+            key: Secrets.GOOGLE_MAPS_API_KEY,
+            language: 'en',
+            types: '(cities)'
+          }}
+          styles={{
+            textInputContainer: {
+              width: '100%'
+            },
+            description: {
+              fontWeight: 'bold',
+              color: 'black'
+            },
+            listView: {
+              backgroundColor: '#ffffff'
+            }
+          }}
+          debounce={200}
+        />
         { this.state.refreshShowing &&
         <Button
           accessibilityLabel='update-markers-button'
@@ -277,7 +307,6 @@ const styles = StyleSheet.create({
     top: 100,
     width: 200,
     right: Metrics.width / 2 - 100,
-    // alignSelf: 'center',
     justifyContent: 'center',
     backgroundColor: '#FAFAFA',
     color: '#2f2f2f'

@@ -22,6 +22,14 @@ exports[`MapScreen tests renders correctly 1`] = `
       }
     }
     onRegionChange={[Function]}
+    region={
+      Object {
+        "latitude": 44.4056,
+        "latitudeDelta": 0.1,
+        "longitude": 8.9463,
+        "longitudeDelta": 0.1,
+      }
+    }
     style={
       Object {
         "bottom": 0,
@@ -122,37 +130,69 @@ exports[`MapScreen tests renders correctly 1`] = `
       </MapCallout>
     </MapMarker>
   </MapView>
-  <Search
-    accessibilityLabel="searchBar"
-    clearIcon={true}
-    containerStyle={
+  <GooglePlacesAutocomplete
+    GooglePlacesSearchQuery={
       Object {
-        "backgroundColor": "white",
-        "marginLeft": 10,
-        "marginRight": 10,
-        "marginTop": 15,
-        "opacity": 0.8,
+        "rankby": "distance",
+        "types": "food",
       }
     }
-    icon={Object {}}
-    inputStyle={
+    GoogleReverseGeocodingQuery={Object {}}
+    autoFillOnNotFound={false}
+    autoFocus={false}
+    currentLocation={false}
+    currentLocationLabel="Current location"
+    debounce={200}
+    editable={true}
+    enableEmptySections={true}
+    enableHighAccuracyLocation={true}
+    enablePoweredByContainer={true}
+    fetchDetails={true}
+    filterReverseGeocodingByTypes={Array []}
+    getDefaultValue={[Function]}
+    isRowScrollable={true}
+    keyboardShouldPersistTaps="always"
+    listViewDisplayed="false"
+    minLength={2}
+    nearbyPlacesAPI="GooglePlacesSearch"
+    numberOfLines={1}
+    onFail={[Function]}
+    onNotFound={[Function]}
+    onPress={[Function]}
+    onSubmitEditing={[Function]}
+    onTimeout={[Function]}
+    placeholder="Search"
+    placeholderTextColor="#A8A8A8"
+    predefinedPlaces={Array []}
+    predefinedPlacesAlwaysVisible={false}
+    query={
       Object {
-        "color": "#848484",
+        "key": undefined,
+        "language": "en",
+        "types": "(cities)",
       }
     }
-    lightTheme={true}
-    loadingIcon={Object {}}
-    noIcon={false}
-    placeholder="Cerca Indirizzo"
-    placeholderTextColor="#848484"
-    round={true}
-    searchIcon={
+    renderDescription={[Function]}
+    returnKeyType="search"
+    styles={
       Object {
-        "size": 30,
+        "description": Object {
+          "color": "black",
+          "fontWeight": "bold",
+        },
+        "listView": Object {
+          "backgroundColor": "#ffffff",
+        },
+        "textInputContainer": Object {
+          "width": "100%",
+        },
       }
     }
-    showLoadingIcon={false}
-    testID="searchBar"
+    suppressDefaultStyles={false}
+    textInputHide={false}
+    textInputProps={Object {}}
+    timeout={20000}
+    underlineColorAndroid="transparent"
   />
   <Styled(Button)
     accessibilityLabel="geolocate-button"
