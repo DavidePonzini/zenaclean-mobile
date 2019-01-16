@@ -8,8 +8,9 @@ import api from '../Services/ApiService'
 import Fonts from '../Themes/Fonts'
 import DateParser from '../Utils/DateParser'
 import Icon from 'react-native-vector-icons/FontAwesome'
-import { SearchBar } from 'react-native-elements'
-import Colors from '../Themes/Colors'
+import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete'
+import Secrets from 'react-native-config'
+
 
 export default class MapScreen extends React.Component {
   constructor (props) {
@@ -36,8 +37,8 @@ export default class MapScreen extends React.Component {
   }
 
   onRegionChange = (region) => {
-    // console.log(this.region.latitudeDelta)
     this.region = region
+    this.setState({ region: region })
   }
 
   markerRegionUpdate = () => {
@@ -62,6 +63,7 @@ export default class MapScreen extends React.Component {
     if (this.state.updateMaps) {
       const tmp = api.getMarkers((res) => { this.setState({ markers: res }) })
       this.setState({ updateMaps: false })
+      this.setState({ updatePosition: false })
       return tmp
     }
   }
@@ -119,7 +121,7 @@ export default class MapScreen extends React.Component {
         key={key}
         coordinate={{ latitude: marker.latitude, longitude: marker.longitude }}
       >
-        <Callout style={styles.callout} onPress={() => {this.navigateToSingleReport(marker)}}>
+        <Callout style={styles.callout} onPress={() => { this.navigateToSingleReport(marker) }}>
           <Text style={styles.calloutTitle}>{marker.title}</Text>
           <View style={styles.row}>
             <View style={styles.innerContainer}>
@@ -139,6 +141,7 @@ export default class MapScreen extends React.Component {
         <MapView
           style={styles.map}
           initialRegion={this.state.region}
+          region={this.state.region}
           onRegionChange={this.onRegionChange}
         >
           {!this.state.inserting && this.state.markers.map(this.renderMarker)}
@@ -149,14 +152,48 @@ export default class MapScreen extends React.Component {
           </View>
         }
 
-        <SearchBar accessibilityLabel='searchBar' testID={'searchBar'} containerStyle={styles.searchBarStyle}
-          searchIcon={{ size: 30 }}
-          clearIcon
-          round
-          lightTheme
-          placeholderTextColor={'#848484'}
-          inputStyle={styles.textSearchBar}
-          placeholder='Cerca Indirizzo' />
+        <GooglePlacesAutocomplete
+          placeholder='Search'
+          minLength={2} // minimum length of text to search
+          autoFocus={false}
+          returnKeyType={'search'}
+          listViewDisplayed='false'
+          fetchDetails
+          renderDescription={row => row.description}
+          onPress={(data, details = null) => {
+            const region = {
+              latitude: details.geometry.location.lat,
+              longitude: details.geometry.location.lng,
+              latitudeDelta: 0.1,
+              longitudeDelta: 0.1
+            }
+            this.onRegionChange(region)
+          }}
+
+          getDefaultValue={() => ''}
+
+          query={{
+            key: Secrets.GOOGLE_MAPS_API_KEY,
+            language: 'en',
+            types: '(cities)'
+          }}
+
+          styles={{
+            textInputContainer: {
+              width: '100%'
+            },
+            description: {
+              fontWeight: 'bold',
+              color: 'black'
+            },
+            listView: {
+              backgroundColor: '#ffffff'
+            }
+
+          }}
+
+          debounce={200} // debounce the requests in ms. Set to 0 to remove debounce. By default 0ms.
+        />
 
         <Button
           accessibilityLabel='update-markers-button'
@@ -216,9 +253,10 @@ const styles = StyleSheet.create({
     flex: 0.2
   },
   button_update_markers: {
-    marginTop: 20,
+    marginTop: 100,
     width: '15%',
     // alignSelf: 'center',
+    position: 'absolute',
     borderRadius: 30,
     marginLeft: 330,
     justifyContent: 'center',
