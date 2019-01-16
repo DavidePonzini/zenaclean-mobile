@@ -11,7 +11,6 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete'
 import Secrets from 'react-native-config'
 
-
 export default class MapScreen extends React.Component {
   constructor (props) {
     super(props)
@@ -38,6 +37,9 @@ export default class MapScreen extends React.Component {
 
   onRegionChange = (region) => {
     this.region = region
+  }
+
+  centerOn (region) {
     this.setState({ region: region })
   }
 
@@ -167,7 +169,7 @@ export default class MapScreen extends React.Component {
               latitudeDelta: 0.1,
               longitudeDelta: 0.1
             }
-            this.onRegionChange(region)
+            this.centerOn(region)
           }}
 
           getDefaultValue={() => ''}

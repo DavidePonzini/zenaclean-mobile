@@ -118,7 +118,10 @@ export default class AccountScreen extends Component {
           />
 
           {this.props.navigation.state.params.logged === true && <View>
-            <Text style={styles.textAccount}>
+            <Text
+              accessibilityLabel='account-email'
+              testID={'account-email'}
+              style={styles.textAccount}>
               {this.props.navigation.state.params.inputEmail}
             </Text>
             <Text style={styles.textResetPassword}>Compila i campi per reimpostare la password:</Text>
