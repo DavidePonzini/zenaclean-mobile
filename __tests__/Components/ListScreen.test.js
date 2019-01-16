@@ -10,6 +10,7 @@ import ReportListItem from '../../App/Components/ReportListItem'
 configure({ adapter: new Adapter() })
 
 jest.mock('../../App/Services/ApiService', () => require('../../App/Services/FixtureApiService'))
+jest.mock('../../App//Services/GeolocationService', () => require('../../App/Services/FixtureGeolocationService'))
 jest.mock('react-navigation', () => { return { SafeAreaView: 'SafeAreaView' } })
 
 const navigation = { navigate: jest.fn() }

@@ -11,7 +11,7 @@ import { Marker, Callout } from 'react-native-maps'
 configure({ adapter: new Adapter() })
 
 jest.mock('../../App/Services/ApiService', () => require('../../App/Services/FixtureApiService'))
-
+jest.mock('../../App/Services/GeolocationService', () => require('../../App/Services/FixtureGeolocationService'))
 const navigation = { navigate: jest.fn(), state: { params: { logged: true } } }
 
 describe('MapScreen tests', () => {

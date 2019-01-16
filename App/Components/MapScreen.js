@@ -1,15 +1,18 @@
 import React from 'react'
-import MapView, { Marker, Callout } from 'react-native-maps'
+import MapView, { Marker, Callout, Circle } from 'react-native-maps'
 import { Button } from 'native-base'
-import { Alert, StyleSheet, Text, View } from 'react-native'
+import { ActivityIndicator, Alert, StyleSheet, Text, View } from 'react-native'
 import { StackActions, NavigationActions } from 'react-navigation'
 import ActionButton from 'react-native-action-button'
 import api from '../Services/ApiService'
+import geolocationService from '../Services/GeolocationService'
 import Fonts from '../Themes/Fonts'
 import DateParser from '../Utils/DateParser'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { SearchBar } from 'react-native-elements'
 import Colors from '../Themes/Colors'
+import Images from '../Themes/Images'
+import Metrics from '../Themes/Metrics'
 
 export default class MapScreen extends React.Component {
   constructor (props) {
@@ -25,10 +28,14 @@ export default class MapScreen extends React.Component {
     this.state = {
       region: this.region,
       inserting: false,
+      fetching: true,
       markers: [],
-      updateMaps: false
+      updateMaps: false,
+      geolocating: false,
+      geolocation: null,
+      refreshShowing: false
     }
-    this.logged = this.props.navigation.state.params.logged
+    this.logged = api.isLoggedIn()
   }
 
   static navigationOptions = {
@@ -36,26 +43,31 @@ export default class MapScreen extends React.Component {
   }
 
   onRegionChange = (region) => {
-    // console.log(this.region.latitudeDelta)
+    // prompt the user to refresh the markers only when moving or zooming out
+    if ((region.latitude - this.state.region.latitude) ** 2 > 0.001 || (region.longitude - this.state.region.longitude) ** 2 > 0.001 ||
+        region.longitudeDelta - this.state.region.longitudeDelta > 0.01) {
+      this.setState({ refreshShowing: true })
+    }
     this.region = region
+    geolocationService.setCurrentRegion(region)
   }
 
   markerRegionUpdate = () => {
-    const ne_lat = this.region.latitude + this.region.latitudeDelta / 2
-    const sw_lat = this.region.latitude - this.region.latitudeDelta / 2
-    const sw_lng = this.region.longitude - this.region.longitudeDelta / 2
-    const ne_lng = this.region.longitude + this.region.longitudeDelta / 2
+    const neLat = this.region.latitude + this.region.latitudeDelta / 2
+    const swLat = this.region.latitude - this.region.latitudeDelta / 2
+    const swLng = this.region.longitude - this.region.longitudeDelta / 2
+    const neLng = this.region.longitude + this.region.longitudeDelta / 2
+    const that = this
 
-    return api.getMarkers(ne_lat, sw_lat, sw_lng, ne_lng, (res) => { this.setState({ markers: res }) })
+    return new Promise(resolve => {
+      that.setState({ fetching: true, region: that.region }, () => {
+        api.getMarkers(neLat, swLat, swLng, neLng, (res) => { that.setState({ markers: res, refreshShowing: false, fetching: false }, () => resolve()) })
+      })
+    })
   }
 
   componentWillMount () {
-    const ne_lat = this.region.latitude + this.region.latitudeDelta / 2
-    const sw_lat = this.region.latitude - this.region.latitudeDelta / 2
-    const sw_lng = this.region.longitude - this.region.longitudeDelta / 2
-    const ne_lng = this.region.longitude + this.region.longitudeDelta / 2
-
-    return api.getMarkers(ne_lat, sw_lat, sw_lng, ne_lng, (res) => { this.setState({ markers: res }) })
+    return this.markerRegionUpdate()
   }
 
   componentDidUpdate () {
@@ -65,9 +77,10 @@ export default class MapScreen extends React.Component {
       return tmp
     }
   }
+
   onUpdateMaps = data => {
     this.setState({ updateMaps: data })
-  };
+  }
 
   navigateToAddReport = () => {
     this.updateMaps = true
@@ -119,7 +132,7 @@ export default class MapScreen extends React.Component {
         key={key}
         coordinate={{ latitude: marker.latitude, longitude: marker.longitude }}
       >
-        <Callout style={styles.callout} onPress={() => {this.navigateToSingleReport(marker)}}>
+        <Callout style={styles.callout} onPress={() => { this.navigateToSingleReport(marker) }}>
           <Text style={styles.calloutTitle}>{marker.title}</Text>
           <View style={styles.row}>
             <View style={styles.innerContainer}>
@@ -132,21 +145,44 @@ export default class MapScreen extends React.Component {
       </Marker>)
   }
 
+  geolocateMe = () => {
+    const that = this
+    geolocationService.geolocateOnce().then(pos => {
+      that.setState({ geolocating: true, geolocation: { latitude: pos.coords.latitude, longitude: pos.coords.longitude, radius: pos.coords.accuracy } })
+      const newRegion = {
+        latitude: pos.coords.latitude,
+        longitude: pos.coords.longitude,
+        longitudeDelta: 0.01,
+        latitudeDelta: 0.01
+      }
+      that.region = newRegion
+      that.map.animateToRegion(newRegion, 200)
+      setTimeout(that.markerRegionUpdate, 200)
+    })
+  }
+
   render () {
     return (
       <View style={styles.map}>
-
         <MapView
           style={styles.map}
           initialRegion={this.state.region}
           onRegionChange={this.onRegionChange}
+          ref={(map) => { this.map = map }}
         >
+          {this.state.geolocating &&
+            <View>
+              <Marker anchor={{ x: 0.5, y: 0.5 }}image={Images.locationDot} coordinate={{ latitude: this.state.geolocation.latitude, longitude: this.state.geolocation.longitude }} />
+              <Circle strokeColor='lightblue' fillColor='lightblue' center={{ latitude: this.state.geolocation.latitude, longitude: this.state.geolocation.longitude }} radius={this.state.geolocation.radius} />
+            </View>
+          }
           {!this.state.inserting && this.state.markers.map(this.renderMarker)}
         </MapView>
+
         {this.state.inserting &&
-          <View pointerEvents='none' style={styles.floatingMarkerContainer}>
-            <Icon name='map-marker' style={styles.floatingMarker} />
-          </View>
+        <View pointerEvents='none' style={styles.floatingMarkerContainer}>
+          <Icon name='map-marker' style={styles.floatingMarker} />
+        </View>
         }
 
         <SearchBar accessibilityLabel='searchBar' testID={'searchBar'} containerStyle={styles.searchBarStyle}
@@ -157,30 +193,43 @@ export default class MapScreen extends React.Component {
           placeholderTextColor={'#848484'}
           inputStyle={styles.textSearchBar}
           placeholder='Cerca Indirizzo' />
-
+        { this.state.refreshShowing &&
         <Button
           accessibilityLabel='update-markers-button'
           testID={'update-markers-button'}
-          rounded
-          style={styles.button_update_markers}
-          onPress={() => this.markerRegionUpdate()}>
-          <Text style={{ color: 'white', fontWeight: 'bold' }}>Update</Text>
-        </Button>
 
+          style={styles.button_update_markers}
+          onPress={this.markerRegionUpdate}
+          iconLeft>
+          <View style={{ flexDirection: 'row', paddingLeft: 10, paddingRight: 10 }}>
+            { (this.state.fetching && <ActivityIndicator style={{ flex: 0.2 }} />) ||
+            <Icon name='search' style={{ fontSize: 20, flex: 0.2 }} /> }
+            <Text style={{ fontWeight: 'bold', flex: 0.8 }}>Cerca in quest'area</Text>
+          </View>
+        </Button>}
+        <Button
+          accessibilityLabel='geolocate-button'
+          testID={'geolocate-button'}
+          rounded
+          style={styles.geoBtn}
+          onPress={this.geolocateMe}
+          iconLeft>
+          <Icon name='crosshairs' style={{ fontSize: 25, color: Colors.accent }} />
+        </Button>
         <ActionButton fixNativeFeedbackRadius backgroundTappable
           accessibilityLabel='button-add'
           testID={'button-add'}
-          buttonColor='dodgerblue'
+          buttonColor={Colors.accent}
           offsetY={50}
           onPress={this.beginMarkerPlacement}
           onReset={this.cancelMarkerPlacement}
         >
           {this.logged &&
-            <ActionButton.Item accessibilityLabel='button-confirm' testID={'button-confirm'}
-              buttonColor='dodgerblue' title='Scegli questa posizione'
-              onPress={this.navigateToAddReport}>
-              <Icon name='check' style={{ color: 'white' }} />
-            </ActionButton.Item>
+          <ActionButton.Item accessibilityLabel='button-confirm' testID={'button-confirm'}
+            buttonColor={Colors.accent} title='Scegli questa posizione'
+            onPress={this.navigateToAddReport}>
+            <Icon name='check' style={{ color: 'white' }} />
+          </ActionButton.Item>
           }
         </ActionButton>
       </View>
@@ -215,14 +264,23 @@ const styles = StyleSheet.create({
     ...Fonts.style.footer,
     flex: 0.2
   },
-  button_update_markers: {
-    marginTop: 20,
-    width: '15%',
-    // alignSelf: 'center',
-    borderRadius: 30,
-    marginLeft: 330,
+  geoBtn: {
+    position: 'absolute',
+    left: 10,
+    bottom: 50,
     justifyContent: 'center',
-    backgroundColor: '#D55353'
+    backgroundColor: '#FAFAFA',
+    width: 50
+  },
+  button_update_markers: {
+    position: 'absolute',
+    top: 100,
+    width: 200,
+    right: Metrics.width / 2 - 100,
+    // alignSelf: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#FAFAFA',
+    color: '#2f2f2f'
   },
   address: {
     fontSize: Fonts.size.small,

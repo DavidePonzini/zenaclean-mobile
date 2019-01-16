@@ -1,0 +1,217 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MapScreen tests renders correctly 1`] = `
+<View
+  style={
+    Object {
+      "bottom": 0,
+      "left": 0,
+      "position": "absolute",
+      "right": 0,
+      "top": 0,
+    }
+  }
+>
+  <MapView
+    initialRegion={
+      Object {
+        "latitude": 44.4056,
+        "latitudeDelta": 0.1,
+        "longitude": 8.9463,
+        "longitudeDelta": 0.1,
+      }
+    }
+    onRegionChange={[Function]}
+    style={
+      Object {
+        "bottom": 0,
+        "left": 0,
+        "position": "absolute",
+        "right": 0,
+        "top": 0,
+      }
+    }
+  >
+    <MapMarker
+      coordinate={
+        Object {
+          "latitude": 44.1234,
+          "longitude": 8.1234,
+        }
+      }
+      key="0"
+      stopPropagation={false}
+    >
+      <MapCallout
+        onPress={[Function]}
+        style={
+          Object {
+            "height": 150,
+            "width": 250,
+          }
+        }
+        tooltip={false}
+      >
+        <Text
+          style={
+            Object {
+              "borderBottomColor": "#EAEAEA",
+              "borderBottomWidth": 1,
+              "fontFamily": "HelveticaNeue-Italic",
+              "fontSize": 19,
+              "marginBottom": 5,
+              "paddingBottom": 2.5,
+              "textAlign": "center",
+            }
+          }
+        >
+          Divano abbandonato
+        </Text>
+        <View
+          style={
+            Object {
+              "flex": 1,
+              "flexDirection": "row",
+              "padding": 2.5,
+            }
+          }
+        >
+          <View
+            style={
+              Object {
+                "flex": 1,
+                "flexDirection": "column",
+              }
+            }
+          >
+            <Text
+              style={
+                Object {
+                  "flex": 0.2,
+                  "fontSize": 12,
+                }
+              }
+            >
+              Via del Camoscio
+            </Text>
+            <Text
+              style={
+                Object {
+                  "flex": 0.8,
+                  "fontFamily": "Avenir-Book",
+                  "fontSize": 14,
+                }
+              }
+            >
+              Divano abbandonato in via Gramsci
+            </Text>
+            <Text
+              style={
+                Object {
+                  "color": "#808080",
+                  "flex": 0.2,
+                  "fontFamily": "Avenir-Book",
+                  "fontSize": 12,
+                }
+              }
+            >
+              9 Dicembre 2018 alle 17:40
+            </Text>
+          </View>
+        </View>
+      </MapCallout>
+    </MapMarker>
+  </MapView>
+  <Search
+    accessibilityLabel="searchBar"
+    clearIcon={true}
+    containerStyle={
+      Object {
+        "backgroundColor": "white",
+        "marginLeft": 10,
+        "marginRight": 10,
+        "marginTop": 15,
+        "opacity": 0.8,
+      }
+    }
+    icon={Object {}}
+    inputStyle={
+      Object {
+        "color": "#848484",
+      }
+    }
+    lightTheme={true}
+    loadingIcon={Object {}}
+    noIcon={false}
+    placeholder="Cerca Indirizzo"
+    placeholderTextColor="#848484"
+    round={true}
+    searchIcon={
+      Object {
+        "size": 30,
+      }
+    }
+    showLoadingIcon={false}
+    testID="searchBar"
+  />
+  <Styled(Button)
+    accessibilityLabel="geolocate-button"
+    iconLeft={true}
+    onPress={[Function]}
+    rounded={true}
+    style={
+      Object {
+        "backgroundColor": "#FAFAFA",
+        "bottom": 50,
+        "justifyContent": "center",
+        "left": 10,
+        "position": "absolute",
+        "width": 50,
+      }
+    }
+    testID="geolocate-button"
+  >
+    <Icon
+      allowFontScaling={false}
+      name="crosshairs"
+      size={12}
+      style={
+        Object {
+          "color": "dodgerblue",
+          "fontSize": 25,
+        }
+      }
+    />
+  </Styled(Button)>
+  <ActionButton
+    accessibilityLabel="button-add"
+    active={false}
+    activeOpacity={0.85}
+    autoInactive={true}
+    backdrop={false}
+    backgroundTappable={true}
+    bgColor="transparent"
+    bgOpacity={1}
+    buttonColor="dodgerblue"
+    buttonText="+"
+    buttonTextStyle={Object {}}
+    degrees={45}
+    fixNativeFeedbackRadius={true}
+    nativeFeedbackRippleColor="rgba(255,255,255,0.75)"
+    offsetX={30}
+    offsetY={50}
+    onPress={[Function]}
+    onPressIn={[Function]}
+    onPressOn={[Function]}
+    onReset={[Function]}
+    outRangeScale={1}
+    position="right"
+    resetToken={null}
+    size={56}
+    spacing={20}
+    testID="button-add"
+    useNativeFeedback={true}
+    verticalOrientation="up"
+  />
+</View>
+`;
