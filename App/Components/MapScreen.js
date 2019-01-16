@@ -53,6 +53,10 @@ export default class MapScreen extends React.Component {
     geolocationService.setCurrentRegion(region)
   }
 
+  centerOn (region) {
+    this.setState({ region: region })
+  }
+
   markerRegionUpdate = () => {
     const neLat = this.region.latitude + this.region.latitudeDelta / 2
     const swLat = this.region.latitude - this.region.latitudeDelta / 2
@@ -201,7 +205,7 @@ export default class MapScreen extends React.Component {
               latitudeDelta: 0.1,
               longitudeDelta: 0.1
             }
-            this.onRegionChange(region)
+            this.centerOn(region)
           }}
           getDefaultValue={() => ''}
           query={{
