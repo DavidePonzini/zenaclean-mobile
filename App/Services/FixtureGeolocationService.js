@@ -34,8 +34,18 @@ const geolocateOnce = async () => {
 
 const getLatestPosition = () => lastLocation
 
+const geolocateContinuously = (cb, cbErr, options) => {
+  return setInterval(cb, 100)
+}
+
+const stopGeolocating = (id) => {
+  clearInterval(id)
+}
+
 export default {
   geolocateOnce,
+  geolocateContinuously,
+  stopGeolocating,
   getLatestPosition,
   getCurrentRegion,
   setCurrentRegion

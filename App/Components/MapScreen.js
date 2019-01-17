@@ -18,13 +18,7 @@ import Secrets from 'react-native-config'
 export default class MapScreen extends React.Component {
   constructor (props) {
     super(props)
-    // initial Region
-    this.region = {
-      latitude: 44.4056,
-      longitude: 8.9463,
-      latitudeDelta: 0.1,
-      longitudeDelta: 0.1
-    }
+    this.region = geolocationService.getCurrentRegion()
 
     this.state = {
       region: this.region,
@@ -54,8 +48,7 @@ export default class MapScreen extends React.Component {
   }
 
   centerOn (region) {
-    this.setState({ region: region })
-    this.onRegionChange(region)
+    this.map.animateToRegion(region)
   }
 
   markerRegionUpdate = () => {
@@ -90,7 +83,7 @@ export default class MapScreen extends React.Component {
 
   navigateToAddReport = () => {
     this.updateMaps = true
-    this.props.navigation.navigate('AddReport', {
+    return this.props.navigation.navigate('AddReport', {
       lat: this.region.latitude,
       lng: this.region.longitude,
       onUpdateMaps: this.onUpdateMaps
@@ -123,7 +116,7 @@ export default class MapScreen extends React.Component {
   }
 
   navigateToSingleReport = (marker) => {
-    this.props.navigation.navigate('SingleReport', { marker })
+    return this.props.navigation.navigate('SingleReport', { marker })
   }
 
   cancelMarkerPlacement = () => {
@@ -173,7 +166,6 @@ export default class MapScreen extends React.Component {
         <MapView
           style={styles.map}
           initialRegion={this.state.region}
-          region={this.state.region}
           onRegionChange={this.onRegionChange}
           ref={(map) => { this.map = map }}
         >
@@ -242,15 +234,15 @@ export default class MapScreen extends React.Component {
             <Text style={{ fontWeight: 'bold', flex: 0.8 }}>Cerca in quest'area</Text>
           </View>
         </Button>}
-        <Button
+        <ActionButton
+          fixNativeFeedbackRadius
           accessibilityLabel='geolocate-button'
           testID={'geolocate-button'}
-          rounded
-          style={styles.geoBtn}
+          buttonColor='#FAFAFA'
+          offsetY={125}
           onPress={this.geolocateMe}
-          iconLeft>
-          <Icon name='crosshairs' style={{ fontSize: 25, color: Colors.accent }} />
-        </Button>
+          renderIcon={() => (<Icon name='crosshairs' style={{ fontSize: 20, color: this.state.geolocating ? Colors.accent : Colors.inactiveIcon }} />)}
+        />
         <ActionButton fixNativeFeedbackRadius backgroundTappable
           accessibilityLabel='button-add'
           testID={'button-add'}
@@ -313,8 +305,8 @@ const styles = StyleSheet.create({
     width: 200,
     right: Metrics.width / 2 - 100,
     justifyContent: 'center',
-    backgroundColor: '#FAFAFA',
-    color: '#2f2f2f'
+    backgroundColor: Colors.materialGray,
+    color: Colors.defaultText
   },
   address: {
     fontSize: Fonts.size.small,
