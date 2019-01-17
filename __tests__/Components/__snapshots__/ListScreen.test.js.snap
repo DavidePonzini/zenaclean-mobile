@@ -6,7 +6,11 @@ exports[`List tests renders correctly 1`] = `
     onWillFocus={[Function]}
   />
   <FlatList
-    ListEmptyComponent={<NoReportsLeftComponent />}
+    ListEmptyComponent={
+      <NoReportsLeftComponent
+        onPress={[Function]}
+      />
+    }
     accessibilityLabel="list-report"
     data={
       Array [

@@ -1,24 +1,68 @@
 import React from 'react'
-import { FlatList, Text, View } from 'react-native'
+import { FlatList, StyleSheet, Text, View } from 'react-native'
 import { Button } from 'native-base'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { SafeAreaView, NavigationEvents } from 'react-navigation'
 import ReportListItem from './ReportListItem'
 import api from '../Services/ApiService'
 import geolocationService from '../Services/GeolocationService'
+import Fonts from '../Themes/Fonts'
+import Colors from '../Themes/Colors'
+import Metrics from '../Themes/Metrics'
 
 export class NoReportsLeftComponent extends React.Component {
   render () {
     return (
-      <View>
-        <Text>Buone Notizie!</Text>
-        <Icon name='street-view' />
-        <Text>Non ci sono segnalazioni nella tua zona!</Text>
-        <Text>Prenditi un attimo per assaporare il momento oppure </Text>
-        <Button><Text>Cerca in un'altra zona</Text></Button>
+      <View style={styles.container}>
+        <View style={styles.innerContainer}>
+          <Text style={styles.title}>Buone notizie!</Text>
+          <Icon style={styles.splashIcon} name='trophy' />
+          <Text style={styles.descr}>Non ci sono segnalazioni nei dintorni!</Text>
+          <Text style={styles.descr}>Prenditi un attimo per assaporare il momento</Text>
+          <Text style={styles.descr}> oppure</Text>
+          <Button onPress={this.props.onPress} style={styles.goBackButton} full iconLeft>
+            <Icon style={styles.buttonContent} name='arrow-left' />
+            <Text style={styles.buttonContent}>Cerca in un'altra zona</Text>
+          </Button>
+        </View>
       </View>)
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    height: Metrics.height
+  },
+  innerContainer: {
+    flex: 1,
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  title: {
+    fontSize: Fonts.size.h1,
+    color: Colors.defaultText,
+    textAlign: 'center'
+  },
+  descr: {
+    fontSize: Fonts.size.h6,
+    textAlign: 'center',
+    margin: 10,
+    color: Colors.defaultText
+  },
+  splashIcon: {
+    color: Colors.accent,
+    fontSize: 200
+  },
+  goBackButton: {
+    backgroundColor: Colors.accent
+  },
+  buttonContent: {
+    color: 'white',
+    padding: 10,
+    fontSize: Fonts.size.h5
+  }
+})
 
 export default class ListScreen extends React.Component {
   constructor (props) {
@@ -50,6 +94,9 @@ export default class ListScreen extends React.Component {
       return this.markerRegionUpdate()
     }
   }
+  navigateBackToMap = () => {
+    return this.props.navigation.navigate('Map')
+  }
   componentWillMount () {
     return this.markerRegionUpdate()
   }
@@ -72,7 +119,7 @@ export default class ListScreen extends React.Component {
           refreshing={this.state.fetching}
           renderItem={this.renderItem}
           keyExtractor={(_, index) => ('' + index)}
-          ListEmptyComponent={!this.state.fetching && <NoReportsLeftComponent />}
+          ListEmptyComponent={!this.state.fetching && <NoReportsLeftComponent onPress={this.navigateBackToMap} />}
         />
       </SafeAreaView>
     )
