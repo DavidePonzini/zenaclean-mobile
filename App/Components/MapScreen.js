@@ -2,7 +2,7 @@ import React from 'react'
 import MapView, { Marker, Callout, Circle } from 'react-native-maps'
 import { Button } from 'native-base'
 import { ActivityIndicator, Alert, StyleSheet, Text, View } from 'react-native'
-import { StackActions, NavigationActions } from 'react-navigation'
+import { StackActions, NavigationActions, NavigationEvents } from 'react-navigation'
 import ActionButton from 'react-native-action-button'
 import api from '../Services/ApiService'
 import geolocationService from '../Services/GeolocationService'
@@ -18,17 +18,17 @@ import Secrets from 'react-native-config'
 export default class MapScreen extends React.Component {
   constructor (props) {
     super(props)
-    this.region = geolocationService.getCurrentRegion()
+    this.region = geolocationService.getCurrentRegion() // region in the object holds the region we're currently viewing
 
     this.state = {
-      region: this.region,
+      region: this.region, // region in the state holds the last "searched" region
       inserting: false,
       fetching: true,
       markers: [],
-      updateMaps: false,
       geolocating: false,
       geolocation: null,
-      refreshShowing: false
+      refreshShowing: false,
+      zoomShowing: false
     }
     this.logged = api.isLoggedIn()
   }
@@ -37,11 +37,21 @@ export default class MapScreen extends React.Component {
     tabBarLabel: 'Mappa'
   }
 
-  onRegionChange = (region) => {
+  onRegionChanged = (region) => {
     // prompt the user to refresh the markers only when moving or zooming out
-    if ((region.latitude - this.state.region.latitude) ** 2 > 0.001 || (region.longitude - this.state.region.longitude) ** 2 > 0.001 ||
+    // -- however, if the zoom is TOO MUCH out, don't
+    if (region.longitudeDelta > 0.11) {
+      this.setState({ refreshShowing: false, zoomShowing: true })
+    } else {
+      let newState = { zoomShowing: false, moving: false }
+      if ((region.latitude - this.state.region.latitude) ** 2 > 0.001 || (region.longitude - this.state.region.longitude) ** 2 > 0.001 ||
         region.longitudeDelta - this.state.region.longitudeDelta > 0.01) {
-      this.setState({ refreshShowing: true })
+        newState.refreshShowing = true
+      }
+      this.setState(newState)
+    }
+    if (this.state.inserting) {
+      this.insertingMarker.animateMarkerToCoordinate(region)
     }
     this.region = region
     geolocationService.setCurrentRegion(region)
@@ -52,6 +62,9 @@ export default class MapScreen extends React.Component {
   }
 
   markerRegionUpdate = () => {
+    if (this.region.longitudeDelta > 0.11) {
+      return
+    }
     const neLat = this.region.latitude + this.region.latitudeDelta / 2
     const swLat = this.region.latitude - this.region.latitudeDelta / 2
     const swLng = this.region.longitude - this.region.longitudeDelta / 2
@@ -69,24 +82,10 @@ export default class MapScreen extends React.Component {
     return this.markerRegionUpdate()
   }
 
-  componentDidUpdate () {
-    if (this.state.updateMaps) {
-      const tmp = api.getMarkers((res) => { this.setState({ markers: res }) })
-      this.setState({ updateMaps: false, updatePosition: false })
-      return tmp
-    }
-  }
-
-  onUpdateMaps = data => {
-    this.setState({ updateMaps: data })
-  }
-
   navigateToAddReport = () => {
-    this.updateMaps = true
     return this.props.navigation.navigate('AddReport', {
       lat: this.region.latitude,
-      lng: this.region.longitude,
-      onUpdateMaps: this.onUpdateMaps
+      lng: this.region.longitude
     })
   }
 
@@ -102,7 +101,7 @@ export default class MapScreen extends React.Component {
 
   beginMarkerPlacement = () => {
     if (this.logged) {
-      this.setState({ inserting: true })
+      this.setState({ inserting: true, region: this.region })
     } else {
       const that = this
       Alert.alert('Attenzione!', 'Registrati per effettuare una segnalazione', [
@@ -144,6 +143,15 @@ export default class MapScreen extends React.Component {
       </Marker>)
   }
 
+  zoomIn = () => {
+    this.map.animateToRegion({
+      latitude: this.region.latitude,
+      longitude: this.region.longitude,
+      latitudeDelta: 0.1,
+      longitudeDelta: 0.1
+    })
+  }
+
   geolocateMe = () => {
     const that = this
     geolocationService.geolocateOnce().then(pos => {
@@ -163,10 +171,16 @@ export default class MapScreen extends React.Component {
   render () {
     return (
       <View style={styles.map}>
+        <NavigationEvents
+          onWillFocus={this.markerRegionUpdate} />
         <MapView
           style={styles.map}
           initialRegion={this.state.region}
-          onRegionChange={this.onRegionChange}
+          showsMyLocationButton={false}
+          loadingEnabled
+          pitchEnabled={false}
+          toolbarEnabled={false}
+          onRegionChangeComplete={this.onRegionChanged}
           ref={(map) => { this.map = map }}
         >
           {this.state.geolocating &&
@@ -176,13 +190,13 @@ export default class MapScreen extends React.Component {
             </View>
           }
           {!this.state.inserting && this.state.markers.map(this.renderMarker)}
+          {this.state.inserting &&
+          <Marker
+            ref={ref => { this.insertingMarker = ref }}
+            coordinate={this.state.region}
+          />
+          }
         </MapView>
-
-        {this.state.inserting &&
-        <View pointerEvents='none' style={styles.floatingMarkerContainer}>
-          <Icon name='map-marker' style={styles.floatingMarker} />
-        </View>
-        }
         <GooglePlacesAutocomplete
           placeholder='Search'
           minLength={2}
@@ -220,11 +234,10 @@ export default class MapScreen extends React.Component {
           }}
           debounce={200}
         />
-        { this.state.refreshShowing &&
+        { !this.state.inserting && this.state.refreshShowing &&
         <Button
           accessibilityLabel='update-markers-button'
           testID={'update-markers-button'}
-
           style={styles.button_update_markers}
           onPress={this.markerRegionUpdate}
           iconLeft>
@@ -234,12 +247,26 @@ export default class MapScreen extends React.Component {
             <Text style={{ fontWeight: 'bold', flex: 0.8 }}>Cerca in quest'area</Text>
           </View>
         </Button>}
+        { !this.state.inserting && this.state.zoomShowing &&
+        <Button
+          accessibilityLabel='zoom-button'
+          testID={'zoom-button'}
+          style={styles.button_update_markers}
+          onPress={this.zoomIn}
+          iconLeft>
+          <View style={{ flexDirection: 'row', paddingLeft: 10, paddingRight: 10 }}>
+            <Icon name='search-plus' style={{ fontSize: 20, flex: 0.2 }} />
+            <Text style={{ fontWeight: 'bold', fontSize: 12, flex: 0.8 }}>Ingrandisci per cercare</Text>
+          </View>
+        </Button>}
         <ActionButton
           fixNativeFeedbackRadius
           accessibilityLabel='geolocate-button'
           testID={'geolocate-button'}
           buttonColor='#FAFAFA'
-          offsetY={125}
+          offsetY={50}
+          offsetX={-25}
+          position='left/center'
           onPress={this.geolocateMe}
           renderIcon={() => (<Icon name='crosshairs' style={{ fontSize: 20, color: this.state.geolocating ? Colors.accent : Colors.inactiveIcon }} />)}
         />
@@ -328,18 +355,11 @@ const styles = StyleSheet.create({
     width: 250,
     height: 150
   },
-  floatingMarkerContainer: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    top: 0,
-    bottom: 0,
-    zIndex: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: '100%'
-  },
   floatingMarker: {
+    position: 'absolute',
+    zIndex: 10,
+    left: Metrics.width / 2,
+    top: Metrics.height / 2,
     fontSize: 50
   }
 })

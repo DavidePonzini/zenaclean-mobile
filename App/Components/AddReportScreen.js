@@ -4,8 +4,6 @@ import { FormInput, FormLabel, FormValidationMessage, Button, Text } from 'react
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import ImagePicker from 'react-native-image-picker'
 import api from '../Services/ApiService'
-import ActionButton from 'react-native-action-button'
-import Images from '../Themes/Images'
 
 const options = {
   title: 'Carica foto',
@@ -77,7 +75,6 @@ export default class AddReportScreen extends Component {
           { text: 'OK',
             onPress: () => {
               that.props.navigation.goBack()
-              that.props.navigation.state.params.onUpdateMaps({ updateMaps: true })
             }
           }
         ])
