@@ -220,8 +220,7 @@ export default class MapScreen extends React.Component {
           getDefaultValue={() => ''}
           query={{
             key: Secrets.GOOGLE_MAPS_API_KEY,
-            language: 'en',
-            types: '(cities)'
+            language: 'it'
           }}
           styles={{
             textInputContainer: {
