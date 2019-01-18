@@ -50,9 +50,10 @@ const voteReport = (v, report, cb) => {
     body: JSON.stringify(body)
   }).then(res => res.json())
     .then((response) => {
-      if (response.status.ok) {
+      if (response.status === 'ok') {
         cb(null)
       } else {
+        console.log(response)
         cb(new Error('Error voting'))
       }
     }).catch((err) => {
