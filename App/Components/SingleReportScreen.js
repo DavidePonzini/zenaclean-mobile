@@ -15,13 +15,13 @@ export default class SingleReportScreen extends Component {
     super(props)
     this.marker = props.navigation.state.params.marker
     this.imgUri = (this.marker.url == null) ? Images.defaultReportPicture : { uri: this.marker.url }
-    let voted
-    if (this.marker.voted_positive) {
-      voted = true
-    } else if (this.marker.voted_negative) {
-      voted = false
-    } else {
-      voted = null
+    let voted = null
+    if (!this.marker.own) {
+      if (this.marker.voted_positive) {
+        voted = true
+      } else if (this.marker.voted_negative) {
+        voted = false
+      }
     }
     this.state = {
       voted
@@ -64,6 +64,7 @@ export default class SingleReportScreen extends Component {
       const cb = (err) => {
         if (err) {
           this.setState({ voted: null })
+          console.log(err)
         } else {
           this.setState({ voted: v })
         }
@@ -71,7 +72,7 @@ export default class SingleReportScreen extends Component {
       Alert.alert('Attenzione!', 'Sei sicuro di voler votare?', [
         {
           text: 'OK',
-          onPress: () => { return api.voteReport(v, this.marker.id, cb) }
+          onPress: () => { return api.voteReport(v, this.marker._id, cb) }
         },
         { text: 'Annulla', style: 'cancel' }
       ])
@@ -91,7 +92,7 @@ export default class SingleReportScreen extends Component {
         <ScrollView style={styles.scrollable}>
           <View>
             <Image style={styles.image} source={this.imgUri} />
-            {((this.state.voted == null) &&
+            {!this.marker.own && (((this.state.voted == null) &&
               <LinearGradient style={styles.voteOverlay} colors={['rgba(255,255,255,0)', 'rgba(0,0,0,0.75)']}>
                 <TouchableOpacity accessibilityLabel='vote-up' testID={'vote-up'} style={styles.voteButton}
                   onPress={() => { this.vote(true) }}>
@@ -109,7 +110,7 @@ export default class SingleReportScreen extends Component {
                 <View style={styles.voteButton}>
                   <Icon name='thumbs-o-down' style={styles.voteIcon} />
                 </View>
-              </LinearGradient>
+              </LinearGradient>)
             }
           </View>
 

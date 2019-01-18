@@ -167,12 +167,15 @@ export default class MapScreen extends React.Component {
       setTimeout(that.markerRegionUpdate, 200)
     })
   }
-
+  refreshOnFocus = (payload) => {
+    console.log(payload)
+    this.markerRegionUpdate()
+  }
   render () {
     return (
       <View style={styles.map}>
         <NavigationEvents
-          onWillFocus={this.markerRegionUpdate} />
+          onWillFocus={this.refreshOnFocus} />
         <MapView
           style={styles.map}
           initialRegion={this.state.region}

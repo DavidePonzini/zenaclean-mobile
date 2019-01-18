@@ -36,14 +36,27 @@ const _unsetData = async (key) => {
 }
 
 const voteReport = (v, report, cb) => {
-  return fetch(baseUrl + 'reports/vote?user=' + userId + '&report=' + report + '&vote=' + (v ? '1' : '0'))
+  let body = {
+    user: userId,
+    report: report,
+    vote: v ? '1' : '0'
+  }
+  return fetch(baseUrl + 'reports/vote', {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(body)
+  }).then(res => res.json())
     .then((response) => {
-      console.log(response)
-      if (response.ok) {
+      if (response.status.ok) {
         cb(null)
       } else {
         cb(new Error('Error voting'))
       }
+    }).catch((err) => {
+      cb(new Error('Error voting: ' + err))
     })
 }
 
@@ -127,6 +140,7 @@ const changePassword = (email, oldPassword, newPassword, confirmPassword, cb) =>
 }
 
 const uploadReport = (infoReport, cb) => {
+  infoReport.id = userId // probably this should be different
   return fetch(baseUrl + 'reports', {
     method: 'POST',
     headers: {
@@ -180,6 +194,7 @@ const getMarkers = (neLat, swLat, swLng, neLng, cb) => {
         const marker = responseJson[k]
         markers.push({
           ...marker,
+          own: marker['user_id'] === userId, // I should not be able to know the author of a report
           id: k
         })
       })
