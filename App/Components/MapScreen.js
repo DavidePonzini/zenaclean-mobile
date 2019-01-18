@@ -201,7 +201,7 @@ export default class MapScreen extends React.Component {
           }
         </MapView>
         <GooglePlacesAutocomplete
-          placeholder='Search'
+          placeholder='Cerca su Google Maps'
           minLength={2}
           autoFocus={false}
           returnKeyType='search'
@@ -212,8 +212,8 @@ export default class MapScreen extends React.Component {
             const region = {
               latitude: details.geometry.location.lat,
               longitude: details.geometry.location.lng,
-              latitudeDelta: 0.1,
-              longitudeDelta: 0.1
+              latitudeDelta: 0.001,
+              longitudeDelta: 0.001
             }
             this.centerOn(region)
           }}
