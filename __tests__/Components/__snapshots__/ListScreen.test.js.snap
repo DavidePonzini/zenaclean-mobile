@@ -2,9 +2,6 @@
 
 exports[`List tests renders correctly 1`] = `
 <SafeAreaView>
-  <Component
-    onWillFocus={[Function]}
-  />
   <FlatList
     ListEmptyComponent={
       <NoReportsLeftComponent

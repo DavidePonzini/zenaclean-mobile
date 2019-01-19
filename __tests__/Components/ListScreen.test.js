@@ -13,7 +13,7 @@ jest.mock('../../App/Services/ApiService', () => require('../../App/Services/Fix
 jest.mock('../../App//Services/GeolocationService', () => require('../../App/Services/FixtureGeolocationService'))
 jest.mock('react-navigation', () => { return { SafeAreaView: 'SafeAreaView' } })
 
-const navigation = { navigate: jest.fn() }
+const navigation = { addListener: jest.fn(), navigate: jest.fn() }
 
 describe('List tests', () => {
   const wrapper = shallow(<ListScreen navigation={navigation} />)

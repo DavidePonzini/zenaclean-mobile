@@ -2,7 +2,7 @@ import React from 'react'
 import { FlatList, StyleSheet, Text, View } from 'react-native'
 import { Button } from 'native-base'
 import Icon from 'react-native-vector-icons/FontAwesome'
-import { SafeAreaView, NavigationEvents } from 'react-navigation'
+import { SafeAreaView } from 'react-navigation'
 import ReportListItem from './ReportListItem'
 import api from '../Services/ApiService'
 import geolocationService from '../Services/GeolocationService'
@@ -71,6 +71,7 @@ export default class ListScreen extends React.Component {
       markers: [],
       fetching: true
     }
+    this.props.navigation.addListener('didFocus', this.markerRegionUpdate)
   }
   // this is used by the navigator to set the title in the header
   static navigationOptions = {
@@ -88,12 +89,7 @@ export default class ListScreen extends React.Component {
     const that = this
     return api.getMarkers(neLat, swLat, swLng, neLng, (res) => { that.setState({ fetching: false, markers: res }) })
   }
-  componentWillUpdate = () => {
-    console.log(this.region)
-    if (geolocationService.getCurrentRegion() !== this.region) {
-      return this.markerRegionUpdate()
-    }
-  }
+
   navigateBackToMap = () => {
     return this.props.navigation.navigate('Map')
   }
@@ -109,8 +105,6 @@ export default class ListScreen extends React.Component {
   render () {
     return (
       <SafeAreaView>
-        <NavigationEvents
-          onWillFocus={this.markerRegionUpdate} />
         <FlatList
           accessibilityLabel='list-report'
           testID={'list-report'}

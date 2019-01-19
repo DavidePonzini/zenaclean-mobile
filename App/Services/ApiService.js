@@ -152,7 +152,7 @@ const uploadReport = (infoReport, cb) => {
   }).then(res => res.json())
     .then((res) => {
       if (res.status === 'ok') {
-        cb(null)
+        cb(null, res._id)
       } else {
         cb(new Error('failed to upload'), res)
       }

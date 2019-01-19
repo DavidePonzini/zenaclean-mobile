@@ -2,7 +2,7 @@ import React from 'react'
 import MapView, { Marker, Callout, Circle } from 'react-native-maps'
 import { Button } from 'native-base'
 import { ActivityIndicator, Alert, StyleSheet, Text, View } from 'react-native'
-import { StackActions, NavigationActions, NavigationEvents } from 'react-navigation'
+import { StackActions, NavigationActions } from 'react-navigation'
 import ActionButton from 'react-native-action-button'
 import api from '../Services/ApiService'
 import geolocationService from '../Services/GeolocationService'
@@ -31,6 +31,9 @@ export default class MapScreen extends React.Component {
       zoomShowing: false
     }
     this.logged = api.isLoggedIn()
+    this.props.navigation.addListener('didFocus', this.refreshOnFocus)
+    this.props.navigation.addListener('willBlur', () => { this.setState({ refreshShowing: false }) })
+    this.markersRefs = {}
   }
 
   static navigationOptions = {
@@ -62,13 +65,19 @@ export default class MapScreen extends React.Component {
   }
 
   markerRegionUpdate = () => {
+    let latDelta
+    let lngDelta
     if (this.region.longitudeDelta > 0.11) {
-      return
+      latDelta = (this.region.latitudeDelta * 0.11) / this.region.longitudeDelta
+      lngDelta = 0.11
+    } else {
+      latDelta = this.region.latitudeDelta
+      lngDelta = this.region.longitudeDelta
     }
-    const neLat = this.region.latitude + this.region.latitudeDelta / 2
-    const swLat = this.region.latitude - this.region.latitudeDelta / 2
-    const swLng = this.region.longitude - this.region.longitudeDelta / 2
-    const neLng = this.region.longitude + this.region.longitudeDelta / 2
+    const neLat = this.region.latitude + latDelta / 2
+    const swLat = this.region.latitude - latDelta / 2
+    const swLng = this.region.longitude - lngDelta / 2
+    const neLng = this.region.longitude + lngDelta / 2
     const that = this
 
     return new Promise(resolve => {
@@ -122,6 +131,13 @@ export default class MapScreen extends React.Component {
     this.setState({ inserting: false })
   }
 
+  renderMarkers = () => {
+    if (!this.state.inserting) {
+      this.markersRefs = {}
+      return this.state.markers.map(this.renderMarker)
+    }
+  }
+
   renderMarker = (marker, key) => {
     const { date, time } = DateParser.timestampToItalianDate(marker.timestamp)
     const description = marker.description.length > 80 ? marker.description.substring(0, 80) + '...' : marker.description
@@ -129,6 +145,7 @@ export default class MapScreen extends React.Component {
       <Marker
         key={key}
         coordinate={{ latitude: marker.latitude, longitude: marker.longitude }}
+        ref={(ref) => { this.markersRefs[marker._id] = ref }}
       >
         <Callout style={styles.callout} onPress={() => { this.navigateToSingleReport(marker) }}>
           <Text style={styles.calloutTitle}>{marker.title}</Text>
@@ -168,14 +185,28 @@ export default class MapScreen extends React.Component {
     })
   }
   refreshOnFocus = (payload) => {
-    console.log(payload)
-    this.markerRegionUpdate()
+    this.markerRegionUpdate().then(() => {
+      if (payload.state.params.markerId != null) {
+        const setParamsAction = NavigationActions.setParams({
+          params: { marker: null },
+          key: 'Map'
+        })
+        this.props.navigation.dispatch(setParamsAction)
+        this.highlightMarker(payload.state.params.markerId)
+      }
+    })
   }
+
+  highlightMarker = (id) => {
+    const marker = this.markersRefs[id]
+    if (marker != null) {
+      setTimeout(() => { marker.showCallout() }, 0)
+    }
+  }
+
   render () {
     return (
       <View style={styles.map}>
-        <NavigationEvents
-          onWillFocus={this.refreshOnFocus} />
         <MapView
           style={styles.map}
           initialRegion={this.state.region}
@@ -192,7 +223,7 @@ export default class MapScreen extends React.Component {
               <Circle strokeColor='lightblue' fillColor='lightblue' center={{ latitude: this.state.geolocation.latitude, longitude: this.state.geolocation.longitude }} radius={this.state.geolocation.radius} />
             </View>
           }
-          {!this.state.inserting && this.state.markers.map(this.renderMarker)}
+          {this.renderMarkers()}
           {this.state.inserting &&
           <Marker
             ref={ref => { this.insertingMarker = ref }}

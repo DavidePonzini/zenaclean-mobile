@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { StyleSheet, View, Image, ScrollView, Alert } from 'react-native'
 import { FormInput, FormLabel, FormValidationMessage, Button, Text } from 'react-native-elements'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
+import { NavigationActions } from 'react-navigation'
 import ImagePicker from 'react-native-image-picker'
 import api from '../Services/ApiService'
 
@@ -73,6 +74,11 @@ export default class AddReportScreen extends Component {
         Alert.alert('Segnalazione effettuata con successo!', '', [
           { text: 'OK',
             onPress: () => {
+              const setParamsAction = NavigationActions.setParams({
+                params: { markerId: res },
+                key: 'Map'
+              })
+              that.props.navigation.dispatch(setParamsAction)
               that.props.navigation.popToTop()
             }
           }
