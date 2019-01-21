@@ -15,7 +15,7 @@ export class NoReportsLeftComponent extends React.Component {
     return (
       <View style={styles.container}>
         <View style={styles.innerContainer}>
-          <Text style={styles.title}>Buone notizie!</Text>
+          <Text accessibilityLabel='good-news-text' testID={'good-news-text'} style={styles.title}>Buone notizie!</Text>
           <Icon style={styles.splashIcon} name='trophy' />
           <Text style={styles.descr}>Non ci sono segnalazioni nei dintorni!</Text>
           <Text style={styles.descr}>Prenditi un attimo per assaporare il momento</Text>
