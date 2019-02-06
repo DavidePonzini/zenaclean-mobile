@@ -39,7 +39,7 @@ const voteReport = (v, report, cb) => {
   let body = {
     user: userId,
     report: report,
-    vote: v ? '1' : '0'
+    vote: v ? 1 : 0
   }
   return fetch(baseUrl + 'reports/vote', {
     method: 'POST',

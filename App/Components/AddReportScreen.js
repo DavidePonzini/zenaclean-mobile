@@ -165,7 +165,7 @@ export default class AddReportScreen extends Component {
               testID={'button-send'}
               iconRight={{ name: 'md-arrow-round-up', type: 'ionicon', color: 'lightgreen', size: 20 }}
               buttonStyle={[styles.form_button, styles.btn_send]}
-              disabled={!this.state.title}
+              disabled={!(this.state.title && this.state.description)}
               onPress={() => this.showAlertConfirm('Vuoi inviare la segnalazione?')}
               title='Invia' />
           </View>

@@ -112,6 +112,20 @@ export default class SingleReportScreen extends Component {
                 </View>
               </LinearGradient>)
             }
+            {this.marker.approved_positive &&
+            <LinearGradient style={styles.voteOverlay} colors={['rgba(255,255,255,0)', 'rgba(0,255,0,0.75)']}>
+              <View style={styles.voteButton}>
+                <Text style={styles.textApproved}>Report approvato positivamente!</Text>
+              </View>
+            </LinearGradient>
+            }
+            {this.marker.approved_negative &&
+            <LinearGradient style={styles.voteOverlay} colors={['rgba(255,255,255,0)', 'rgba(255,0,0,0.75)']}>
+              <View style={styles.voteButton}>
+                <Text style={styles.textApproved}>Report approvato negativamente!</Text>
+              </View>
+            </LinearGradient>
+            }
           </View>
 
           <View style={styles.innerContainer}>
@@ -177,6 +191,9 @@ const styles = StyleSheet.create({
   },
   voteIcon: {
     fontSize: 40
+  },
+  textApproved: {
+    fontSize: 20
   },
   thumbUp: {
     color: Colors.voteUp

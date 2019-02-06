@@ -38,7 +38,6 @@ export default class LoginComponent extends Component {
       if (err == null) {
         this.navigateAfterLogin(user)
       } else {
-        console.log(err)
         this.setState({ loginChecked: 'failed' })
       }
     })
