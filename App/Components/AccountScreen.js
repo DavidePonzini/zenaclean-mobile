@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { StyleSheet, View, Image, Alert, ActivityIndicator } from 'react-native'
+import { StyleSheet, View, Image, Alert, Linking } from 'react-native'
 import { Button, Text, Container, Content, Input, Item, Icon } from 'native-base'
 import Colors from '../Themes/Colors'
 import { NavigationActions, StackActions } from 'react-navigation'
@@ -121,6 +121,14 @@ export default class AccountScreen extends Component {
     ])
   }
 
+  showAddress = () => {
+    Alert.alert('Non ancora implementata!')
+  }
+
+  _goToURL = () => {
+    Linking.openURL('https://ropsten.etherscan.io/address/' + this.props.navigation.state.params.eth_address)
+  }
+
   render () {
     return (
       <Container>
@@ -146,6 +154,13 @@ export default class AccountScreen extends Component {
               style={styles.textAccount}>
               {'Saldo: ' + this.state.balance + ' token'}
             </Text>
+
+            <Button rounded style={styles.walletButton}
+              accessibilityLabel='wallet-button'
+              testID={'wallet-button'}
+              onPress={this._goToURL}>
+              <Text>Vai al Wallet</Text>
+            </Button>
           </View>}
 
           { this.props.navigation.state.params.logged === true && <View style={styles.resetPasswordView}>
@@ -250,6 +265,13 @@ const styles = StyleSheet.create({
   resetButton: {
     marginTop: 20,
     width: '90%',
+    alignSelf: 'center',
+    justifyContent: 'center',
+    backgroundColor: Colors.accent
+  },
+  walletButton: {
+    marginTop: 20,
+    width: '40%',
     alignSelf: 'center',
     justifyContent: 'center',
     backgroundColor: Colors.accent
