@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { StyleSheet, View, Image, Alert } from 'react-native'
+import { StyleSheet, View, Image, Alert, ActivityIndicator } from 'react-native'
 import { Button, Text, Container, Content, Input, Item, Icon } from 'native-base'
 import Colors from '../Themes/Colors'
 import { NavigationActions, StackActions } from 'react-navigation'
@@ -9,13 +9,15 @@ export default class AccountScreen extends Component {
   constructor (props) {
     super(props)
     this.state = {
+      balance: '',
       oldPassword: '',
       newPassword: '',
       confirmPassword: '',
       validOldPassword: undefined,
       validNewPassword: undefined,
       validConfirmPassword: undefined,
-      resetChecked: ''
+      resetChecked: '',
+      fetching: false
     }
   }
 
@@ -27,6 +29,12 @@ export default class AccountScreen extends Component {
         NavigationActions.navigate({ routeName: 'TabNavigator', params: { logged: false } })
       ]
     }))
+  }
+
+  getBalance =() => {
+    api.getBalance(this.props.navigation.state.params.eth_address, amount => {
+      this.setState({ balance: amount, fetching: true })
+    })
   }
   componentWillMount = () => {
     if (!this.props.navigation.state.params.logged) {
@@ -42,6 +50,9 @@ export default class AccountScreen extends Component {
       ], { onDismiss: that.navigateBack }
       )
     }
+
+    this.getBalance()
+    console.log(this.balance)
   }
 
   navigateToSignIn = () => {
@@ -109,6 +120,7 @@ export default class AccountScreen extends Component {
       { text: 'Annulla', style: 'cancel' }
     ])
   }
+
   render () {
     return (
       <Container>
@@ -125,6 +137,15 @@ export default class AccountScreen extends Component {
               {this.props.navigation.state.params.inputEmail}
             </Text>
             <Text style={styles.textResetPassword}>Compila i campi per reimpostare la password:</Text>
+          </View>}
+
+          {(this.props.navigation.state.params.logged === true && this.state.fetching) && <View>
+            <Text
+              accessibilityLabel='account-balance'
+              testID={'account-balance'}
+              style={styles.textAccount}>
+              {'Saldo: ' + this.state.balance + ' token'}
+            </Text>
           </View>}
 
           { this.props.navigation.state.params.logged === true && <View style={styles.resetPasswordView}>

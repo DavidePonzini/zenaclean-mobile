@@ -210,6 +210,17 @@ const logoutUser = (cb) => {
 
 const isLoggedIn = () => userId !== null
 
+const getBalance = (eth_addr, cb) => {
+  return fetch(baseUrl + 'users/balance?addr=' + eth_addr)
+    .then((response) => {
+      return response.json()
+    }
+    )
+    .then(res => {
+      cb(res.value)
+    })
+}
+
 export default {
   getAddressFromCoords,
   getMarkers,
@@ -220,5 +231,6 @@ export default {
   voteReport,
   isLoggedIn,
   logoutUser,
-  rehydrateLogin
+  rehydrateLogin,
+  getBalance
 }

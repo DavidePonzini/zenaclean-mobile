@@ -18,6 +18,7 @@ export default class LoginComponent extends Component {
   }
 
   navigateAfterLogin = (user) => {
+    console.log(user)
     if (user != null) {
       this.props.navigation.dispatch(StackActions.reset({
         index: 0,
@@ -26,7 +27,8 @@ export default class LoginComponent extends Component {
             routeName: 'TabNavigator',
             params: {
               logged: true,
-              inputEmail: user.email
+              inputEmail: user.email,
+              eth_address: user.eth_address
             }
           })
         ]

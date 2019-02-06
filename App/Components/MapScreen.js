@@ -19,11 +19,11 @@ export default class MapScreen extends React.Component {
   constructor (props) {
     super(props)
     this.region = geolocationService.getCurrentRegion() // region in the object holds the region we're currently viewing
-
+    this.balance = ''
     this.state = {
       region: this.region, // region in the state holds the last "searched" region
       inserting: false,
-      fetching: true,
+      fetching: false,
       markers: [],
       geolocating: false,
       geolocation: null,
