@@ -130,19 +130,7 @@ exports[`AddReportScreen tests renders correctly 1`] = `
             "maxWidth": 450,
           }
         }
-      >
-        <FormLabel
-          labelStyle={
-            Object {
-              "fontSize": 25,
-              "marginBottom": 37.5,
-              "maxWidth": 600,
-            }
-          }
-        >
-          Aggiungi Foto
-        </FormLabel>
-      </ScrollView>
+      />
       <Button
         accessibilityLabel="button-image"
         buttonStyle={
@@ -163,9 +151,6 @@ exports[`AddReportScreen tests renders correctly 1`] = `
         title="+"
       />
     </View>
-    <Component
-      source={null}
-    />
     <View
       style={
         Object {

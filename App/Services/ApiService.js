@@ -1,5 +1,5 @@
 import Secrets from 'react-native-config'
-import { AsyncStorage } from 'react-native'
+import { AsyncStorage, Platform } from 'react-native'
 import { composeAddress } from '../Utils/GeoUtils'
 const baseUrl = Secrets.API_URL
 const googleApiUrl = 'https://maps.googleapis.com/maps/api/geocode/json?key=' + Secrets.GOOGLE_MAPS_API_KEY + '&address='
@@ -140,8 +140,45 @@ const changePassword = (email, oldPassword, newPassword, confirmPassword, cb) =>
     })
 }
 
+const createFormData = (photo, body) => {
+  const data = new FormData()
+  if (photo != null) {
+    data.append('photo', {
+      name: photo.fileName,
+      type: photo.type,
+      uri:
+        Platform.OS === 'android' ? photo.uri : photo.uri.replace('file://', '')
+    })
+
+    Object.keys(body).forEach(key => {
+      data.append(key, body[key])
+    })
+  }
+  return data
+}
+
+const handleUploadPhoto = (photo, body, cb) => {
+  fetch(baseUrl + 'reports/uploadPhoto', {
+    method: 'POST',
+    body: createFormData(photo, body)
+  })
+    .then(response => response.json())
+    .then(response => {
+      console.log('upload successful', response)
+      cb(null, body.id)
+    })
+    .catch(error => {
+      console.log('error uploading', error)
+    })
+}
+
 const uploadReport = (infoReport, cb) => {
   infoReport.id = userId // probably this should be different
+  let photo = null
+  if (infoReport.photo != null) {
+    photo = infoReport.photo
+    delete infoReport.photo
+  }
   return fetch(baseUrl + 'reports', {
     method: 'POST',
     headers: {
@@ -152,7 +189,11 @@ const uploadReport = (infoReport, cb) => {
   }).then(res => res.json())
     .then((res) => {
       if (res.status === 'ok') {
-        cb(null, res._id)
+        if (photo != null) {
+          handleUploadPhoto(photo, { id: res._id, userId: userId }, cb)
+        } else {
+          cb(null, res._id)
+        }
       } else {
         cb(new Error('failed to upload'), res)
       }
@@ -196,7 +237,8 @@ const getMarkers = (neLat, swLat, swLng, neLng, cb) => {
         markers.push({
           ...marker,
           own: marker['user_id'] === userId, // I should not be able to know the author of a report
-          id: k
+          id: k,
+          url: baseUrl + marker['url']
         })
       })
       cb(markers)

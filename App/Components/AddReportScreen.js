@@ -65,8 +65,8 @@ export default class AddReportScreen extends Component {
       address: this.state.address
     }
 
-    if (this.state.photoSource) {
-      data.url = this.state.photoSource
+    if (this.state.photo) {
+      data.photo = this.state.photo
     }
     api.uploadReport(data, (err, res) => {
       let that = this
@@ -121,17 +121,14 @@ export default class AddReportScreen extends Component {
         console.log('ImagePicker Error: ', response.error)
       } else if (response.customButton) {
         console.log('User tapped custom button: ', response.customButton)
-      } else if (response.fileSize > 4000000) {
+      } else if (response.fileSize > 10000000) {
         this.showAlert('Dimensione immagine troppo grande')
       } else if (!(/\/(gif|jpg|jpeg|tiff|png)$/i).test(response.type)) {
         this.showAlert('Estensione immagine non valida')
       } else {
-        const source = { uri: 'data:image/jpeg;base64,' + response.data }
         this.setState({
-          photoSource: source,
-          nameFile: response.fileName
+          photo: response
         })
-        console.log(this.state.photoSource)
       }
     })
   }
@@ -149,7 +146,7 @@ export default class AddReportScreen extends Component {
           { this.state.descrError && <FormValidationMessage>{formItems.descrErrorMessage}</FormValidationMessage> }
           <View style={[styles.view_button, styles.margin_top]}>
             <ScrollView horizontal style={{ maxWidth: wp('60%') }}>
-              <FormLabel labelStyle={styles.title_label}>{this.state.nameFile}</FormLabel>
+              { this.state.photo != null && <FormLabel labelStyle={styles.title_label}>{this.state.photo.title}</FormLabel> }
             </ScrollView>
             <Button accessibilityLabel='button-image'
               testID={'button-image'}
@@ -158,7 +155,7 @@ export default class AddReportScreen extends Component {
               buttonStyle={styles.btn_foto}
               title='+' />
           </View>
-          <Image source={this.state.photoSource} />
+          { this.state.photo != null && <Image style={{ width: 100, height: 100 }} source={{ uri: 'data:image/jpeg;base64,' + this.state.photo.data }} /> }
           <View style={styles.view_button}>
             <Button
               accessibilityLabel='button-send'

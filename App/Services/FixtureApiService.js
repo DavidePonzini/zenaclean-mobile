@@ -92,7 +92,7 @@ const logoutUser = () => {
   userId = null
 }
 const rehydrateLogin = () => { userId = fixtureUserId }
-
+const getBalance = () => {}
 export default {
   getAddressFromCoords,
   getMarkers,
@@ -103,5 +103,6 @@ export default {
   voteReport,
   isLoggedIn,
   logoutUser,
-  rehydrateLogin
+  rehydrateLogin,
+  getBalance
 }
