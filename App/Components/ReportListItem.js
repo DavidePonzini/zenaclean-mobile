@@ -4,7 +4,6 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import Images from '../Themes/Images'
 import Fonts from '../Themes/Fonts'
 import DateParser from '../Utils/DateParser'
-import ActionButton from 'react-native-action-button'
 
 export default class ReportListItem extends React.Component {
   constructor (props) {

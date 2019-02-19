@@ -238,7 +238,7 @@ const getMarkers = (neLat, swLat, swLng, neLng, cb) => {
           ...marker,
           own: marker['user_id'] === userId, // I should not be able to know the author of a report
           id: k,
-          url: baseUrl + marker['url']
+          url: marker['url'] ? (baseUrl + marker['url']) : null
         })
       })
       cb(markers)

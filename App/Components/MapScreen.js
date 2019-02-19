@@ -79,6 +79,7 @@ export default class MapScreen extends React.Component {
     const swLng = this.region.longitude - lngDelta / 2
     const neLng = this.region.longitude + lngDelta / 2
     const that = this
+    Object.keys(this.markersRefs).forEach(k => { this.markersRefs[k].hideCallout() })
 
     return new Promise(resolve => {
       that.setState({ fetching: true, region: that.region }, () => {
