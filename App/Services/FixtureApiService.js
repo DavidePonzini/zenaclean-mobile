@@ -5,7 +5,7 @@ export const fixtureMessageNotOk = 'Utente già esistente'
 export const fixtureUserId = 'verylonguserid'
 const SSNlist = ['LNGSVV60T17H509N', 'HTHHLG90R62B112N', 'BRTHZG56P68C982U']
 const emailList = ['prova@gmail.com', 'prova@hotmail.it']
-const user1 = ['prova@gmail.com', '12345678']
+export const user1 = [emailList[0], '12345678', SSNlist[0]]
 const totVoti = [32, 45, 21]
 let userId = null
 
@@ -15,7 +15,7 @@ const logInUser = (email, password, cb) => {
   }).then((res) => {
     if (res.status === 'ok') {
       userId = fixtureUserId
-      cb(null)
+      cb(null, { id: userId, email, eth_address: null })
     } else {
       cb(new Error('login failed'), res)
     }
@@ -91,7 +91,16 @@ const isLoggedIn = () => userId != null
 const logoutUser = () => {
   userId = null
 }
-const rehydrateLogin = () => { userId = fixtureUserId }
+const rehydrateLogin = () => {
+  return new Promise((resolve, reject) => {
+    if (userId != null) {
+      resolve(userId)
+    } else {
+      reject(new Error('Not logged in'))
+    }
+  })
+}
+
 const getBalance = () => {}
 export default {
   getAddressFromCoords,

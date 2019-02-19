@@ -18,7 +18,6 @@ export default class LoginComponent extends Component {
   }
 
   navigateAfterLogin = (user) => {
-    console.log(user)
     if (user != null) {
       this.props.navigation.dispatch(StackActions.reset({
         index: 0,
@@ -76,7 +75,7 @@ export default class LoginComponent extends Component {
             onPress={() => this.loginPressed()}>
             <Text>Login</Text>
           </Button>
-          {this.state.loginChecked === 'failed' && <Text style={styles.errorInputMessage}>{'Email e/o password errati'}</Text> }
+          {this.state.loginChecked === 'failed' && <Text testID={'login-failed'} style={styles.errorInputMessage}>{'Email e/o password errati'}</Text> }
           <View style={styles.fpwd_nuser}>
             <Button transparent>
               <Text accessibilityLabel='signup-button'
