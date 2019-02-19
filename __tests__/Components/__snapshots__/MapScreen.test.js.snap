@@ -22,6 +22,7 @@ exports[`MapScreen tests renders correctly 1`] = `
       }
     }
     loadingEnabled={true}
+    onPress={null}
     onRegionChangeComplete={[Function]}
     pitchEnabled={false}
     showsMyLocationButton={false}

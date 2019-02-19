@@ -108,6 +108,15 @@ export default class MapScreen extends React.Component {
       ]
     }))
   }
+  animateToTouch = ({ nativeEvent }) => {
+    let region = {
+      ...nativeEvent.coordinate,
+      latitudeDelta: this.region.latitudeDelta,
+      longitudeDelta: this.region.longitudeDelta
+    }
+    this.map.animateToRegion(region)
+    this.insertingMarker.animateMarkerToCoordinate(region)
+  }
 
   beginMarkerPlacement = () => {
     if (this.logged) {
@@ -215,6 +224,7 @@ export default class MapScreen extends React.Component {
           loadingEnabled
           pitchEnabled={false}
           toolbarEnabled={false}
+          onPress={this.state.inserting ? this.animateToTouch : null}
           onRegionChangeComplete={this.onRegionChanged}
           ref={(map) => { this.map = map }}
         >

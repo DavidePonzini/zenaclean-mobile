@@ -155,12 +155,12 @@ export default class AccountScreen extends Component {
               {'Saldo: ' + this.state.balance + ' token'}
             </Text>
 
-            <Button rounded style={styles.walletButton}
+            {false && <Button rounded style={styles.walletButton}
               accessibilityLabel='wallet-button'
               testID={'wallet-button'}
               onPress={this._goToURL}>
               <Text>Vai al Wallet</Text>
-            </Button>
+            </Button>}
           </View>}
 
           { this.props.navigation.state.params.logged === true && <View style={styles.resetPasswordView}>
