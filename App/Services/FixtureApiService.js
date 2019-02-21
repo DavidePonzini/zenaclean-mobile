@@ -1,17 +1,26 @@
+const SSNlist = ['LNGSVV60T17H509N', 'HTHHLG90R62B112N', 'BRTHZG56P68C982U']
+const emailList = ['prova@gmail.com', 'prova@hotmail.it']
+export const user1 = {
+  email: emailList[0],
+  password: '12345678',
+  ssn: SSNlist[0],
+  id: '5c5afd7c4be7ff1c8d7daacd'
+}
+
+const wallets = {}
+wallets[user1.id] = 2
+export { wallets }
 export const fixtureAddress = 'Via del Camoscio'
-export const fixtureMarkers = [{ address: fixtureAddress, title: 'Divano abbandonato', latitude: 44.1234, longitude: 8.1234, description: 'Divano abbandonato in via Gramsci', timestamp: '2018-12-09T14:40:35 -02:00' }]
+export const fixtureMarkers = [{ address: fixtureAddress, title: 'Divano abbandonato', latitude: 44.1234, longitude: 8.1234, description: 'Divano abbandonato in via Gramsci', timestamp: '2018-12-09T14:40:35 -02:00', approved_positive: false, approved_negative: false, _id: '5c6580a33a7f647afccd8920', user_id: user1.id, url: 'images/667856780e39f0bbe7407bfdae603f8e', voted_positive: false, voted_negative: false }]
 export const fixtureMessageOk = 'Registrazione effettuata con successo!'
 export const fixtureMessageNotOk = 'Utente già esistente'
 export const fixtureUserId = 'verylonguserid'
-const SSNlist = ['LNGSVV60T17H509N', 'HTHHLG90R62B112N', 'BRTHZG56P68C982U']
-const emailList = ['prova@gmail.com', 'prova@hotmail.it']
-export const user1 = [emailList[0], '12345678', SSNlist[0]]
 const totVoti = [32, 45, 21]
-let userId = null
+export let userId = null
 
 const logInUser = (email, password, cb) => {
   return new Promise(resolve => {
-    (user1[0] === email && user1[1] === password) ? resolve({ status: 'ok' }) : resolve({ status: 'no' })
+    (user1.email === email && user1.password === password) ? resolve({ status: 'ok' }) : resolve({ status: 'no' })
   }).then((res) => {
     if (res.status === 'ok') {
       userId = fixtureUserId
@@ -74,11 +83,11 @@ const voteReport = (v, report, cb) => {
 
 const changePassword = (email, oldPassword, newPassword, confirmPassword, cb) => {
   return new Promise((resolve) => {
-    if (user1[1] === oldPassword && newPassword === confirmPassword) resolve({ status: 'ok' })
+    if (user1.password === oldPassword && newPassword === confirmPassword) resolve({ status: 'ok' })
     else resolve({ status: 'no' })
   }).then((res) => {
     if (res.status === 'ok') {
-      user1[1] = newPassword
+      user1.password = newPassword
       cb(null)
     } else {
       cb(new Error('login failed'), res)
@@ -101,7 +110,14 @@ const rehydrateLogin = () => {
   })
 }
 
-const getBalance = () => {}
+const getBalance = (eth_addr, cb) => {
+  return new Promise(resolve => {
+    resolve({ value: wallets[user1.id] })
+  }).then(res => {
+    cb(res.value)
+  })
+}
+
 export default {
   getAddressFromCoords,
   getMarkers,

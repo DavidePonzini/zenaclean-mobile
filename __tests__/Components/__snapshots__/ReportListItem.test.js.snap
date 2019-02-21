@@ -77,7 +77,7 @@ exports[`List tests renders correctly 1`] = `
             <Component
               source={
                 Object {
-                  "testUri": "../../../App/Assets/Images/default_report_image.png",
+                  "uri": "images/667856780e39f0bbe7407bfdae603f8e",
                 }
               }
               style={

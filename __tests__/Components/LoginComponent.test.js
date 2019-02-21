@@ -20,13 +20,16 @@ describe('LoginComponent tests', () => {
   })
 
   it('navigates when successful login', async (done) => {
-    const emailInput = wrapper.find({ testID: 'login-email' }).first()
-    emailInput.simulate('changeText', user1[0])
-    const pwdInput = wrapper.find({ testID: 'login-password' }).first()
-    pwdInput.simulate('changeText', user1[1])
-    wrapper.update()
-    const loginButton = wrapper.find({ testID: 'login-button' }).first()
-    await loginButton.simulate('Press')
+    await logInCorrectly(wrapper)
+    await expect(navigation.dispatch).toHaveBeenCalled()
+    done()
+  })
+
+  it('navigates when it finds a persisted session', async (done) => {
+    const wrapper = shallow(<LoginComponent navigation={navigation} />)
+    await logInCorrectly(wrapper)
+    wrapper.unmount()
+    shallow(<LoginComponent navigation={navigation} />)
     await expect(navigation.dispatch).toHaveBeenCalled()
     done()
   })
@@ -43,3 +46,13 @@ describe('LoginComponent tests', () => {
     done()
   })
 })
+
+const logInCorrectly = async (wrapper) => {
+  const emailInput = wrapper.find({ testID: 'login-email' }).first()
+  emailInput.simulate('changeText', user1.email)
+  const pwdInput = wrapper.find({ testID: 'login-password' }).first()
+  pwdInput.simulate('changeText', user1.password)
+  wrapper.update()
+  const loginButton = wrapper.find({ testID: 'login-button' }).first()
+  await loginButton.simulate('Press')
+}

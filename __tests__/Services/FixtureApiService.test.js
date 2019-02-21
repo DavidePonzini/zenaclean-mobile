@@ -3,7 +3,9 @@ import FixtureApiService, {
   fixtureMarkers,
   fixtureAddress,
   fixtureMessageOk,
-  fixtureMessageNotOk
+  fixtureMessageNotOk,
+  user1,
+  wallets
 } from '../../App/Services/FixtureApiService'
 import 'react-test-renderer'
 import 'isomorphic-fetch'
@@ -161,5 +163,13 @@ describe('FixtureApi tests', () => {
       error = err
     })
     expect(error).toBeNull()
+  })
+
+  it('gets tokens amount from wallet', async (done) => {
+    let value = 0
+    const cb = v => { value = v }
+    await FixtureApiService.getBalance(null, cb)
+    expect(value).toBe(wallets[user1.id])
+    done()
   })
 })
