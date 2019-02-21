@@ -115,14 +115,14 @@ export default class SingleReportScreen extends Component {
             {this.marker.approved_positive &&
             <LinearGradient style={styles.voteOverlay} colors={['rgba(255,255,255,0)', 'rgba(0,255,0,0.75)']}>
               <View style={styles.voteButton}>
-                <Text style={styles.textApproved}>Report approvato positivamente!</Text>
+                <Text accessibilityLabel='approved-positive' testID={'approved-positive'} style={styles.textApproved}>Report approvato positivamente!</Text>
               </View>
             </LinearGradient>
             }
             {this.marker.approved_negative &&
             <LinearGradient style={styles.voteOverlay} colors={['rgba(255,255,255,0)', 'rgba(255,0,0,0.75)']}>
               <View style={styles.voteButton}>
-                <Text style={styles.textApproved}>Report approvato negativamente!</Text>
+                <Text accessibilityLabel='approved-negative' testID={'approved-negative'} style={styles.textApproved}>Report approvato negativamente!</Text>
               </View>
             </LinearGradient>
             }
